@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	errhandle "github.com/mrmxf/opentsg-cote/errHandle"
-	"github.com/mrmxf/opentsg-cote/widgethandler"
+	errhandle "github.com/mrmxf/opentsg-core/errHandle"
+	"github.com/mrmxf/opentsg-core/widgethandler"
 )
 
 // NGenerator generates images of noise

@@ -13,10 +13,10 @@ import (
 
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
-	"github.com/mrmxf/opentsg-cote/colourgen"
-	"github.com/mrmxf/opentsg-cote/config/core"
-	errhandle "github.com/mrmxf/opentsg-cote/errHandle"
-	"github.com/mrmxf/opentsg-cote/widgethandler"
+	"github.com/mrmxf/opentsg-core/colourgen"
+	"github.com/mrmxf/opentsg-core/config/core"
+	errhandle "github.com/mrmxf/opentsg-core/errHandle"
+	"github.com/mrmxf/opentsg-core/widgethandler"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
 

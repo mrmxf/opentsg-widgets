@@ -20,7 +20,7 @@ rm go.mod
 
 # if statement here
 #Walk_dir "$PWD" "github.com/mrmxf/opentsg-widgets" "github.com/mmTristan/tpg-widgets-private"
-#Walk_dir "$PWD" "github.com/mrmxf/opentsg-cote" "github.com/mmTristan/tpg-core-private"
+#Walk_dir "$PWD" "github.com/mrmxf/opentsg-core" "github.com/mmTristan/tpg-core-private"
 #Walk_dir "$PWD" "gitlab.com/mmTristan/tpg-io" "github.com/mmTristan/tpg-io-private"
 
 

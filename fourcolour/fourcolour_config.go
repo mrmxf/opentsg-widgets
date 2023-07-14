@@ -1,7 +1,7 @@
 package fourcolour
 
 import (
-	"github.com/mrmxf/opentsg-cote/config"
+	"github.com/mrmxf/opentsg-core/config"
 )
 
 type fourJSON struct {

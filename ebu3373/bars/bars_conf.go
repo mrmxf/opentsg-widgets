@@ -3,7 +3,7 @@ package bars
 import (
 	_ "embed"
 
-	"github.com/mrmxf/opentsg-cote/config"
+	"github.com/mrmxf/opentsg-core/config"
 )
 
 /*

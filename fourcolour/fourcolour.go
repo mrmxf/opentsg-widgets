@@ -8,10 +8,10 @@ import (
 	"image/draw"
 	"sync"
 
-	"github.com/mrmxf/opentsg-cote/colourgen"
-	errhandle "github.com/mrmxf/opentsg-cote/errHandle"
-	"github.com/mrmxf/opentsg-cote/gridgen"
-	"github.com/mrmxf/opentsg-cote/widgethandler"
+	"github.com/mrmxf/opentsg-core/colourgen"
+	errhandle "github.com/mrmxf/opentsg-core/errHandle"
+	"github.com/mrmxf/opentsg-core/gridgen"
+	"github.com/mrmxf/opentsg-core/widgethandler"
 )
 
 func FourColourGenerator(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {

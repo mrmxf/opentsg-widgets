@@ -8,8 +8,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mrmxf/opentsg-cote/config"
-	"github.com/mrmxf/opentsg-cote/gridgen"
+	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mrmxf/opentsg-core/gridgen"
 	geometrymock "github.com/mrmxf/opentsg-widgets/geometryMock"
 	// . "github.com/smartystreets/goconvey/convey"
 )

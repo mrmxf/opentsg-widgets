@@ -1,6 +1,6 @@
 package geometrytext
 
-import "github.com/mrmxf/opentsg-cote/config"
+import "github.com/mrmxf/opentsg-core/config"
 
 type geomTextJSON struct {
 	TextColour string       `json:"textColor" yaml:"textColor"`

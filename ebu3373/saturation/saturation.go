@@ -9,8 +9,8 @@ import (
 	"image/draw"
 	"sync"
 
-	errhandle "github.com/mrmxf/opentsg-cote/errHandle"
-	"github.com/mrmxf/opentsg-cote/widgethandler"
+	errhandle "github.com/mrmxf/opentsg-core/errHandle"
+	"github.com/mrmxf/opentsg-core/widgethandler"
 )
 
 func SatGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {

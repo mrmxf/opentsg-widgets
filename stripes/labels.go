@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/golang/freetype/truetype"
-	"github.com/mrmxf/opentsg-cote/colourgen"
+	"github.com/mrmxf/opentsg-core/colourgen"
 	"github.com/mrmxf/opentsg-widgets/textbox"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"

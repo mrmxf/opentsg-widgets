@@ -13,7 +13,7 @@ import (
 	"runtime/debug"
 	"testing"
 
-	"github.com/mrmxf/opentsg-cote/config"
+	"github.com/mrmxf/opentsg-core/config"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

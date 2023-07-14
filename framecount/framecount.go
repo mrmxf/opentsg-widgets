@@ -14,9 +14,9 @@ import (
 
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
-	"github.com/mrmxf/opentsg-cote/colourgen"
-	errhandle "github.com/mrmxf/opentsg-cote/errHandle"
-	"github.com/mrmxf/opentsg-cote/widgethandler"
+	"github.com/mrmxf/opentsg-core/colourgen"
+	errhandle "github.com/mrmxf/opentsg-core/errHandle"
+	"github.com/mrmxf/opentsg-core/widgethandler"
 	"github.com/mrmxf/opentsg-widgets/textbox"
 
 	"golang.org/x/image/font"
