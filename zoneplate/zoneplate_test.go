@@ -9,6 +9,7 @@ import (
 	"os"
 	"testing"
 
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	"github.com/mrmxf/opentsg-widgets/mask"
 	. "github.com/smartystreets/goconvey/convey"
 )
@@ -27,6 +28,8 @@ func TestZoneGenAngle(t *testing.T) {
 	for i := range angleDummies {
 		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{1000, 1000}})
 		mockZone.Angle = angleDummies[i]
+
+		examplejson.SaveExampleJson(mockZone, widgetType, "base")
 		// Generate the ramp image
 		genErr := mockZone.Generate(myImage)
 		// Open the image to compare to

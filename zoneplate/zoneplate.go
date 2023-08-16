@@ -16,10 +16,14 @@ import (
 	"github.com/mrmxf/opentsg-widgets/mask"
 )
 
+const (
+	widgetType = "builtin.zoneplate"
+)
+
 // zoneGen takes a canvas and then returns an image of the zone plate layered ontop of the image
 func ZoneGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
-	conf := widgethandler.GenConf[zoneplateJSON]{Debug: debug, Schema: schemaInit, WidgetType: "builtin.zoneplate"}
+	conf := widgethandler.GenConf[zoneplateJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc) // Update this to pass an error which is then formatted afterwards
 }
 
