@@ -18,10 +18,14 @@ import (
 	"github.com/mrmxf/opentsg-core/widgethandler"
 )
 
+const (
+	widgetType = "builtin.ramps"
+)
+
 // RampGen generates images of ramps at any specified angle
 func RampGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
-	conf := widgethandler.GenConf[rampJSON]{Debug: debug, Schema: schemaInit, WidgetType: "builtin.ramps"}
+	conf := widgethandler.GenConf[rampJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc) // Update this to pass an error which is then formatted afterwards
 }
 
@@ -46,7 +50,7 @@ func (r rampJSON) Generate(canvas draw.Image, opts ...any) error {
 
 	width := centre.X
 	height := centre.Y
-	ang := "xy"
+	ang := noRotation
 	inverse := 0
 	// Reduce all angle to be within 2pi
 	if mult := (radian / (2 * math.Pi)); mult > 1 {
@@ -60,13 +64,13 @@ func (r rampJSON) Generate(canvas draw.Image, opts ...any) error {
 		width = centre.Y // This goes down the y direction now
 		height = centre.X
 		if rads == "1.571" {
-			ang = "yx"
+			ang = rotate90
 		} else {
-			ang = "yxReverse"
+			ang = rotate270
 			inverse = centre.X
 		}
 	} else if rads == "3.142" {
-		ang = "xyReverse"
+		ang = rotate180
 		inverse = centre.Y
 	}
 
@@ -189,7 +193,7 @@ func (r rampJSON) stripeGen(canvas draw.Image, fill []fill, fillPos, width, inve
 
 // fill creates the body of fill struct based off of the group header.
 // This is designed to have the values updated for each separate group
-func groupFill(body groupsHeaderJSON) []fill {
+func groupFill(body stripeHeadersJSON) []fill {
 	var fills []fill
 
 	// Make the group
@@ -358,16 +362,23 @@ func colourPosShift(c, scaleShift float64, brightToDark, maxBlack, maxWhite int)
 	return validStart(c, brightToDark, scaleShift)
 }
 
+const (
+	rotate180  = "rotate180"
+	rotate90   = "rotate90 "
+	rotate270  = "rotate270"
+	noRotation = "xy"
+)
+
 // func set sets the canvas values based on the roatation without running a transformation
 func set(ang string, canvas draw.Image, colourRGB color.NRGBA64, i, j float64) {
 
 	b := canvas.Bounds().Max
 	switch ang {
-	case "xy":
+	case noRotation:
 		canvas.Set(int(i), int(j), colourRGB)
-	case "xyReverse":
+	case rotate180:
 		canvas.Set(b.X-(int(i)+1), b.Y-(int(j)+1), colourRGB)
-	case "yxReverse":
+	case rotate270:
 		canvas.Set(b.X-int(j), b.Y-(int(i)+1), colourRGB)
 	default:
 		canvas.Set(int(j), int(i), colourRGB)

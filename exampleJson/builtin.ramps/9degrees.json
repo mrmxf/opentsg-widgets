@@ -1,0 +1,68 @@
+{
+    "rampAngle": "π*1/20",
+    "minimum": 0,
+    "maximum": 4095,
+    "depth": 12,
+    "fillType": "truncate",
+    "stripes": {
+        "groupHeader": {
+            "color": [
+                "white"
+            ],
+            "height": 6
+        },
+        "ramps": {
+            "bitDepth": [
+                12,
+                10,
+                8,
+                4
+            ],
+            "height": 6,
+            "labels": [
+                "12b",
+                "10b",
+                "8b",
+                "4b"
+            ],
+            "fill": "gradient",
+            "rampGroups": {
+                "Ared": {
+                    "color": "red",
+                    "direction": 1
+                },
+                "Bgreen": {
+                    "color": "green",
+                    "direction": 1
+                },
+                "Cblue": {
+                    "color": "blue",
+                    "rampstart": 2815,
+                    "direction": 1
+                },
+                "Dgray": {
+                    "color": "gray",
+                    "rampstart": 2815,
+                    "direction": -1
+                }
+            }
+        },
+        "interStripes": {
+            "color": [
+                "black",
+                "white"
+            ],
+            "height": 2
+        }
+    },
+    "grid": {
+        "location": "a5:p8",
+        "alias": "bottom"
+    },
+    "text": {
+        "textyPosition": "top",
+        "textxPosition": "left",
+        "textHeight": 20,
+        "textColor": "#345AB6"
+    }
+}

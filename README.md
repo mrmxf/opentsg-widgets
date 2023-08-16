@@ -9,7 +9,7 @@ These examples contain all the fields unique to the widget. The name of the fold
 is the same as the type that would be declared for that widget.
 
 The positional fields of grid are expected to be in **every** widget. And have the
-layout as shown below
+layout as shown below. They may not be found on every example.
 
 ```json
 "type" : "builtin.example",

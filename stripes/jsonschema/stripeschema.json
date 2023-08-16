@@ -21,7 +21,7 @@
                 "truncate",
                 "fill"
             ],
-            "description": "The type of fill for when the ramp is an exact multiple of 4096"
+            "description": "The type of fill for when the ramp is an exact multiple of 4096, truncate stops at the number, fill squeezes the values to loop from bright to dark"
         },
         "minimum": {
             "$ref": "#/$defs/colourvals"
