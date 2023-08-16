@@ -17,10 +17,11 @@ import (
 func TestZoneGenAngle(t *testing.T) {
 	var mockZone zoneplateJSON
 	// Make the dummy functions to circumvent config
-	mockZone.Platetype = "sweep"
+	mockZone.Platetype = sweepPattern
 
 	mockZone.Startcolour = "white"
 
+	explanation := []string{"fractional Radians", "Degrees", "wholeRadians", "noTurning"}
 	angleDummies := []interface{}{"π*1/2", 90, "π*1", nil}
 
 	testF := []string{"./testdata/normalzp.png", "./testdata/normalzp.png", "./testdata/zonepi.png", "./testdata/zonepi.png"}
@@ -29,7 +30,7 @@ func TestZoneGenAngle(t *testing.T) {
 		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{1000, 1000}})
 		mockZone.Angle = angleDummies[i]
 
-		examplejson.SaveExampleJson(mockZone, widgetType, "base")
+		examplejson.SaveExampleJson(mockZone, widgetType, explanation[i])
 		// Generate the ramp image
 		genErr := mockZone.Generate(myImage)
 		// Open the image to compare to
@@ -62,19 +63,21 @@ func TestZoneGenAngle(t *testing.T) {
 func TestZoneGenMask(t *testing.T) {
 	var mockZone zoneplateJSON
 	// Make the dummy functions to circumvent config
-	mockZone.Platetype = "circular"
+	mockZone.Platetype = circlePattern
 	mockZone.Startcolour = "grey"
 
-	mockZone.Mask = "circle"
+	mockZone.Mask = mask.Circle
 	testF := []string{"./testdata/normalzpm.png"}
+	explanation := []string{"circularMask"}
 
 	for i := range testF {
 		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{1000, 1000}})
 
+		examplejson.SaveExampleJson(mockZone, widgetType, explanation[i])
 		// Generate the ramp image
 		genErr := mockZone.Generate(myImage)
 		// Reapply the mask because for somereason it is not transferred across the test suiteS?
-		myImage = mask.Mask("circle", 1000, 1000, 0, 0, myImage)
+		myImage = mask.Mask(mask.Circle, 1000, 1000, 0, 0, myImage)
 		// Open the image to compare to
 		file, _ := os.Open(testF[i])
 		// Decode to get the colour values
