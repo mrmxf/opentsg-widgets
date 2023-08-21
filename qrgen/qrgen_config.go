@@ -14,7 +14,7 @@ const wLibrary = "builtin"
 const hooks = "[framecount]"*/
 
 type qrcodeJSON struct {
-	Type    string             `json:"type" yaml:"type"`
+	// Type    string             `json:"type" yaml:"type"`
 	Code    string             `json:"code" yaml:"code"`
 	Imgpos  *config.Position   `json:"gridPosition,omitempty" yaml:"gridPosition,omitempty"`
 	Size    *sizeJSON          `json:"size,omitempty" yaml:"size,omitempty"`

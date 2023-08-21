@@ -54,7 +54,7 @@ func TestNoTruncate(t *testing.T) {
 			})
 		})
 	}
-}
+} 
 
 func TestRightAngles(t *testing.T) {
 	// This test suite still has issues with the draw function in golang in go 1.18

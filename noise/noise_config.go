@@ -14,7 +14,7 @@ const wLibrary = "builtin"
 const hooks = ""*/
 
 type noiseJSON struct {
-	Type      string       `json:"type" yaml:"type"`
+	//	Type      string       `json:"type" yaml:"type"`
 	Noisetype string       `json:"noisetype" yaml:"noisetype"`
 	Minimum   int          `json:"minimum" yaml:"minimum"`
 	Maximum   int          `json:"maximum" yaml:"maximum"`

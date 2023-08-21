@@ -25,7 +25,7 @@ func SaveExampleJson(example any, folder, name string) {
 		os.MkdirAll(base+string(os.PathSeparator)+folder, 0777)
 	}
 
-	f, _ := os.Create(base + string(os.PathSeparator) + folder + string(os.PathSeparator) + name + ".json")
+	f, _ := os.Create(base + string(os.PathSeparator) + folder + string(os.PathSeparator) + name + "-example.json")
 
 	f.Write(jsonExample)
 

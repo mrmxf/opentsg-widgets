@@ -22,7 +22,7 @@ type frameJSON struct {
 	Font         string       `json:"font" yaml:"font"`
 	FontSize     float64      `json:"fontsize" yaml:"fontsize"`
 	GridLoc      *config.Grid `json:"grid,omitempty" yaml:"grid,omitempty"`
-	DesignScale  string       `json:"designScale" yaml:"designScale"`
+	//	DesignScale  string       `json:"designScale" yaml:"designScale"`
 	// This is added in for metadata purposes
 	FrameNumber int `json:"framenumber"`
 }

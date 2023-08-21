@@ -15,9 +15,13 @@ import (
 	"github.com/mrmxf/opentsg-core/widgethandler"
 )
 
+const (
+	widgetType = "builtin.qrcode"
+)
+
 func QrGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
-	conf := widgethandler.GenConf[qrcodeJSON]{Debug: debug, Schema: schemaInit, WidgetType: "builtin.qrcode", ExtraOpt: []any{c}}
+	conf := widgethandler.GenConf[qrcodeJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType, ExtraOpt: []any{c}}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc) // Update this to pass an error which is then formatted afterwards
 }
 
@@ -69,7 +73,7 @@ func (qrC qrcodeJSON) Generate(canvas draw.Image, opt ...any) error {
 		return fmt.Errorf("0133 the y position %v is greater than the y boundary of %v", y, canvas.Bounds().Max.Y)
 	}
 
-	draw.Draw(canvas, canvas.Bounds(), code, image.Point{-x, -y}, draw.Over)
+	draw.Draw(canvas, canvas.Bounds().Add(image.Point{x, y}), code, image.Point{}, draw.Over)
 
 	return nil
 }

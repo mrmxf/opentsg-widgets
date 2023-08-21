@@ -10,6 +10,7 @@ import (
 	"os"
 	"testing"
 
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -24,13 +25,14 @@ func TestZoneGenAngle(t *testing.T) {
 	mockTB.BorderSize = 0.02666
 	stringsToCheck := [][]string{{"sample text"}, {"sample", "text"}}
 	original := []string{"./testdata/singleline.png", "./testdata/multiline.png"}
+	explanation := []string{"singleline", "multiline"}
 
 	for i, str := range stringsToCheck {
-		fmt.Println(original[i])
+
 		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{1024, 240}})
 		mockTB.Text = str
 		genErr := mockTB.Generate(myImage, &mockContext)
-
+		examplejson.SaveExampleJson(mockTB, widgetType, explanation[i])
 		file, _ := os.Open(original[i])
 		// Decode to get the colour values
 		baseVals, _ := png.Decode(file)
