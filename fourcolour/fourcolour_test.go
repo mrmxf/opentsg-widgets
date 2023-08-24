@@ -13,6 +13,7 @@ import (
 
 	"github.com/mrmxf/opentsg-core/config"
 	"github.com/mrmxf/opentsg-core/gridgen"
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	geometrymock "github.com/mrmxf/opentsg-widgets/geometryMock"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -29,11 +30,15 @@ func TestFillMethod(t *testing.T) {
 	mockJson5 := fourJSON{GridLoc: &mockG, Colourpallette: []string{"#FF0000", "#00FF00", "#0000FF", "#FFFF00"}}
 	mockJsons := []fourJSON{mockJson4, mockJson5}
 
-	for _, mj := range mockJsons {
+	explanation := []string{"fourColour", "fiveColour"}
+
+	for i, mj := range mockJsons {
 
 		canvas := image.NewNRGBA64(image.Rect(0, 0, 1000, 1000))
 		c := context.Background()
 		genErr := mj.Generate(canvas, &c)
+
+		examplejson.SaveExampleJson(mj, widgetType, explanation[i])
 
 		f, _ := os.Open("./testdata/generatecheck" + fmt.Sprint(len(mj.Colourpallette)) + ".png")
 		baseVals, _ := png.Decode(f)

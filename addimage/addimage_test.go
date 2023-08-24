@@ -14,6 +14,7 @@ import (
 	"testing"
 
 	"github.com/mrmxf/opentsg-core/config"
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -125,11 +126,13 @@ func TestZoneGenMask(t *testing.T) {
 		var pos config.Position
 		pos.X = 0
 		pos.Y = 0
-		imgMock.Imgpos = &pos
+		//imgMock.Imgpos = &pos
 
 		sizeDummies := []image.Point{{1000, 1000}, {1000, 500}}
 
 		testF := []string{"../zoneplate/testdata/normalzpm.png", "./testdata/redrawnzp.png"}
+		explanation := []string{"mask", "maskResize"}
+
 		for i := range sizeDummies {
 			imgMock.Image = testF[0]
 
@@ -137,6 +140,7 @@ func TestZoneGenMask(t *testing.T) {
 
 			// generate the ramp image
 			genErr := imgMock.Generate(myImage, &mockContext)
+			examplejson.SaveExampleJson(imgMock, widgetType, explanation[i])
 			file, _ := os.Open(testF[i])
 			defer file.Close()
 			// Decode to get the colour values
@@ -174,12 +178,13 @@ func TestFillTypes(t *testing.T) {
 	var c config.Position
 	c.X = 0
 	c.Y = 0
-	imgMock.Imgpos = &c
+	//imgMock.Imgpos = &c
 
 	//	sizeDummies := [][]int{{0, 0}, {1000, 500}}
 
 	testFile := "./testdata/test16bit.png"
 	fillTypes := []string{"x scale", "y scale", "xy scale", "fill"}
+	explanation := []string{"xScale", "yScale", "xyScale", "fill"}
 
 	for i, fill := range fillTypes {
 		imgMock.Image = testFile
@@ -187,6 +192,8 @@ func TestFillTypes(t *testing.T) {
 
 		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{1000, 900}})
 		genErr := imgMock.Generate(myImage, &mockContext)
+
+		examplejson.SaveExampleJson(imgMock, widgetType, explanation[i])
 		// Open the image to compare to
 
 		file, _ := os.Open(fmt.Sprintf("./testdata/fill%v.png", i))

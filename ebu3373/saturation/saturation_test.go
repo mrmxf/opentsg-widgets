@@ -9,17 +9,22 @@ import (
 	"os"
 	"testing"
 
+	"github.com/mrmxf/opentsg-core/config"
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestBars(t *testing.T) {
 	myImage := image.NewNRGBA64(image.Rect(0, 0, 2330, 600))
-	var s saturationJSON
+	s := saturationJSON{GridLoc: &config.Grid{Alias: "testlocation"}}
 	colours := [][]string{{"red", "green", "blue"}, {"red", "blue"}, {"blue"}, {}}
+	explanation := []string{"redGreenBlue", "redBlue", "blue", "defualt"}
 
 	for i, c := range colours {
 		s.Colours = c
 		genErr := s.Generate(myImage)
+		examplejson.SaveExampleJson(s, widgetType, explanation[i])
+
 		f, _ := os.Open(fmt.Sprintf("./testdata/ordertest%v.png", i))
 
 		baseVals, _ := png.Decode(f)

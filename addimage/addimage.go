@@ -27,12 +27,16 @@ import (
 	"golang.org/x/image/tiff"
 )
 
+const (
+	widgetType = "builtin.addimage"
+)
+
 // ImageGen opens an image and places it at the user specife grid location,
 // the image may be resized if the sizes do not match up.
 // Only 8/16 bit PNG and TIFF files are valid file to be uploaded.
 func ImageGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
-	conf := widgethandler.GenConf[addimageJSON]{Debug: debug, Schema: schemaInit, WidgetType: "builtin.addimage", ExtraOpt: []any{c}}
+	conf := widgethandler.GenConf[addimageJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType, ExtraOpt: []any{c}}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc)
 }
 

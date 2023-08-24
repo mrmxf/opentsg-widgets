@@ -14,7 +14,7 @@ const wLibrary = "builtin"
 const hooks = ""*/
 
 type saturationJSON struct {
-	Type    string       `json:"type" yaml:"type"`
+	// Type    string       `json:"type" yaml:"type"`
 	Colours []string     `json:"colors,omitempty" yaml:"colors,omitempty"`
 	GridLoc *config.Grid `json:"grid,omitempty" yaml:"grid,omitempty"`
 }

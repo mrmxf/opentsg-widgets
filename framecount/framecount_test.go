@@ -178,7 +178,7 @@ func TestInterpret(t *testing.T) {
 		body := []byte(testbody)
 		var f frameJSON
 		json.Unmarshal(body, &f)
-		fmt.Println(f.Imgpos)
+	//	fmt.Println(f.Imgpos)
 		x, y := userPos(f.Imgpos.(map[string]interface{}), image.Point{100, 100}, image.Point{10, 10})
 		// Generate the image and the string
 

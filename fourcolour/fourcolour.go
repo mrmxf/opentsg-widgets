@@ -14,10 +14,15 @@ import (
 	"github.com/mrmxf/opentsg-core/widgethandler"
 )
 
+
+const (
+	widgetType = "builtin.fourcolor"
+)
+
 func FourColourGenerator(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
 	opts := []any{c}
-	conf := widgethandler.GenConf[fourJSON]{Debug: debug, Schema: schemaInit, WidgetType: "builtin.fourcolor", ExtraOpt: opts}
+	conf := widgethandler.GenConf[fourJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType, ExtraOpt: opts}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc) // Update this to pass an error which is then formatted afterwards
 }
 

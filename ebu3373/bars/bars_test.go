@@ -9,6 +9,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/mrmxf/opentsg-core/config"
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -16,11 +18,13 @@ func TestBars(t *testing.T) {
 
 	sizes := [][2]int{{3840, 1160}, {1920, 580}, {500, 1900}}
 	testBase := []string{"testdata/uhd.png", "testdata/hd.png", "testdata/obtuse.png"}
+	explanation := []string{"uhd", "hd", "obtuse"}
 
 	for i, size := range sizes {
-		mock := barJSON{}
+		mock := barJSON{config.Grid{Alias: "testlocation"}}
 		myImage := image.NewNRGBA64(image.Rect(0, 0, size[0], size[1]))
 
+		examplejson.SaveExampleJson(mock, widgetType, explanation[i])
 		// Generate the ramp image
 		genErr := mock.Generate(myImage)
 		// Open the image to compare to
