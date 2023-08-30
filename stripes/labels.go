@@ -57,7 +57,7 @@ func (t *textObjectJSON) labels(canvas draw.Image, label, angle string, inverse,
 	if width == b.X {
 		xpos := xPos(b.X, lFont, label, t.TextXPosition)
 		ypos := yPos(lFont, t.TextYPosition, stripeH)
-		if angle == "xyReverse" {
+		if angle == rotate180 {
 			ypos = inverse - offset - stripeH + ypos
 		} else {
 			ypos += offset
@@ -66,7 +66,7 @@ func (t *textObjectJSON) labels(canvas draw.Image, label, angle string, inverse,
 	} else {
 		xpos := xPos(stripeH, lFont, label, t.TextXPosition)
 		// Add inverse for the reverse functions
-		if angle == "yxReverse" {
+		if angle == rotate270 {
 			xpos = inverse - offset - stripeH + xpos
 		} else {
 			xpos += offset

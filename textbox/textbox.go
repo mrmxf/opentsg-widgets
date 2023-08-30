@@ -35,11 +35,15 @@ var Body []byte
 //go:embed PixeloidSans.ttf
 var Pixel []byte
 
+const (
+	widgetType = "builtin.textbox"
+)
+
 // TextBoxGen generates text boxes on a given image based on config values
 func TBGenerate(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
 	opts := []any{c}
-	conf := widgethandler.GenConf[TextboxJSON]{Debug: debug, Schema: textBoxSchema, WidgetType: "builtin.textbox", ExtraOpt: opts}
+	conf := widgethandler.GenConf[TextboxJSON]{Debug: debug, Schema: textBoxSchema, WidgetType: widgetType, ExtraOpt: opts}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc) // Update this to pass an error which is then formatted afterwards
 }
 

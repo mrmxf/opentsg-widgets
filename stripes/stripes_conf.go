@@ -17,15 +17,15 @@ const wLibrary = "builtin"
 const hooks = ""*/
 
 type rampJSON struct {
-	Type     string            `json:"type" yaml:"type"`
-	Angle    string            `json:"rampAngle" yaml:"rampAngle"`
-	Minimum  int               `json:"minimum" yaml:"minimum"`
-	Maximum  int               `json:"maximum" yaml:"maximum"`
-	Depth    int               `json:"depth" yaml:"depth"`
-	FillType string            `json:"fillType" yaml:"fillType"`
-	Stripes  *groupsHeaderJSON `json:"stripes,omitempty" yaml:"stripes,omitempty"`
-	GridLoc  *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
-	Text     *textObjectJSON   `json:"text,omitempty" yaml:"text,omitempty"`
+	//	Type     string            `json:"type" yaml:"type"`
+	Angle    string             `json:"rampAngle" yaml:"rampAngle"`
+	Minimum  int                `json:"minimum" yaml:"minimum"`
+	Maximum  int                `json:"maximum" yaml:"maximum"`
+	Depth    int                `json:"depth" yaml:"depth"`
+	FillType string             `json:"fillType" yaml:"fillType"`
+	Stripes  *stripeHeadersJSON `json:"stripes,omitempty" yaml:"stripes,omitempty"`
+	GridLoc  *config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
+	Text     *textObjectJSON    `json:"text,omitempty" yaml:"text,omitempty"`
 }
 
 type textObjectJSON struct {
@@ -35,7 +35,7 @@ type textObjectJSON struct {
 	TextColour    string  `json:"textColor" yaml:"textColor"`
 }
 
-type groupsHeaderJSON struct {
+type stripeHeadersJSON struct {
 	Header      *dividerJSON    `json:"groupHeader,omitempty" yaml:"groupHeader,omitempty"`
 	Stripes     *stripesObjJSON `json:"ramps,omitempty" yaml:"ramps,omitempty"`
 	InterStripe *dividerJSON    `json:"interStripes,omitempty" yaml:"interStripes,omitempty"`

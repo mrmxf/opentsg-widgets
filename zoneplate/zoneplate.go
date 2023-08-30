@@ -16,10 +16,14 @@ import (
 	"github.com/mrmxf/opentsg-widgets/mask"
 )
 
+const (
+	widgetType = "builtin.zoneplate"
+)
+
 // zoneGen takes a canvas and then returns an image of the zone plate layered ontop of the image
 func ZoneGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
-	conf := widgethandler.GenConf[zoneplateJSON]{Debug: debug, Schema: schemaInit, WidgetType: "builtin.zoneplate"}
+	conf := widgethandler.GenConf[zoneplateJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc) // Update this to pass an error which is then formatted afterwards
 }
 
@@ -63,9 +67,9 @@ func (z zoneplateJSON) Generate(canvas draw.Image, opts ...any) error {
 		}
 	}
 	// Check if needs to be masked and apply it
-	if masktype := z.Mask; masktype != "" {
+	if maskShape := z.Mask; maskShape != "" {
 		// At the moment just make a mask around the zoneplate
-		canvas = mask.Mask(masktype, w, h, 0, 0, canvas)
+		canvas = mask.Mask(maskShape, w, h, 0, 0, canvas)
 
 	}
 
@@ -82,6 +86,11 @@ type zoneVars struct {
 	w    float64
 }
 
+const (
+	sweepPattern  = "sweep"
+	circlePattern = "circular"
+)
+
 func radialCalc(plateType string, x, y float64, radian float64, w, h float64) float64 {
 
 	// To radians
@@ -90,7 +99,7 @@ func radialCalc(plateType string, x, y float64, radian float64, w, h float64) fl
 	// Calculate new x and y values based off of the chosen angle
 	xp := x*math.Cos(radian) - y*math.Sin(radian)
 	yp := x*math.Sin(radian) + y*math.Cos(radian)
-	if plateType == "sweep" {
+	if plateType == sweepPattern {
 		return math.Abs(yp)
 		// } else if plateType == "ellipse" {
 		//	return math.Sqrt((2 * xp * xp) + (yp * yp))

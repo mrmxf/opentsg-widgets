@@ -21,9 +21,13 @@ import (
 	"golang.org/x/image/math/fixed"
 )
 
+const (
+	widgetType = "builtin.ebu3373/twosi"
+)
+
 func SIGenerate(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
-	conf := widgethandler.GenConf[twosiJSON]{Debug: debug, Schema: schemaInit, WidgetType: "builtin.ebu3373/twosi", ExtraOpt: []any{c}}
+	conf := widgethandler.GenConf[twosiJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType, ExtraOpt: []any{c}}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc)
 
 }

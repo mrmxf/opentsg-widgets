@@ -12,6 +12,7 @@ import (
 
 	"github.com/boombuler/barcode/qr"
 	"github.com/mrmxf/opentsg-core/config"
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -21,6 +22,7 @@ func TestQrGen(t *testing.T) {
 
 	numberToCheck := [][]float64{{0, 0}, {50, 50}, {97.1, 97.1}}
 	fileCheck := []string{"./testdata/topleft.png", "./testdata/middle.png", "./testdata/bottomright.png"}
+	explanation := []string{"topleft", "middle", "topright"}
 	qrmock.Code = "https://mrmxf.io/"
 	code, _ := qr.Encode("https://mrmxf.io/", qr.H, qr.Auto)
 	fmt.Println(code.Bounds())
@@ -30,12 +32,12 @@ func TestQrGen(t *testing.T) {
 		file, _ := os.Open("./testdata/zonepi.png")
 		baseVals, _ := png.Decode(file)
 		readImage := image.NewNRGBA64(baseVals.Bounds())
-		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{}, draw.Over)
 		// Get the image to compare against
 		fileCont, _ := os.Open(fileCheck[i])
 		baseCont, _ := png.Decode(fileCont)
 		control := image.NewNRGBA64(baseCont.Bounds())
-		draw.Draw(control, control.Bounds(), baseCont, image.Point{0, 0}, draw.Over)
+		draw.Draw(control, control.Bounds(), baseCont, image.Point{}, draw.Over)
 		// Generate the image and the string
 		var position config.Position
 		position.X = num[0]
@@ -46,12 +48,13 @@ func TestQrGen(t *testing.T) {
 		// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 		c := context.Background()
 		genErr := qrmock.Generate(readImage, &c)
+		examplejson.SaveExampleJson(qrmock, widgetType, explanation[i])
 		// Make a hash of the pixels of each image
 		hnormal := sha256.New()
 		htest := sha256.New()
 		hnormal.Write(control.Pix)
 		htest.Write(readImage.Pix)
-		fmt.Println("here")
+
 		// GenResult, genErr := intTo4(numberToCheck[i])
 		Convey("Checking the qr code is added to an image is generated", t, func() {
 			Convey(fmt.Sprintf("using a location of x:%v, y:%v  as integer ", numberToCheck[i][0], numberToCheck[i][1]), func() {
@@ -62,6 +65,34 @@ func TestQrGen(t *testing.T) {
 			})
 		})
 	}
+
+	qrmock.Imgpos = nil
+	max := sizeJSON{Width: 100, Height: 100}
+	qrmock.Size = &max
+
+	base := image.NewNRGBA64(image.Rect(0, 0, 1000, 1000))
+	c := context.Background()
+	genErr := qrmock.Generate(base, &c)
+	examplejson.SaveExampleJson(qrmock, widgetType, "full")
+
+	file, _ := os.Open("./testdata/full.png")
+	baseVals, _ := png.Decode(file)
+	readImage := image.NewNRGBA64(baseVals.Bounds())
+	draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{}, draw.Over)
+
+	hnormal := sha256.New()
+	htest := sha256.New()
+	hnormal.Write(readImage.Pix)
+	htest.Write(base.Pix)
+
+	Convey("Checking the qr code is added to fill a space", t, func() {
+		Convey(fmt.Sprintf("using a size of width:%v, height:%v  as integer ", 100, 100), func() {
+			Convey("A qr code is added and the generated sha256 is identical", func() {
+				So(genErr, ShouldBeNil)
+				So(htest.Sum(nil), ShouldResemble, hnormal.Sum(nil))
+			})
+		})
+	})
 }
 
 func TestErr(t *testing.T) {

@@ -13,9 +13,13 @@ import (
 	"github.com/mrmxf/opentsg-core/widgethandler"
 )
 
+const (
+	widgetType = "builtin.ebu3373/bars"
+)
+
 func BarGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
-	conf := widgethandler.GenConf[barJSON]{Debug: debug, Schema: schemaInit, WidgetType: "builtin.ebu3373/bars"}
+	conf := widgethandler.GenConf[barJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc) // Update this to pass an error which is then formatted afterwards
 
 }

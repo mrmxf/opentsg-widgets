@@ -23,10 +23,14 @@ import (
 	"golang.org/x/image/math/fixed"
 )
 
+const (
+	widgetType = "builtin.framecounter"
+)
+
 func CountGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
 	opts := []any{c}
-	conf := widgethandler.GenConf[frameJSON]{Debug: debug, Schema: frameSchema, WidgetType: "builtin.framecounter", ExtraOpt: opts}
+	conf := widgethandler.GenConf[frameJSON]{Debug: debug, Schema: frameSchema, WidgetType: widgetType, ExtraOpt: opts}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc) // Update this to pass an error which is then formatted afterwards
 }
 

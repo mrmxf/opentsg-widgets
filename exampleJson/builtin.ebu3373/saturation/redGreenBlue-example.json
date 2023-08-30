@@ -1,0 +1,10 @@
+{
+    "colors": [
+        "red",
+        "green",
+        "blue"
+    ],
+    "grid": {
+        "alias": "testlocation"
+    }
+}

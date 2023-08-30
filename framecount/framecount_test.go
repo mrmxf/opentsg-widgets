@@ -12,6 +12,7 @@ import (
 	"runtime/debug"
 	"testing"
 
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -25,6 +26,7 @@ func TestStringGen(t *testing.T) {
 	if bi.GoVersion[:6] != "go1.18" {
 		numberToCheck := []int{0, 12, 134, 5666}
 		expecResult := []string{"0000", "0012", "0134", "5666"}
+		explanation := []string{"0000", "0012", "0134", "5666"}
 		var yesFrame frameJSON
 		yesFrame.FrameCounter = true
 
@@ -34,6 +36,8 @@ func TestStringGen(t *testing.T) {
 			pos = inter
 			myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{33, 33}})
 			genErr := yesFrame.Generate(myImage, &c)
+
+			examplejson.SaveExampleJson(yesFrame, widgetType, explanation[i])
 
 			// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 			file, _ := os.Open("./testdata/framecount" + expecResult[i] + ".png")
@@ -78,6 +82,7 @@ func TestFonts(t *testing.T) {
 		var mockFrame frameJSON
 		mockFrame.FrameCounter = true
 		fontType := []string{"header", "", "./testdata/Timmy-Regular.ttf", "title"}
+		explanation := []string{"header", "default", "imported", "title"}
 		sizes := []float64{12, 22, 40, 24}
 
 		for i, fon := range fontType {
@@ -85,6 +90,8 @@ func TestFonts(t *testing.T) {
 			mockFrame.FontSize = sizes[i]
 			myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{100, 100}})
 			genErr := mockFrame.Generate(myImage, &c)
+
+			examplejson.SaveExampleJson(mockFrame, widgetType, explanation[i])
 			// Save these images when we can test for them
 			//	f, _ := os.Create("./testdata/framecount" + fmt.Sprintf("%v", i) + "2.png")
 			//	png.Encode(f, myImage)
@@ -170,8 +177,8 @@ func TestInterpret(t *testing.T) {
 	for i, testbody := range differentPos {
 		body := []byte(testbody)
 		var f frameJSON
-		fmt.Println(json.Unmarshal(body, &f))
-		fmt.Println(f.Imgpos)
+		json.Unmarshal(body, &f)
+	//	fmt.Println(f.Imgpos)
 		x, y := userPos(f.Imgpos.(map[string]interface{}), image.Point{100, 100}, image.Point{10, 10})
 		// Generate the image and the string
 

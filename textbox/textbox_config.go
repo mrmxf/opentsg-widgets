@@ -14,7 +14,7 @@ const wLibrary = "builtin"
 const hooks = ""*/
 
 type TextboxJSON struct {
-	Type       string       `json:"type" yaml:"type"`
+	// Type       string       `json:"type" yaml:"type"`
 	Text       []string     `json:"text" yaml:"text"`
 	Font       string       `json:"font" yaml:"font"`
 	GridLoc    *config.Grid `json:"grid" yaml:"grid"`

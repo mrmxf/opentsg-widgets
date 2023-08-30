@@ -14,7 +14,7 @@ const wLibrary = "builtin"
 const hooks = ""*/
 
 type twosiJSON struct {
-	Type    string      `json:"type" yaml:"type"`
+	//	Type    string      `json:"type" yaml:"type"`
 	GridLoc config.Grid `json:"grid,omitempty" yaml:"grid,omitempty"`
 }
 

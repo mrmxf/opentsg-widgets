@@ -10,22 +10,23 @@ import (
 	"os"
 	"testing"
 
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestRightAngles(t *testing.T) {
+func TestNoTruncate(t *testing.T) {
 	// This test suite still has issues with the draw function in golang in go 1.18
 	b, _ := os.ReadFile("./testdata/angletest.json")
 	var mock rampJSON
 	_ = json.Unmarshal(b, &mock)
+	explanation := []string{"noTruncation"}
+	testF := []string{"./testdata/noTruncate.png"}
 
-	angles := []string{"", "π*1/2", "π*1", "π*3/2"}
-	testF := []string{"./testdata/test.png", "./testdata/test90.png", "./testdata/test180.png", "./testdata/test270.png"}
-
-	for i, angle := range angles {
-		mock.Angle = angle
-		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{4096, 2000}})
-
+	for i, exp := range explanation {
+		mock.FillType = "fill"
+		mock.Angle = ""
+		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{2048, 2000}})
+		examplejson.SaveExampleJson(mock, widgetType, exp)
 		// Generate the ramp image
 		genErr := mock.Generate(myImage)
 		// Open the image to compare to
@@ -41,8 +42,50 @@ func TestRightAngles(t *testing.T) {
 		htest := sha256.New()
 		hnormal.Write(readImage.Pix)
 		htest.Write(myImage.Pix)
-		// F, _ := os.Create(testF[i] + fmt.Sprintf("%v.png", i))
-		// Png.Encode(f, myImage)
+		// f, _ := os.Create("./testdata/g.png")
+		// png.Encode(f, myImage)
+
+		Convey("Checking the ramps can use the \"fill\" method", t, func() {
+			Convey("Generating a ramp with a 12 bit range of 4096 on an image iwth a width of 2048", func() {
+				Convey("No error is returned and the ramp still runs from 0 to 4096", func() {
+					So(genErr, ShouldBeNil)
+					So(htest.Sum(nil), ShouldResemble, hnormal.Sum(nil))
+				})
+			})
+		})
+	}
+} 
+
+func TestRightAngles(t *testing.T) {
+	// This test suite still has issues with the draw function in golang in go 1.18
+	b, _ := os.ReadFile("./testdata/angletest.json")
+	var mock rampJSON
+	_ = json.Unmarshal(b, &mock)
+	explanation := []string{"flat", "90degrees", "180degrees", "270degrees"}
+	angles := []string{"", "π*1/2", "π*1", "π*3/2"}
+	testF := []string{"./testdata/test.png", "./testdata/test90.png", "./testdata/test180.png", "./testdata/test270.png"}
+
+	for i, angle := range angles {
+		mock.Angle = angle
+		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{4096, 2000}})
+		examplejson.SaveExampleJson(mock, widgetType, explanation[i])
+		// Generate the ramp image
+		genErr := mock.Generate(myImage)
+		// Open the image to compare to
+		file, _ := os.Open(testF[i])
+		// Decode to get the colour values
+		baseVals, _ := png.Decode(file)
+		// Assign the colour to the correct type of image NGRBA64 and replace the colour values
+		readImage := image.NewNRGBA64(baseVals.Bounds())
+		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+
+		// Make a hash of the pixels of each image
+		hnormal := sha256.New()
+		htest := sha256.New()
+		hnormal.Write(readImage.Pix)
+		htest.Write(myImage.Pix)
+		// f, _ := os.Create(testF[i] + fmt.Sprintf("%v.png", i))
+		// png.Encode(f, myImage)
 
 		Convey("Checking the ramps are generated at 90 degree angles", t, func() {
 			Convey(fmt.Sprintf("Comparing the generated ramp to %v with an angle of %v", testF[i], angle), func() {
@@ -61,12 +104,13 @@ func TestAngles(t *testing.T) {
 	var mock rampJSON
 	_ = json.Unmarshal(b, &mock) // "π*1/20"
 	angles := []string{"π*1/20", "π*5/12", "π*9/10", "π*31/20"}
+	explanation := []string{"9degrees", "75degrees", "162degrees", "279degrees"}
 	testF := []string{"./testdata/angLinear.png", "./testdata/ang90.png", "./testdata/ang180.png", "./testdata/ang270.png"}
 
 	for i, angle := range angles {
 		mock.Angle = angle
 		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{4096, 2000}})
-
+		examplejson.SaveExampleJson(mock, widgetType, explanation[i])
 		// Generate the ramp image
 		genErr := mock.Generate(myImage)
 		// Open the image to compare to

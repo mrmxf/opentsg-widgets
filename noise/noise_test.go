@@ -9,6 +9,7 @@ import (
 	"os"
 	"testing"
 
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -19,12 +20,14 @@ func TestZoneGenAngle(t *testing.T) {
 	randnum = func() int64 { return 27 }
 
 	testF := []string{"./testdata/whitenoise.png"}
+	explanation := []string{"whitenoise"}
 
-	for _, compare := range testF {
-
+	for i, compare := range testF {
+		mockNoise.Maximum = 4095
 		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{1000, 1000}})
 		// Generate the noise image
 		genErr := mockNoise.Generate(myImage)
+		examplejson.SaveExampleJson(mockNoise, widgetType, explanation[i])
 		// Open the image to compare to
 		file, _ := os.Open(compare)
 		// Decode to get the colour values

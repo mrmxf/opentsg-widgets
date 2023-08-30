@@ -28,13 +28,18 @@ func Mask(shape string, w, h, x, y int, oldCanvas image.Image) *image.NRGBA64 {
 	return masked
 }
 
+const (
+	Circle = "circle"
+	Square = "square"
+)
+
 func maskCanvas(shape string, w, h int) *image.NRGBA64 {
 	c := image.NewNRGBA64(image.Rect(0, 0, w, h))
 	opaque := color.Alpha16{A: uint16(0xffff)}
 	switch shape {
-	case "circle":
+	case Circle:
 		c = circle(c, opaque)
-	case "square":
+	case Square:
 		c = square(c, opaque)
 	}
 

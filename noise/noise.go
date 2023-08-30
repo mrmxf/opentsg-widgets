@@ -14,10 +14,14 @@ import (
 	"github.com/mrmxf/opentsg-core/widgethandler"
 )
 
+const (
+	widgetType = "builtin.noise"
+)
+
 // NGenerator generates images of noise
 func NGenerator(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
-	conf := widgethandler.GenConf[noiseJSON]{Debug: debug, Schema: schemaInit, WidgetType: "builtin.noise"}
+	conf := widgethandler.GenConf[noiseJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType}
 	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc) // Update this to pass an error which is then formatted afterwards
 }
 
@@ -28,8 +32,9 @@ func randSeed() int64 {
 }
 
 func (n noiseJSON) Generate(canvas draw.Image, opt ...any) error {
+
 	// Have a seed variable tht is taken out for testing purposes
-	rand.Seed(randnum())
+	random := rand.New(rand.NewSource(randnum()))
 
 	var max int
 	if n.Maximum != 0 {
@@ -45,17 +50,17 @@ func (n noiseJSON) Generate(canvas draw.Image, opt ...any) error {
 	}
 
 	if n.Noisetype == "white noise" { // upgrade to switch statement when more types come in
-		whitenoise(canvas, min, max)
+		whitenoise(random, canvas, min, max)
 	}
 
 	return nil
 }
 
-func whitenoise(canvas draw.Image, min, max int) {
+func whitenoise(random *rand.Rand, canvas draw.Image, min, max int) {
 	b := canvas.Bounds().Max
 	for y := 0; y < b.Y; y++ {
 		for x := 0; x < b.X; x++ {
-			colourPos := uint16(rand.Intn(max-min)+min) << 4
+			colourPos := uint16(random.Intn(max-min)+min) << 4
 			// Fill := color.NRGBA64{colourPos << 4, colourPos << 4, colourPos << 4, uint16(0xffff)}
 
 			canvas.Set(x, y, color.NRGBA64{colourPos, colourPos, colourPos, 0xffff})
