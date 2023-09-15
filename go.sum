@@ -50,8 +50,6 @@ github.com/jtolds/gls v4.20.0+incompatible h1:xdiiI2gbIgH/gLH7ADydsJ1uDOEzR8yvV7
 github.com/jtolds/gls v4.20.0+incompatible/go.mod h1:QJZ7F/aHp+rZTRtaJ1ow/lLfFfVYBRgL+9YlvaHOwJU=
 github.com/matoous/go-nanoid v1.5.0 h1:VRorl6uCngneC4oUQqOYtO3S0H5QKFtKuKycFG3euek=
 github.com/matoous/go-nanoid v1.5.0/go.mod h1:zyD2a71IubI24efhpvkJz+ZwfwagzgSO6UNiFsZKN7U=
-github.com/mrmxf/opentsg-core v0.0.0-20230717102142-0cce3aeac96d h1:ceG81BM90Gnu5CGaVoj/cOnmubcZ/a/M22Ag5SPsuHM=
-github.com/mrmxf/opentsg-core v0.0.0-20230717102142-0cce3aeac96d/go.mod h1:cRn4fvwaqqy1F6/w5iMt2mE+fU1vJOozUEU+qUmz25Q=
 github.com/mrmxf/opentsg-core v0.0.0-20230717105614-f654656a3a01 h1:NlzFs4okKVZlOozxjrE5hnyc9P1e2kZUI7iUCZngblM=
 github.com/mrmxf/opentsg-core v0.0.0-20230717105614-f654656a3a01/go.mod h1:CG5ZMRC8WLHnChyXKRqHjNBvFzySB5WMiWoLsE/hdXg=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 h1:zYyBkD/k9seD2A7fsi6Oo2LfFZAehjjQMERAvZLEDnQ=

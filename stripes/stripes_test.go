@@ -14,6 +14,56 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
+func TestTemp(t *testing.T) {
+	input := `
+{
+	"type": "builtin.ramps",
+	"rampAngle": 0,
+	"minimum": 0,
+	"maximum": 1023,
+	"depth": 10,
+	"fillType": "fill",
+	"stripes": {
+	  "ramps": {
+		"bitDepth": [
+		  8,4
+		],
+		"fill": "gradient",
+		"height": 8,
+		"rampGroups": {
+		  "gray1": {
+			"color": "gray",
+			"rampstart": 1023,
+			"direction": -1
+		  },
+		  "gray2": {
+			"color": "gray",
+			"rampstart": 0,
+			"direction": 1
+		  },
+		  "gray3": {
+			"color": "gray",
+			"rampstart": 806,
+			"direction": -1
+		  }
+		}
+	  }
+	},
+	"grid": {
+	  "location": "c3:n3"
+	}
+  }`
+
+	var mockJson rampJSON
+	json.Unmarshal([]byte(input), &mockJson)
+
+	testImg := image.NewNRGBA64(image.Rect(0, 0, 1024, 500))
+	mockJson.Generate(testImg)
+
+	f, _ := os.Create("example.png")
+	png.Encode(f, testImg)
+}
+
 func TestNoTruncate(t *testing.T) {
 	// This test suite still has issues with the draw function in golang in go 1.18
 	b, _ := os.ReadFile("./testdata/angletest.json")
@@ -54,7 +104,7 @@ func TestNoTruncate(t *testing.T) {
 			})
 		})
 	}
-} 
+}
 
 func TestRightAngles(t *testing.T) {
 	// This test suite still has issues with the draw function in golang in go 1.18

@@ -111,7 +111,7 @@ func (r rampJSON) Generate(canvas draw.Image, opts ...any) error {
 
 			default:
 				// Calculate the gradient and then fill the depth
-				r.stripeGen(canvas, fill, fillPos, width, inverse, offset, scale, ang)
+				r.stripeGen(canvas, fill[fillPos], r.Depth, width, inverse, offset, scale, ang)
 
 			}
 			offset += f.height
@@ -148,21 +148,24 @@ func (r rampJSON) headerGen(canvas draw.Image, fill []fill, fillPos, width int, 
 }
 
 // stripeGen generates the gradient lines for the stripes
-func (r rampJSON) stripeGen(canvas draw.Image, fill []fill, fillPos, width, inverse int, offset, scale float64, ang string) {
-	f := fill[fillPos]
-
+func (r rampJSON) stripeGen(canvas draw.Image, fi fill, imgDepth, width, inverse int, offset, scale float64, ang string) {
+	//f := fill[fillPos]
+	f := fi
 	// Calculate the gradient and then fill the depth
 	shift := int(math.Pow(2, float64(12-f.depth)))
 
 	scaledShift := 1 / scale
 	// Tune the scale to be valid with 4 bit colours if in the negative direction
-	if f.direction < 0 {
+	/*if f.direction < 0 {
+		//only tune if it is below something
+
+		// fmt.Println(f.start, f.start%256, f)
 		if f.start%256 == 0 {
 			f.start-- // Take away 1 to make it friendly for 4 bit
 		} else if f.start%256 != 255 {
 			f.start = int(validStart(float64(f.start), f.direction, 256.0)) - 1
 		}
-	}
+	}*/
 
 	colourPos := float64(f.start)
 	// Make sure the ramp is a suitable start point for the bit depth
@@ -174,6 +177,7 @@ func (r rampJSON) stripeGen(canvas draw.Image, fill []fill, fillPos, width, inve
 
 		// Assign that colour for the depth of the stripe
 		for j := float64(offset); j < float64(offset+f.height); j++ {
+
 			set(ang, canvas, colourRGB, float64(i), j)
 		}
 
@@ -207,12 +211,14 @@ func groupFill(body stripeHeadersJSON) []fill {
 		fills = append(fills, f)
 	}
 	if body.Stripes != nil {
+		// assign all the values
 		for i, d := range body.Stripes.Bitdepth {
 			var fg fill
 			fg.height = body.Stripes.Height
 			fg.depth = d
 
 			fg.gradient = body.Stripes.Fill
+			// assign a a label (if possible)
 			if i < len(body.Stripes.Labels) {
 				fg.label = body.Stripes.Labels[i]
 			}
