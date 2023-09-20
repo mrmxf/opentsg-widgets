@@ -43,8 +43,8 @@ func TestTemp(t *testing.T) {
 		  },
 		  "gray3": {
 			"color": "gray",
-			"rampstart": 806,
-			"direction": -1
+			"rampstart": 302,
+			"direction": 1
 		  }
 		}
 	  }

@@ -1,0 +1,63 @@
+{
+    "StripeGroup": {
+        "Header": {
+            "Height": 4,
+            "Colour": "white"
+        },
+        "InterStripe": {
+            "Colours": [
+                "white",
+                "black"
+            ],
+            "Height": 2
+        },
+        "Ramp": [
+            {
+                "Height": 4,
+                "BitDepth": 12,
+                "Label": ""
+            },
+            {
+                "Height": 3,
+                "BitDepth": 10,
+                "Label": ""
+            },
+            {
+                "Height": 5,
+                "BitDepth": 8,
+                "Label": ""
+            },
+            {
+                "Height": 5,
+                "BitDepth": 5,
+                "Label": ""
+            }
+        ]
+    },
+    "Stripes": [
+        {
+            "Colour": "red",
+            "StartPoint": 0,
+            "Reverse": false
+        },
+        {
+            "Colour": "blue",
+            "StartPoint": 2500,
+            "Reverse": false
+        },
+        {
+            "Colour": "red",
+            "StartPoint": 3199,
+            "Reverse": true
+        },
+        {
+            "Colour": "green",
+            "StartPoint": 3967,
+            "Reverse": true
+        }
+    ],
+    "WidgetProperties": {
+        "GlobalBitDepth": 12,
+        "Angle": ""
+    }
+}
