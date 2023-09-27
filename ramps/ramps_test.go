@@ -11,12 +11,12 @@ import (
 )
 
 func TestTemp(t *testing.T) {
-	mock := Ramp{Stripes: []RampProperties{{Colour: "red"}, {Colour: "blue", StartPoint: 2500}, {Colour: "red", StartPoint: 3199, Reverse: true}, {Colour: "green", StartPoint: 3967, Reverse: true}},
-		StripeGroup: layout{Header: internalHeader{Height: 4, Colour: "white"},
-			InterStripe: alternateHeader{Colours: []string{"white", "black"}, Height: 2},
-			Ramp:        []Stripe{{Height: 4, BitDepth: 12}, {Height: 3, BitDepth: 10}, {Height: 5, BitDepth: 8}, {Height: 5, BitDepth: 5}}},
-		WidgetProperties: control{GlobalBitDepth: 12}}
-	tester := image.NewNRGBA64(image.Rect(0, 0, 5000, 1000))
+	mock := Ramp{Stripes: []RampProperties{{Colour: "green", StartPoint: 960}, {Colour: "gray", StartPoint: 960}},
+		StripeGroup: layout{Header: internalHeader{Height: 0, Colour: "white"},
+			InterStripe: alternateHeader{Colours: []string{"white", "black", "red", "blue"}, Height: 1},
+			Ramp:        []Stripe{{Height: 5, BitDepth: 4, Label: "4b"}, {Height: 5, BitDepth: 6, Label: "6b"}, {Height: 5, BitDepth: 8, Label: "8b"}, {Height: 5, BitDepth: 10, Label: "10b"}}},
+		WidgetProperties: control{GlobalBitDepth: 10, TextProperties: textObjectJSON{TextColour: "#345AB6", TextHeight: 70}}}
+	tester := image.NewNRGBA64(image.Rect(0, 0, 1024, 1000)) //960))
 	firstrun(tester, mock)
 
 	examplejson.SaveExampleJson(mock, "builtin.ramps2", "demo")
@@ -30,6 +30,7 @@ func TestTemp(t *testing.T) {
 	for i, ang := range rotates {
 		mockAngle := mock
 		mockAngle.WidgetProperties.Angle = ang
+		mock.WidgetProperties.TextProperties = textObjectJSON{TextColour: "#F32399"}
 
 		testerAng := image.NewNRGBA64(image.Rect(0, 0, 4000, 4000))
 		firstrun(testerAng, mockAngle)
@@ -39,7 +40,7 @@ func TestTemp(t *testing.T) {
 	}
 
 	mock.Stripes = []RampProperties{{Colour: "gray", StartPoint: 1023, Reverse: true}}
-	mock.WidgetProperties = control{GlobalBitDepth: 10}
+	mock.WidgetProperties = control{GlobalBitDepth: 10, TextProperties: textObjectJSON{TextColour: "#F32399"}}
 	mock.StripeGroup.Ramp = []Stripe{{Height: 20, BitDepth: 8}, {Height: 20, BitDepth: 4}}
 	tester2 := image.NewNRGBA64(image.Rect(0, 0, 5000, 1000))
 	firstrun(tester2, mock)

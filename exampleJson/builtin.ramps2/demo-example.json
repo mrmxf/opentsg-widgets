@@ -1,63 +1,61 @@
 {
     "StripeGroup": {
         "Header": {
-            "Height": 4,
+            "Height": 0,
             "Colour": "white"
         },
         "InterStripe": {
             "Colours": [
                 "white",
-                "black"
+                "black",
+                "red",
+                "blue"
             ],
-            "Height": 2
+            "Height": 1
         },
         "Ramp": [
             {
-                "Height": 4,
-                "BitDepth": 12,
-                "Label": ""
+                "Height": 5,
+                "BitDepth": 4,
+                "Label": "4b"
             },
             {
-                "Height": 3,
-                "BitDepth": 10,
-                "Label": ""
+                "Height": 5,
+                "BitDepth": 6,
+                "Label": "6b"
             },
             {
                 "Height": 5,
                 "BitDepth": 8,
-                "Label": ""
+                "Label": "8b"
             },
             {
                 "Height": 5,
-                "BitDepth": 5,
-                "Label": ""
+                "BitDepth": 10,
+                "Label": "10b"
             }
         ]
     },
     "Stripes": [
         {
-            "Colour": "red",
-            "StartPoint": 0,
-            "Reverse": false
-        },
-        {
-            "Colour": "blue",
-            "StartPoint": 2500,
-            "Reverse": false
-        },
-        {
-            "Colour": "red",
-            "StartPoint": 3199,
-            "Reverse": true
-        },
-        {
             "Colour": "green",
-            "StartPoint": 3967,
-            "Reverse": true
+            "StartPoint": 960,
+            "Reverse": false
+        },
+        {
+            "Colour": "gray",
+            "StartPoint": 960,
+            "Reverse": false
         }
     ],
     "WidgetProperties": {
-        "GlobalBitDepth": 12,
-        "Angle": ""
+        "GlobalBitDepth": 10,
+        "Angle": "",
+        "TextProperties": {
+            "textyPosition": "",
+            "textxPosition": "",
+            "textHeight": 70,
+            "textColor": "#345AB6"
+        }
     }
 }

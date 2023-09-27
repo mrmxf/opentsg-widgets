@@ -182,16 +182,25 @@ type alternateHeader struct {
 }
 
 func (h internalHeader) Generate(img draw.Image) {
+	if h.Height == 0 {
+		return
+	}
+
 	c, _ := assignRGBValues(h.Colour, 65535, 0, 65535)
 	draw.Draw(img, img.Bounds(), &image.Uniform{c}, image.Point{}, draw.Over)
 }
 
 func (a alternateHeader) Generate(img draw.Image) {
 
+	if a.Height == 0 {
+		return
+	}
+
 	step := int(math.Pow(2, float64((a.base.GlobalBitDepth - a.step))))
 
 	altCount := 0
 	end := a.base.getLoop(img.Bounds())
+
 	for x := 0; x <= end; x += step {
 		c, _ := assignRGBValues(a.Colours[altCount%len(a.Colours)], 65535, 0, 65535)
 		target := a.base.set(x, step, img.Bounds().Max)
@@ -206,6 +215,14 @@ type Ramp struct {
 	StripeGroup      layout
 	Stripes          []RampProperties
 	WidgetProperties control
+	text             textObjectJSON
+}
+
+type textObjectJSON struct {
+	TextYPosition string  `json:"textyPosition" yaml:"textyPosition"`
+	TextXPosition string  `json:"textxPosition" yaml:"textxPosition"`
+	TextHeight    float64 `json:"textHeight" yaml:"textHeight"`
+	TextColour    string  `json:"textColor" yaml:"textColor"`
 }
 
 type RampProperties struct {
@@ -273,6 +290,10 @@ func (s Stripe) Generate(img draw.Image) {
 		}
 	}
 
+	// generate the label if needed
+	if s.Label != "" {
+		s.base.TextProperties.labels(img, s.Label, s.base.angleType)
+	}
 
 	//run the labels here - use the other label code
 }
@@ -287,6 +308,7 @@ type layout struct {
 type control struct {
 	GlobalBitDepth int
 	Angle          string
+	TextProperties textObjectJSON
 	// These are things the user does not set
 	/*
 		fill function - for rotation to automatically translate the fill location
