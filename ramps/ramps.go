@@ -46,10 +46,14 @@ func shapes() {
 	*/
 }
 
-func firstrun(target draw.Image, input Ramp) {
+func firstrun(target draw.Image, input Ramp) error {
 	// calculate the whole height of each one
 
-	setBase(&input.WidgetProperties)
+	rotation, err := setBase(&input.WidgetProperties)
+
+	if err != nil {
+		return err
+	}
 	fmt.Println(input.WidgetProperties)
 
 	// validate teh control here
@@ -89,7 +93,7 @@ func firstrun(target draw.Image, input Ramp) {
 			rowCut := input.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
 			rrow := image.NewNRGBA64(rowCut)
 
-			ramp.col = str.Colour
+			ramp.colour = str.Colour
 			ramp.startPoint = str.StartPoint
 			ramp.reverse = str.Reverse
 
@@ -122,9 +126,14 @@ func firstrun(target draw.Image, input Ramp) {
 	}
 
 	// @TODO add the rotation algortihim
+	if rotation != 0 {
+		rotate(target, rotation)
+	}
+
+	return nil
 }
 
-func setBase(target *control) error {
+func setBase(target *control) (float64, error) {
 	radian := 0.0
 	target.angleType = noRotation
 
@@ -133,27 +142,23 @@ func setBase(target *control) error {
 		var err error
 		radian, err = anglegen.AngleCalc(angString)
 		if err != nil {
-			return err
+			return 0, err
 		}
 	}
 
-	angDiff, _ := diff(radian, 1.571, 4.712, 3.142, 0.0)
+	angDiff, angleOffset := diff(radian, 1.571, 4.712, 3.142, 0.0)
 	rads := fmt.Sprintf("%.3f", angDiff)
 
-	if rads == "1.571" || rads == "4.712" { // Assign an angle based on the direction
-
-		if rads == "1.571" {
-			target.angleType = rotate90
-		} else {
-			target.angleType = rotate270
-		}
-
-	} else if rads == "3.142" {
+	switch rads {
+	case "1.571":
+		target.angleType = rotate90
+	case "4.712":
+		target.angleType = rotate270
+	case "3.142":
 		target.angleType = rotate180
-
 	}
 
-	return nil
+	return angleOffset, nil
 }
 
 func diff(angle float64, targets ...float64) (target float64, diff float64) {
@@ -170,19 +175,6 @@ func diff(angle float64, targets ...float64) (target float64, diff float64) {
 	return
 }
 
-type internalHeader struct {
-	Height int
-	Colour string
-}
-
-type alternateHeader struct {
-	Colours []string
-	Height  int
-	// things the user does not assign
-	base control
-	step int
-}
-
 func (h internalHeader) Generate(img draw.Image) {
 	if h.Height == 0 {
 		return
@@ -192,7 +184,7 @@ func (h internalHeader) Generate(img draw.Image) {
 	draw.Draw(img, img.Bounds(), &image.Uniform{c}, image.Point{}, draw.Over)
 }
 
-func (a alternateHeader) Generate(img draw.Image) {
+func (a gradientSeparator) Generate(img draw.Image) {
 
 	if a.Height == 0 {
 		return
@@ -213,39 +205,7 @@ func (a alternateHeader) Generate(img draw.Image) {
 
 }
 
-type Ramp struct {
-	StripeGroup      layout
-	Stripes          []RampProperties
-	WidgetProperties control
-	text             textObjectJSON
-}
-
-type textObjectJSON struct {
-	TextYPosition string  `json:"textyPosition" yaml:"textyPosition"`
-	TextXPosition string  `json:"textxPosition" yaml:"textxPosition"`
-	TextHeight    float64 `json:"textHeight" yaml:"textHeight"`
-	TextColour    string  `json:"textColor" yaml:"textColor"`
-}
-
-type RampProperties struct {
-	Colour     string
-	StartPoint int
-	Reverse    bool
-}
-type Stripe struct {
-	Height, BitDepth int
-
-	Label string
-	// thigns that are added on run thorughs
-	startPoint int
-	reverse    bool
-
-	// Thigns we generate
-	base control
-	col  string
-}
-
-func (s Stripe) Generate(img draw.Image) {
+func (s Gradient) Generate(img draw.Image) {
 	shift16 := 1 << (16 - s.BitDepth)
 
 	//set the steps relative to the max bitdepth
@@ -276,7 +236,7 @@ func (s Stripe) Generate(img draw.Image) {
 	end := s.base.getLoop(img.Bounds())
 
 	for x := 0; x <= end; x += step {
-		c, _ := assignRGBValues(s.col, float64(startPoint), 0, 65535)
+		c, _ := assignRGBValues(s.colour, float64(startPoint), 0, 65535)
 		target := s.base.set(x, step, img.Bounds().Max)
 
 		// draw.Draw(img, image.Rect(x, img.Bounds().Min.Y, x+step, img.Bounds().Max.Y), &image.Uniform{c}, image.Point{}, draw.Over)
@@ -298,13 +258,6 @@ func (s Stripe) Generate(img draw.Image) {
 	}
 
 	//run the labels here - use the other label code
-}
-
-type layout struct {
-	Header      internalHeader
-	InterStripe alternateHeader
-	Ramp        []Stripe // just do the heights frst
-
 }
 
 type control struct {
@@ -393,12 +346,12 @@ func (c control) set(position, step int, bounds image.Point) image.Rectangle {
 	return image.Rectangle{}
 }
 
-type make interface {
+type maker interface {
 	Generate(img draw.Image)
 }
 
 // Defaults give the optional extras?
-func hidden(base, img draw.Image, start image.Point, G make) {
+func hidden(base, img draw.Image, start image.Point, G maker) {
 
 	/*
 		hidden needs to be something that can be generic and useful
@@ -425,5 +378,54 @@ func assignRGBValues(colour string, rgb float64, maxBlack, maxWhite uint16) (col
 		return color.NRGBA64{0, 0, uint16(rgb), uint16(0xffff)}, nil
 	default:
 		return color.NRGBA64{0, 0, 0, 0}, fmt.Errorf("%s Non specific colour called, rgb values set at 0", colour) // Unused error
+	}
+}
+
+func rotate(canvas draw.Image, radian float64) {
+
+	// Take n as 10 for the moment
+	// Math.ceil x, y and floor each one
+
+	size := canvas.Bounds().Max
+	x0, y0 := float64((size.X / 2)), float64((size.Y / 2))
+	// Calculate these on initialisation
+	// Use base as a method of calculating it all without changing the canvas
+	base := image.NewNRGBA64(canvas.Bounds())
+	draw.Draw(base, base.Bounds(), canvas, image.Point{}, draw.Src)
+	N := int(10)
+
+	rgbs := make([][]uint32, 4)
+	for i := range rgbs {
+		rgbs[i] = make([]uint32, 4)
+	}
+
+	val := make([]uint16, 4)
+
+	for i := 0; i < base.Bounds().Max.X; i++ {
+		for j := 0; j < base.Bounds().Max.Y; j++ {
+			// Calculate the pixel location to extract from
+			xp := math.Cos(-radian)*(float64(i)-x0) + math.Sin(-radian)*(float64(j)-y0) + x0
+			yp := -1*math.Sin(-radian)*(float64(i)-x0) + math.Cos(-radian)*(float64(j)-y0) + y0
+			_, xFrac := math.Modf(xp)
+			_, yFrac := math.Modf(yp)
+			x := int(xFrac * 10)
+			y := int(yFrac * 10)
+
+			xpos, ypos := int(math.Floor(xp)), int(math.Floor(yp))
+			locs := [][]int{{xpos, ypos}, {xpos + 1, ypos}, {xpos, ypos + 1}, {xpos + 1, ypos + 1}}
+			// Overwrite the rgb values each time instead of making a new array for each loop
+			for i, loc := range locs {
+				rgbs[i][0], rgbs[i][1], rgbs[i][2], rgbs[i][3] = base.At(loc[0], loc[1]).RGBA()
+			}
+			for k := 0; k < 4; k++ {
+				val[k] = uint16((1.0 / (float64(N * N))) * float64(((N-x)*(N-y)*int(rgbs[0][k]) + x*(N-y)*int(rgbs[1][k]) + y*(N-x)*int(rgbs[2][k]) + x*y*int(rgbs[3][k]))))
+			}
+			// If not empty then assign the value to ignore the black background
+			if val[3] != 0 {
+				canvas.Set(i, j, color.NRGBA64{val[0], val[1], val[2], uint16(0xffff)})
+			} else {
+				canvas.Set(i, j, color.NRGBA64{0, 0, 0, uint16(0x0000)})
+			}
+		}
 	}
 }

@@ -23,3 +23,9 @@ layout as shown below. They may not be found on every example.
 }
 
 ```
+
+## Widget Properties
+
+### Gradients
+
+Ramps are
