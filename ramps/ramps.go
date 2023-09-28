@@ -120,6 +120,8 @@ func firstrun(target draw.Image, input Ramp) {
 		}
 
 	}
+
+	// @TODO add the rotation algortihim
 }
 
 func setBase(target *control) error {
@@ -359,9 +361,9 @@ func (c control) positionPoint(bounds image.Point, rowSize, shift int) image.Poi
 	case rotate180:
 		return image.Point{Y: bounds.Y - shift - rowSize}
 	case rotate90:
-		return image.Point{X: shift}
-	default: // rotate270
 		return image.Point{X: bounds.X - shift - rowSize}
+	default: // rotate270
+		return image.Point{X: shift}
 	}
 
 }

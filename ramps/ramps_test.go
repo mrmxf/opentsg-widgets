@@ -30,7 +30,7 @@ func TestTemp(t *testing.T) {
 	for i, ang := range rotates {
 		mockAngle := mock
 		mockAngle.WidgetProperties.Angle = ang
-		mock.WidgetProperties.TextProperties = textObjectJSON{TextColour: "#F32399"}
+		// mock.WidgetProperties.TextProperties = textObjectJSON{TextColour: "#F32399"}
 
 		testerAng := image.NewNRGBA64(image.Rect(0, 0, 4000, 4000))
 		firstrun(testerAng, mockAngle)
