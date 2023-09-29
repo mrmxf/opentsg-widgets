@@ -51,6 +51,8 @@
     "WidgetProperties": {
         "GlobalBitDepth": 10,
         "Angle": "",
+        "Squeeze": false,
+        "ShiftLength": 0,
         "TextProperties": {
             "textyPosition": "",
             "textxPosition": "",

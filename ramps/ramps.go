@@ -18,38 +18,10 @@ const (
 	noRotation = "xy"
 )
 
-/*
-
-next steps
-- implement different objects for interstripes etc
-- get a global value variable set up, these are all inlcuded with the children as part of the configuration
-
-*/
-
-func shapes() {
-	/*
-	   shapes cuts it into a ramp longs
-
-	   go run all the images then draw them on top
-
-	   how to split the patterns and the inputs
-
-	   rampsknows the images it wants to split to
-
-	   and the json constituants as go structs?
-
-	   make this translateable for a checkboard pattern
-
-	   both split into segments thn call the segment, these require shape paramters and what the fills are
-
-	   how to utilise the _hiddden builtin -
-	*/
-}
-
 func firstrun(target draw.Image, input Ramp) error {
 	// calculate the whole height of each one
 
-	rotation, err := setBase(&input.WidgetProperties)
+	rotation, err := setBase(&input.WidgetProperties, target.Bounds().Max)
 
 	if err != nil {
 		return err
@@ -57,7 +29,7 @@ func firstrun(target draw.Image, input Ramp) error {
 	fmt.Println(input.WidgetProperties)
 
 	// validate teh control here
-	input.StripeGroup.InterStripe.base = input.WidgetProperties
+	//	input.StripeGroup.InterStripe.base = input.WidgetProperties
 
 	totalHeight := input.StripeGroup.Header.Height + ((len(input.StripeGroup.Ramp) - 1) * input.StripeGroup.InterStripe.Height)
 	for _, r := range input.StripeGroup.Ramp {
@@ -65,9 +37,9 @@ func firstrun(target draw.Image, input Ramp) error {
 	}
 
 	totalHeight *= len(input.Stripes)
-	rowDimens := input.WidgetProperties.rowDimension(target.Bounds())
+	rowHeight := input.WidgetProperties.rowDimension(target.Bounds())
 
-	groupStep := float64(rowDimens) / float64(totalHeight)
+	groupStep := float64(rowHeight) / float64(totalHeight)
 
 	position := 0.0
 	// posPoint := image.Point{}
@@ -125,7 +97,8 @@ func firstrun(target draw.Image, input Ramp) error {
 
 	}
 
-	// @TODO add the rotation algortihim
+	// rotate if required
+	// this is not pixel accurate
 	if rotation != 0 {
 		rotate(target, rotation)
 	}
@@ -133,7 +106,7 @@ func firstrun(target draw.Image, input Ramp) error {
 	return nil
 }
 
-func setBase(target *control) (float64, error) {
+func setBase(target *control, dims image.Point) (float64, error) {
 	radian := 0.0
 	target.angleType = noRotation
 
@@ -149,13 +122,41 @@ func setBase(target *control) (float64, error) {
 	angDiff, angleOffset := diff(radian, 1.571, 4.712, 3.142, 0.0)
 	rads := fmt.Sprintf("%.3f", angDiff)
 
+	rowLength := dims.X
 	switch rads {
 	case "1.571":
 		target.angleType = rotate90
+		rowLength = dims.Y
 	case "4.712":
 		target.angleType = rotate270
+		rowLength = dims.Y
 	case "3.142":
 		target.angleType = rotate180
+	}
+
+	/*
+		calculate shift here
+
+	*/
+	if target.GlobalBitDepth == 0 {
+		target.GlobalBitDepth = 16
+	}
+	stepLength := math.Pow(2, float64(target.GlobalBitDepth))
+	step := float64(rowLength) / stepLength
+	fmt.Println(step)
+	if target.Squeeze {
+
+		stepLength := math.Pow(2, float64(target.GlobalBitDepth))
+		step := float64(rowLength) / stepLength
+		target.trueShift = step
+	} else {
+
+		if target.ShiftLength == 0 {
+			target.trueShift = 1
+		} else {
+			target.trueShift = float64(target.ShiftLength)
+		}
+
 	}
 
 	return angleOffset, nil
@@ -211,6 +212,8 @@ func (s Gradient) Generate(img draw.Image) {
 	//set the steps relative to the max bitdepth
 	step := int(math.Pow(2, float64((s.base.GlobalBitDepth - s.BitDepth))))
 
+	//multiply the step by the shift factor
+
 	// generate a start point in 16 bit
 	// sanity check the start point is within the bitdepth
 	startPoint := s.startPoint << (16 - s.base.GlobalBitDepth)
@@ -219,10 +222,9 @@ func (s Gradient) Generate(img draw.Image) {
 
 	if overRun != 0 {
 		/*
-					tow options line up when we can let them lineup when required
-			 		or have them always lineup by shifting the value to match the lowest bit closest bitdepth
-					e.g. would shift to 0?@TODO fix eveything else before tackling this
-
+			tow options line up when we can let them lineup when required
+			or have them always lineup by shifting the value to match the lowest bit closest bitdepth
+			e.g. would shift to 0?@TODO fix eveything else before tackling this
 		*/
 		if !s.reverse {
 			startPoint += (shift16 - overRun)
@@ -258,23 +260,6 @@ func (s Gradient) Generate(img draw.Image) {
 	}
 
 	//run the labels here - use the other label code
-}
-
-type control struct {
-	GlobalBitDepth int
-	Angle          string
-	TextProperties textObjectJSON
-	// These are things the user does not set
-	/*
-		fill function - for rotation to automatically translate the fill location
-		fill - get stepsize and end goal
-
-		step size - fill or truncate. Add a multiplier
-
-
-	*/
-
-	angleType string
 }
 
 func (c control) getLoop(bounds image.Rectangle) (end int) {
@@ -321,7 +306,7 @@ func (c control) positionPoint(bounds image.Point, rowSize, shift int) image.Poi
 
 }
 
-// func set sets the canvas values based on the roatation without running a transformation
+// func set sets the canvas position based on the rotation without running a transformation
 func (c control) set(position, step int, bounds image.Point) image.Rectangle {
 
 	switch c.angleType {
@@ -336,12 +321,6 @@ func (c control) set(position, step int, bounds image.Point) image.Rectangle {
 
 		return image.Rect(0, bounds.Y-(position), bounds.X, bounds.Y-(position+step))
 	}
-	//case rotate270:
-
-	//		canvas.Set(b.X-int(j), b.Y-(int(i)+1), colourRGB)
-	//default:
-	//	canvas.Set(int(j), int(i), colourRGB)
-	//}
 
 	return image.Rectangle{}
 }

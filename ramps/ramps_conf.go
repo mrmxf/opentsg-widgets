@@ -50,3 +50,23 @@ type gradientSeparator struct {
 	base control
 	step int
 }
+
+type control struct {
+	GlobalBitDepth int
+	Angle          string
+	Squeeze        bool
+	ShiftLength    int
+	TextProperties textObjectJSON
+	// These are things the user does not set
+	/*
+		fill function - for rotation to automatically translate the fill location
+		fill - get stepsize and end goal
+
+		step size - fill or truncate. Add a multiplier
+
+
+	*/
+
+	angleType string
+	trueShift float64
+}
