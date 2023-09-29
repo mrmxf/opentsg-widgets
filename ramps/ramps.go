@@ -31,42 +31,42 @@ func firstrun(target draw.Image, input Ramp) error {
 	// validate teh control here
 	//	input.StripeGroup.InterStripe.base = input.WidgetProperties
 
-	totalHeight := input.StripeGroup.Header.Height + ((len(input.StripeGroup.Ramp) - 1) * input.StripeGroup.InterStripe.Height)
-	for _, r := range input.StripeGroup.Ramp {
+	totalHeight := input.Gradients.GroupSeparator.Height + ((len(input.Gradients.Gradients) - 1) * input.Gradients.GradientSeparator.Height)
+	for _, r := range input.Gradients.Gradients {
 		totalHeight += r.Height
 	}
 
-	totalHeight *= len(input.Stripes)
+	totalHeight *= len(input.Groups)
 	rowHeight := input.WidgetProperties.rowDimension(target.Bounds())
 
 	groupStep := float64(rowHeight) / float64(totalHeight)
 
 	position := 0.0
 	// posPoint := image.Point{}
-	for _, str := range input.Stripes {
+	for _, str := range input.Groups {
 
-		if input.StripeGroup.Header.Height != 0 {
+		if input.Gradients.GroupSeparator.Height != 0 {
 
-			rowHeight := input.StripeGroup.Header.Height
+			rowHeight := input.Gradients.GroupSeparator.Height
 			// draw the header
 			end := int(position + groupStep*float64(rowHeight))
 			rowCut := input.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
 			row := image.NewNRGBA64(rowCut)
 			posPoint := input.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
-			hidden(target, row, posPoint, input.StripeGroup.Header)
+			hidden(target, row, posPoint, input.Gradients.GroupSeparator)
 
 			position += groupStep * float64(rowHeight)
 
 		}
 
-		for i, ramp := range input.StripeGroup.Ramp {
+		for i, ramp := range input.Gradients.Gradients {
 
 			end := int(position + groupStep*float64(ramp.Height))
 			rowCut := input.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
 			rrow := image.NewNRGBA64(rowCut)
 
 			ramp.colour = str.Colour
-			ramp.startPoint = str.StartPoint
+			ramp.startPoint = str.BitStartPoint
 			ramp.reverse = str.Reverse
 
 			ramp.base = input.WidgetProperties
@@ -75,16 +75,16 @@ func firstrun(target draw.Image, input Ramp) error {
 
 			position += groupStep * float64(ramp.Height)
 			//	posPoint = input.base.positionPoint(target.Bounds().Max, int(position))
-			if i+1 < len(input.StripeGroup.Ramp) {
-				interHeight := input.StripeGroup.InterStripe.Height
+			if i+1 < len(input.Gradients.Gradients) {
+				interHeight := input.Gradients.GradientSeparator.Height
 				// accounts for jumps in floats and ints
 				end := int(position + groupStep*float64(interHeight))
 
 				rowCut := input.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
 				irow := image.NewNRGBA64(rowCut)
-				altCopy := input.StripeGroup.InterStripe
+				altCopy := input.Gradients.GradientSeparator
 				altCopy.base = input.WidgetProperties
-				altCopy.step = input.StripeGroup.Ramp[i+1].BitDepth
+				altCopy.step = input.Gradients.Gradients[i+1].BitDepth
 				posPoint := input.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
 				hidden(target, irow, posPoint, altCopy)
 
@@ -176,7 +176,7 @@ func diff(angle float64, targets ...float64) (target float64, diff float64) {
 	return
 }
 
-func (h internalHeader) Generate(img draw.Image) {
+func (h groupSeparator) Generate(img draw.Image) {
 	if h.Height == 0 {
 		return
 	}
@@ -191,17 +191,21 @@ func (a gradientSeparator) Generate(img draw.Image) {
 		return
 	}
 
-	step := int(math.Pow(2, float64((a.base.GlobalBitDepth - a.step))))
+	bitStep := int(math.Pow(2, float64((a.base.GlobalBitDepth - a.step))))
+	shiftStep := a.base.trueShift * float64(bitStep)
 
 	altCount := 0
 	end := a.base.getLoop(img.Bounds())
+	xPosition := 0.0
 
-	for x := 0; x <= end; x += step {
+	for xPosition <= float64(end) {
+		stepEnd := int(xPosition + shiftStep)
 		c, _ := assignRGBValues(a.Colours[altCount%len(a.Colours)], 65535, 0, 65535)
-		target := a.base.set(x, step, img.Bounds().Max)
+		target := a.base.set(int(xPosition), stepEnd-int(xPosition), img.Bounds().Max)
 
 		draw.Draw(img, target, &image.Uniform{c}, image.Point{}, draw.Over)
 		altCount++
+		xPosition += shiftStep
 	}
 
 }
@@ -210,9 +214,9 @@ func (s Gradient) Generate(img draw.Image) {
 	shift16 := 1 << (16 - s.BitDepth)
 
 	//set the steps relative to the max bitdepth
-	step := int(math.Pow(2, float64((s.base.GlobalBitDepth - s.BitDepth))))
-
+	bitStep := int(math.Pow(2, float64((s.base.GlobalBitDepth - s.BitDepth))))
 	//multiply the step by the shift factor
+	shiftStep := s.base.trueShift * float64(bitStep)
 
 	// generate a start point in 16 bit
 	// sanity check the start point is within the bitdepth
@@ -236,10 +240,12 @@ func (s Gradient) Generate(img draw.Image) {
 	altCount := 0
 	// have the mover position and the bounds
 	end := s.base.getLoop(img.Bounds())
+	xPosition := 0.0
+	for xPosition <= float64(end) {
+		stepEnd := int(xPosition + shiftStep)
 
-	for x := 0; x <= end; x += step {
 		c, _ := assignRGBValues(s.colour, float64(startPoint), 0, 65535)
-		target := s.base.set(x, step, img.Bounds().Max)
+		target := s.base.set(int(xPosition), stepEnd-int(xPosition), img.Bounds().Max)
 
 		// draw.Draw(img, image.Rect(x, img.Bounds().Min.Y, x+step, img.Bounds().Max.Y), &image.Uniform{c}, image.Point{}, draw.Over)
 
@@ -252,6 +258,8 @@ func (s Gradient) Generate(img draw.Image) {
 		} else {
 			startPoint -= shift16 // 1 << shift16
 		}
+
+		xPosition += shiftStep
 	}
 
 	// generate the label if needed

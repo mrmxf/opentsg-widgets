@@ -1,15 +1,15 @@
 package ramps
 
 type Ramp struct {
-	StripeGroup      layout
-	Stripes          []RampProperties
+	Gradients        groupContents
+	Groups           []RampProperties
 	WidgetProperties control
 }
 
-type layout struct {
-	Header      internalHeader
-	InterStripe gradientSeparator
-	Ramp        []Gradient // just do the heights frst
+type groupContents struct {
+	GroupSeparator    groupSeparator
+	GradientSeparator gradientSeparator
+	Gradients         []Gradient // just do the heights frst
 }
 
 type textObjectJSON struct {
@@ -20,9 +20,9 @@ type textObjectJSON struct {
 }
 
 type RampProperties struct {
-	Colour     string
-	StartPoint int
-	Reverse    bool
+	Colour        string
+	BitStartPoint int
+	Reverse       bool
 }
 type Gradient struct {
 	Height   int
@@ -33,12 +33,12 @@ type Gradient struct {
 	startPoint int
 	reverse    bool
 
-	// Thigns we generate
+	// Things we generate
 	base   control
 	colour string
 }
 
-type internalHeader struct {
+type groupSeparator struct {
 	Height int
 	Colour string
 }
