@@ -1,25 +1,24 @@
 package bars
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
 )
 
-func bar(target draw.Image, fills [][]bars) {
+func bar(target draw.Image, fills [][]bars, heights []float64) {
 	// 2d array of shapes
-	heights := []float64{7 * b, 1 * b, 1 * b, 3 * b}
-
+	// heights := []float64{7 * b, 1 * b, 1 * b, 3 * b}
+	// treat the widths and heights as floats until the rectangle is formed
 	b := target.Bounds().Max
-	y := 0
+	y := 0.0
 	for i, h := range heights {
 
 		w := 0.0
 		twidth := 0.0
 		for _, f := range fills[i] {
 			twidth += f.width * float64(b.X)
-			area := image.Rect(int(w), y, int(w+f.width*float64(b.X)), y+int(h*float64(b.Y)))
+			area := image.Rect(int(w), int(y), int(w+f.width*float64(b.X)), int(y+h*float64(b.Y)))
 			var fill image.Image
 
 			if f.color != nil {
@@ -27,14 +26,13 @@ func bar(target draw.Image, fills [][]bars) {
 			} else {
 				fill = f.fill(image.Rect(0, 0, area.Dx(), area.Dy()))
 			}
-			fmt.Println(area)
+
 			draw.Draw(target, area, fill, image.Point{}, draw.Src)
 
 			w += f.width * float64(b.X)
 		}
-		fmt.Println(twidth)
 
-		y += int(h * float64(b.Y))
+		y += h * float64(b.Y)
 
 	}
 }
@@ -54,6 +52,9 @@ const (
 	k = 309 / 1920.0
 	g = 411 / 1920.0
 	h = 171 / 1920.0
+
+	sdwidth = 1 / 7.0
+	qwidth  = (5 * sdwidth) / 4.0
 )
 
 var (
@@ -100,8 +101,14 @@ var (
 
 	gray15SD    = color.NRGBA{R: 49, G: 49, B: 49, A: 0xff}
 	black2NegSD = color.NRGBA{R: 12, G: 12, B: 12, A: 0xff}
+	black4NegSD = color.NRGBA{R: 7, G: 7, B: 7, A: 0xff}
 	black2PosSD = color.NRGBA{R: 20, G: 20, B: 20, A: 0xff}
 	black4PosSD = color.NRGBA{R: 25, G: 25, B: 25, A: 0xff}
+)
+
+var (
+	ISD = color.NRGBA{R: 16, G: 70, B: 106, A: 0xff}
+	QSD = color.NRGBA{R: 72, G: 16, B: 118, A: 0xff}
 )
 
 func yRamp(bounds image.Rectangle) draw.Image {

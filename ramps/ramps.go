@@ -66,7 +66,7 @@ func firstrun(target draw.Image, input Ramp) error {
 			rrow := image.NewNRGBA64(rowCut)
 
 			ramp.colour = str.Colour
-			ramp.startPoint = str.BitStartPoint
+			ramp.startPoint = str.InitialPixelValue
 			ramp.reverse = str.Reverse
 
 			ramp.base = input.WidgetProperties
@@ -110,8 +110,8 @@ func setBase(target *control, dims image.Point) (float64, error) {
 	radian := 0.0
 	target.angleType = noRotation
 
-	if target.Angle != "" {
-		angString := fmt.Sprintf("%v", target.Angle)
+	if target.CwRotation != "" {
+		angString := fmt.Sprintf("%v", target.CwRotation)
 		var err error
 		radian, err = anglegen.AngleCalc(angString)
 		if err != nil {
@@ -138,23 +138,23 @@ func setBase(target *control, dims image.Point) (float64, error) {
 		calculate shift here
 
 	*/
-	if target.GlobalBitDepth == 0 {
-		target.GlobalBitDepth = 16
+	if target.MaxBitDepth == 0 {
+		target.MaxBitDepth = 16
 	}
-	stepLength := math.Pow(2, float64(target.GlobalBitDepth))
+	stepLength := math.Pow(2, float64(target.MaxBitDepth))
 	step := float64(rowLength) / stepLength
 	fmt.Println(step)
-	if target.Squeeze {
+	if target.ObjectFitFill {
 
-		stepLength := math.Pow(2, float64(target.GlobalBitDepth))
+		stepLength := math.Pow(2, float64(target.MaxBitDepth))
 		step := float64(rowLength) / stepLength
-		target.trueShift = step
+		target.truePixelShift = step
 	} else {
 
-		if target.ShiftLength == 0 {
-			target.trueShift = 1
+		if target.PixelValueRepeat == 0 {
+			target.truePixelShift = 1
 		} else {
-			target.trueShift = float64(target.ShiftLength)
+			target.truePixelShift = float64(target.PixelValueRepeat)
 		}
 
 	}
@@ -191,8 +191,8 @@ func (a gradientSeparator) Generate(img draw.Image) {
 		return
 	}
 
-	bitStep := int(math.Pow(2, float64((a.base.GlobalBitDepth - a.step))))
-	shiftStep := a.base.trueShift * float64(bitStep)
+	bitStep := int(math.Pow(2, float64((a.base.MaxBitDepth - a.step))))
+	shiftStep := a.base.truePixelShift * float64(bitStep)
 
 	altCount := 0
 	end := a.base.getLoop(img.Bounds())
@@ -214,13 +214,13 @@ func (s Gradient) Generate(img draw.Image) {
 	shift16 := 1 << (16 - s.BitDepth)
 
 	//set the steps relative to the max bitdepth
-	bitStep := int(math.Pow(2, float64((s.base.GlobalBitDepth - s.BitDepth))))
+	bitStep := int(math.Pow(2, float64((s.base.MaxBitDepth - s.BitDepth))))
 	//multiply the step by the shift factor
-	shiftStep := s.base.trueShift * float64(bitStep)
+	shiftStep := s.base.truePixelShift * float64(bitStep)
 
 	// generate a start point in 16 bit
 	// sanity check the start point is within the bitdepth
-	startPoint := s.startPoint << (16 - s.base.GlobalBitDepth)
+	startPoint := s.startPoint << (16 - s.base.MaxBitDepth)
 
 	overRun := startPoint % shift16
 

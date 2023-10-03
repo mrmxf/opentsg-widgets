@@ -11,11 +11,11 @@ import (
 )
 
 func TestTemp(t *testing.T) {
-	mock := Ramp{Groups: []RampProperties{{Colour: "green", BitStartPoint: 960}, {Colour: "gray", BitStartPoint: 960}},
+	mock := Ramp{Groups: []RampProperties{{Colour: "green", InitialPixelValue: 960}, {Colour: "gray", InitialPixelValue: 960}},
 		Gradients: groupContents{GroupSeparator: groupSeparator{Height: 0, Colour: "white"},
 			GradientSeparator: gradientSeparator{Colours: []string{"white", "black", "red", "blue"}, Height: 1},
 			Gradients:         []Gradient{{Height: 5, BitDepth: 4, Label: "ブルースのテスト列"}, {Height: 5, BitDepth: 6, Label: "ब्रूस परीक्षण पंक्ति"}, {Height: 5, BitDepth: 8, Label: "8b"}, {Height: 5, BitDepth: 10, Label: "10b"}}},
-		WidgetProperties: control{GlobalBitDepth: 10, TextProperties: textObjectJSON{TextColour: "#345AB6", TextHeight: 70}}}
+		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textObjectJSON{TextColour: "#345AB6", TextHeight: 70}}}
 	tester := image.NewNRGBA64(image.Rect(0, 0, 1024, 1000)) //960))
 	firstrun(tester, mock)
 
@@ -29,7 +29,7 @@ func TestTemp(t *testing.T) {
 
 	for i, ang := range rotates {
 		mockAngle := mock
-		mockAngle.WidgetProperties.Angle = ang
+		mockAngle.WidgetProperties.CwRotation = ang
 		// mock.WidgetProperties.TextProperties = textObjectJSON{TextColour: "#F32399"}
 
 		testerAng := image.NewNRGBA64(image.Rect(0, 0, 4000, 4000))
@@ -39,8 +39,8 @@ func TestTemp(t *testing.T) {
 		png.Encode(fang, testerAng)
 	}
 
-	mock.Groups = []RampProperties{{Colour: "gray", BitStartPoint: 1023, Reverse: true}}
-	mock.WidgetProperties = control{GlobalBitDepth: 10, TextProperties: textObjectJSON{TextColour: "#F32399"}}
+	mock.Groups = []RampProperties{{Colour: "gray", InitialPixelValue: 1023, Reverse: true}}
+	mock.WidgetProperties = control{MaxBitDepth: 10, TextProperties: textObjectJSON{TextColour: "#F32399"}}
 	mock.Gradients.Gradients = []Gradient{{Height: 20, BitDepth: 8}, {Height: 20, BitDepth: 4}}
 	tester2 := image.NewNRGBA64(image.Rect(0, 0, 5000, 1000))
 	firstrun(tester2, mock)
@@ -48,20 +48,20 @@ func TestTemp(t *testing.T) {
 	f2, _ := os.Create("tester2.png")
 	png.Encode(f2, tester2)
 
-	mock = Ramp{Groups: []RampProperties{{Colour: "green", BitStartPoint: 960}, {Colour: "gray", BitStartPoint: 960}},
+	mock = Ramp{Groups: []RampProperties{{Colour: "green", InitialPixelValue: 960}, {Colour: "gray", InitialPixelValue: 960}},
 		Gradients: groupContents{GroupSeparator: groupSeparator{Height: 0, Colour: "white"},
 			GradientSeparator: gradientSeparator{Colours: []string{"white", "black", "red", "blue"}, Height: 1},
 			Gradients:         []Gradient{{Height: 5, BitDepth: 4, Label: "4b"}, {Height: 5, BitDepth: 6, Label: "6b"}, {Height: 5, BitDepth: 8, Label: "8b"}, {Height: 5, BitDepth: 10, Label: "10b"}}},
-		WidgetProperties: control{GlobalBitDepth: 10, TextProperties: textObjectJSON{TextColour: "#345AB6", TextHeight: 70}}}
+		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textObjectJSON{TextColour: "#345AB6", TextHeight: 70}}}
 	Squeezer := image.NewNRGBA64(image.Rect(0, 0, 5000, 1000)) //960))
-	mock.WidgetProperties.Squeeze = true
+	mock.WidgetProperties.ObjectFitFill = true
 	firstrun(Squeezer, mock)
 	fsqueeze, _ := os.Create("testerSqu.png")
 	png.Encode(fsqueeze, Squeezer)
 
 	twoer := image.NewNRGBA64(image.Rect(0, 0, 5000, 1000)) //960))
-	mock.WidgetProperties.Squeeze = false
-	mock.WidgetProperties.ShiftLength = 2
+	mock.WidgetProperties.ObjectFitFill = false
+	mock.WidgetProperties.PixelValueRepeat = 2
 	firstrun(twoer, mock)
 	fstwo, _ := os.Create("testerTwo.png")
 	png.Encode(fstwo, twoer)

@@ -39,20 +39,20 @@
     "Groups": [
         {
             "Colour": "green",
-            "BitStartPoint": 960,
+            "InitialPixelValue": 960,
             "Reverse": false
         },
         {
             "Colour": "gray",
-            "BitStartPoint": 960,
+            "InitialPixelValue": 960,
             "Reverse": false
         }
     ],
     "WidgetProperties": {
-        "GlobalBitDepth": 10,
-        "Angle": "",
-        "Squeeze": false,
-        "ShiftLength": 0,
+        "MaxBitDepth": 10,
+        "CwRotation": "",
+        "ObjectFitFill": false,
+        "PixelValueRepeat": 0,
         "TextProperties": {
             "textyPosition": "",
             "textxPosition": "",

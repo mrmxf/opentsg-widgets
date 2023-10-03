@@ -9,7 +9,7 @@ type Ramp struct {
 type groupContents struct {
 	GroupSeparator    groupSeparator
 	GradientSeparator gradientSeparator
-	Gradients         []Gradient // just do the heights frst
+	Gradients         []Gradient
 }
 
 type textObjectJSON struct {
@@ -20,9 +20,9 @@ type textObjectJSON struct {
 }
 
 type RampProperties struct {
-	Colour        string
-	BitStartPoint int
-	Reverse       bool
+	Colour            string
+	InitialPixelValue int
+	Reverse           bool
 }
 type Gradient struct {
 	Height   int
@@ -52,11 +52,11 @@ type gradientSeparator struct {
 }
 
 type control struct {
-	GlobalBitDepth int
-	Angle          string
-	Squeeze        bool
-	ShiftLength    int
-	TextProperties textObjectJSON
+	MaxBitDepth      int
+	CwRotation       string
+	ObjectFitFill    bool
+	PixelValueRepeat int
+	TextProperties   textObjectJSON
 	// These are things the user does not set
 	/*
 		fill function - for rotation to automatically translate the fill location
@@ -67,6 +67,6 @@ type control struct {
 
 	*/
 
-	angleType string
-	trueShift float64
+	angleType      string
+	truePixelShift float64
 }
