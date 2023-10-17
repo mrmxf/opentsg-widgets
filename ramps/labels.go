@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/golang/freetype/truetype"
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/colourgen"
 	"github.com/mmTristan/opentsg-widgets/textbox"
 	"golang.org/x/image/font"
@@ -75,7 +76,7 @@ func (t *textObjectJSON) labels(target draw.Image, label, angle string) {
 	// 90 is swap x and y
 	// 270 is inverse and swap x and y
 
-	col := colourgen.HexToColour(t.TextColour)
+	col := colourgen.HexToColour(t.TextColour, colour.ColorSpace{})
 	b := canvas.Bounds().Max
 
 	xpos := xPos(b.X, lFont, label, t.TextXPosition)

@@ -1,12 +1,14 @@
 package fourcolour
 
 import (
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
 )
 
 type fourJSON struct {
-	Colourpallette []string     `json:"colors" yaml:"colors"`
-	GridLoc        *config.Grid `json:"grid,omitempty" yaml:"grid,omitempty"`
+	Colourpallette []string          `json:"colors" yaml:"colors"`
+	ColourSpace    colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	GridLoc        *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
 }
 
 var schemaInit = []byte(`{

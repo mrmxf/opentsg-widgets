@@ -50,7 +50,7 @@ func (gt geomTextJSON) Generate(canvas draw.Image, opt ...any) error {
 	// This is too intensive as text box does way more than this widget needs
 
 	// extract colours here and text
-	colour := colourgen.HexToColour(gt.TextColour)
+	colour := colourgen.HexToColour(gt.TextColour, gt.ColourSpace)
 	fontByte := textbox.FontSelector(c, "pixel")
 
 	fontain, err := freetype.ParseFont(fontByte)

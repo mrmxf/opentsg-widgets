@@ -3,6 +3,7 @@ package textbox
 import (
 	_ "embed"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
 )
 
@@ -15,13 +16,14 @@ const hooks = ""*/
 
 type TextboxJSON struct {
 	// Type       string       `json:"type" yaml:"type"`
-	Text       []string     `json:"text" yaml:"text"`
-	Font       string       `json:"font" yaml:"font"`
-	GridLoc    *config.Grid `json:"grid" yaml:"grid"`
-	Back       string       `json:"backgroundcolor" yaml:"backgroundcolor"`
-	Border     string       `json:"bordercolor" yaml:"bordercolor"`
-	Textc      string       `json:"textcolor" yaml:"textcolor"`
-	BorderSize float64      `json:"bordersize" yaml:"bordersize"`
+	Text        []string          `json:"text" yaml:"text"`
+	Font        string            `json:"font" yaml:"font"`
+	GridLoc     *config.Grid      `json:"grid" yaml:"grid"`
+	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	Back        string            `json:"backgroundcolor" yaml:"backgroundcolor"`
+	Border      string            `json:"bordercolor" yaml:"bordercolor"`
+	Textc       string            `json:"textcolor" yaml:"textcolor"`
+	BorderSize  float64           `json:"bordersize" yaml:"bordersize"`
 }
 
 //go:embed jsonschema/textboxschema.json

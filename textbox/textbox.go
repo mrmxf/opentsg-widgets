@@ -67,14 +67,12 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) error {
 		return fmt.Errorf("0101 %v", err)
 	}
 
-	back := colourgen.HexToColour(tb.Back)
-	backC := colourgen.ConvertNRGBA64(back)
-	border := colourgen.HexToColour(tb.Border)
-	borderC := colourgen.ConvertNRGBA64(border)
+	back := colourgen.HexToColour(tb.Back, tb.ColourSpace)
+	border := colourgen.HexToColour(tb.Border, tb.ColourSpace)
 
 	borderSize := tb.BorderSize
-	if borderC.A != 0 && backC.A != 0 { // only fill if there's colours to add
-		borderBox(borderC, backC, borderSize, canvas) // generate a background filled box
+	if border.A != 0 && back.A != 0 { // only fill if there's colours to add
+		borderBox(border, back, borderSize, canvas) // generate a background filled box
 	}
 
 	labels := tb.Text
@@ -88,8 +86,7 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) error {
 	opt := truetype.Options{Size: height, SubPixelsY: 8, Hinting: 2}
 	myFace := truetype.NewFace(fontain, &opt)
 
-	textCBase := colourgen.HexToColour(tb.Textc)
-	textC := colourgen.ConvertNRGBA64(textCBase)
+	textCB := colourgen.HexToColour(tb.Textc, tb.ColourSpace)
 
 	for i, label := range labels {
 		labelBox, _ := font.BoundString(myFace, label)
@@ -121,7 +118,7 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) error {
 		//	myFace := truetype.NewFace(fontain, &opt)
 		d := &font.Drawer{
 			Dst:  canvas,
-			Src:  image.NewUniform(textC),
+			Src:  image.NewUniform(textCB),
 			Face: myFace,
 			Dot:  point,
 		}

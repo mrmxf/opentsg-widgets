@@ -14,6 +14,7 @@ import (
 
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/colourgen"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/widgethandler"
@@ -93,15 +94,16 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	square := image.Point{height + 1, height + 1}
 
 	frame := image.NewNRGBA64(image.Rect(0, 0, square.X, square.Y))
-	background := userColour(f.BackColour, color.NRGBA64{uint16(195) << 8, uint16(195) << 8, uint16(195) << 8, uint16(195) << 8})
+	defaultBackground := colour.CNRGBA64{R: uint16(195) << 8, G: uint16(195) << 8, B: uint16(195) << 8, A: uint16(195) << 8, Space: f.ColourSpace}
+	background := userColour(f.BackColour, defaultBackground, f.ColourSpace)
 	// Generate a semi transparent grey background
 	for i := 0; i < frame.Bounds().Max.Y; i++ {
 		for j := 0; j < frame.Bounds().Max.X; j++ {
-			frame.SetNRGBA64(j, i, background)
+			frame.Set(j, i, background)
 		}
 	}
 
-	text := userColour(f.TextColour, color.NRGBA64{0, 0, 0, 65535})
+	text := userColour(f.TextColour, colour.CNRGBA64{R: 0, G: 0, B: 0, A: 65535, Space: f.ColourSpace}, f.ColourSpace)
 	yOff := (float64(square.Y) / 29) * 5 // This constant is to place the y at the text at the center of the square for each height
 	point := fixed.Point26_6{X: fixed.Int26_6(1 * 64), Y: fixed.Int26_6(((float64(height) / 2) + yOff) * 64)}
 	d := &font.Drawer{
@@ -137,14 +139,14 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	return nil
 }
 
-func userColour(input string, defaultC color.NRGBA64) color.NRGBA64 {
-	var gen color.NRGBA64
+func userColour(input string, defaultC colour.CNRGBA64, colourSpace colour.ColorSpace) color.Color {
+	var gen color.Color // colour.CNRGBA64
 
 	if input == "" {
-		gen = defaultC
+		gen = &defaultC
 	} else {
-		inter := colourgen.HexToColour(input)
-		gen = colourgen.ConvertNRGBA64(inter)
+		gen = colourgen.HexToColour(input, colourSpace)
+		// gen = colourgen.ConvertNRGBA64(inter)
 	}
 
 	return gen

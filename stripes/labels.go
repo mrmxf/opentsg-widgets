@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/golang/freetype/truetype"
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/colourgen"
 	"github.com/mmTristan/opentsg-widgets/textbox"
 	"golang.org/x/image/font"
@@ -50,7 +51,7 @@ func (t *textObjectJSON) labels(canvas draw.Image, label, angle string, inverse,
 
 	lFont := fontGen(t.TextHeight, stripeH)
 
-	col := colourgen.HexToColour(t.TextColour)
+	col := colourgen.HexToColour(t.TextColour, colour.ColorSpace{})
 	b := canvas.Bounds().Max
 	// Assign the point based on the rotation to ensure the label lines up with the bar
 	var point fixed.Point26_6
