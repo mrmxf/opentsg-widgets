@@ -18,10 +18,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mrmxf/opentsg-core/colourgen"
-	"github.com/mrmxf/opentsg-core/config/core"
-	errhandle "github.com/mrmxf/opentsg-core/errHandle"
-	"github.com/mrmxf/opentsg-core/widgethandler"
+	"github.com/mmTristan/opentsg-core/colourgen"
+	"github.com/mmTristan/opentsg-core/config/core"
+	errhandle "github.com/mmTristan/opentsg-core/errHandle"
+	"github.com/mmTristan/opentsg-core/widgethandler"
 
 	"github.com/nfnt/resize"
 	"golang.org/x/image/tiff"

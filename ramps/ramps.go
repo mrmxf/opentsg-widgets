@@ -8,7 +8,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/mrmxf/opentsg-core/anglegen"
+	"github.com/mmTristan/opentsg-core/anglegen"
 )
 
 const (

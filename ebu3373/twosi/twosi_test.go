@@ -10,7 +10,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mmTristan/opentsg-core/config"
 	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
@@ -22,7 +22,7 @@ func TestChannels(t *testing.T) {
 	explanation := []string{"uhd", "hd", "obtuse"}
 
 	for i, size := range sizes {
-		mock := twosiJSON{config.Grid{Alias: "testlocation"}}
+		mock := twosiJSON{GridLoc: config.Grid{Alias: "testlocation"}}
 		myImage := image.NewNRGBA64(image.Rect(0, 0, size[0], size[1]))
 		examplejson.SaveExampleJson(mock, widgetType, explanation[i])
 		// Generate the ramp image

@@ -3,7 +3,8 @@ package nearblack
 import (
 	_ "embed"
 
-	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-core/config"
 )
 
 /*
@@ -15,7 +16,8 @@ const hooks = ""*/
 
 type nearblackJSON struct {
 	// Type    string      `json:"type" yaml:"type"`
-	GridLoc config.Grid `json:"grid,omitempty" yaml:"grid,omitempty"`
+	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	GridLoc     config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
 }
 
 //go:embed jsonschema/nbschema.json

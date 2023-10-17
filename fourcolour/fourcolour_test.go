@@ -11,8 +11,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mrmxf/opentsg-core/config"
-	"github.com/mrmxf/opentsg-core/gridgen"
+	"github.com/mmTristan/opentsg-core/config"
+	"github.com/mmTristan/opentsg-core/gridgen"
 	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	geometrymock "github.com/mrmxf/opentsg-widgets/geometryMock"
 

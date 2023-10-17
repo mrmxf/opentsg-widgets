@@ -3,7 +3,8 @@ package zoneplate
 import (
 	_ "embed"
 
-	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-core/config"
 )
 
 /*
@@ -14,11 +15,12 @@ const wLibrary = "builtin"
 const hooks = ""*/
 
 type zoneplateJSON struct {
-	Platetype   string       `json:"platetype" yaml:"platetype"`
-	Startcolour string       `json:"startcolor" yaml:"startcolor"`
-	Angle       interface{}  `json:"angle" yaml:"angle"`
-	Mask        string       `json:"mask" yaml:"mask"`
-	GridLoc     *config.Grid `json:"grid,omitempty" yaml:"grid,omitempty"`
+	Platetype   string            `json:"platetype" yaml:"platetype"`
+	ColourSpace colour.ColorSpace `json:"ColorSpace" yaml:"ColorSpace"`
+	Startcolour string            `json:"startcolor" yaml:"startcolor"`
+	Angle       interface{}       `json:"angle" yaml:"angle"`
+	Mask        string            `json:"mask" yaml:"mask"`
+	GridLoc     *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
 }
 
 //go:embed jsonschema/zoneplateschema.json

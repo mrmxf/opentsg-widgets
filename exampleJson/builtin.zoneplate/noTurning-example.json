@@ -1,5 +1,27 @@
 {
     "platetype": "sweep",
+    "ColorSpace": {
+        "ColorSpace": "",
+        "TransformType": "",
+        "Primaries": {
+            "Red": {
+                "X": 0,
+                "Y": 0
+            },
+            "Green": {
+                "X": 0,
+                "Y": 0
+            },
+            "Blue": {
+                "X": 0,
+                "Y": 0
+            },
+            "WhitePoint": {
+                "X": 0,
+                "Y": 0
+            }
+        }
+    },
     "startcolor": "white",
     "angle": null,
     "mask": ""

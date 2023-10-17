@@ -13,7 +13,7 @@ import (
 	"runtime/debug"
 	"testing"
 
-	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mmTristan/opentsg-core/config"
 	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )

@@ -3,7 +3,8 @@ package noise
 import (
 	_ "embed"
 
-	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-core/config"
 )
 
 /*
@@ -15,10 +16,11 @@ const hooks = ""*/
 
 type noiseJSON struct {
 	//	Type      string       `json:"type" yaml:"type"`
-	Noisetype string       `json:"noisetype" yaml:"noisetype"`
-	Minimum   int          `json:"minimum" yaml:"minimum"`
-	Maximum   int          `json:"maximum" yaml:"maximum"`
-	GridLoc   *config.Grid `json:"grid,omitempty" yaml:"grid,omitempty"`
+	Noisetype   string            `json:"noisetype" yaml:"noisetype"`
+	Minimum     int               `json:"minimum" yaml:"minimum"`
+	Maximum     int               `json:"maximum" yaml:"maximum"`
+	ColourSpace colour.ColorSpace `json:"ColorSpace" yaml:"ColorSpace"`
+	GridLoc     *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
 }
 
 //go:embed jsonschema/noiseschema.json

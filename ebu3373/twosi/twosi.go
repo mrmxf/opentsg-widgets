@@ -12,10 +12,10 @@ import (
 
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
-	"github.com/mrmxf/opentsg-core/aces"
-	errhandle "github.com/mrmxf/opentsg-core/errHandle"
-	"github.com/mrmxf/opentsg-core/gridgen"
-	"github.com/mrmxf/opentsg-core/widgethandler"
+	"github.com/mmTristan/opentsg-core/colour"
+	errhandle "github.com/mmTristan/opentsg-core/errHandle"
+	"github.com/mmTristan/opentsg-core/gridgen"
+	"github.com/mmTristan/opentsg-core/widgethandler"
 	"github.com/mrmxf/opentsg-widgets/textbox"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
@@ -34,8 +34,8 @@ func SIGenerate(canvasChan chan draw.Image, debug bool, c *context.Context, wg, 
 
 // Colour "constants"
 var (
-	grey       = aces.RGBA128{R: 26496, G: 26496, B: 26496, A: 0xffff}
-	letterFill = aces.RGBA128{R: 41470, G: 41470, B: 41470, A: 0xffff}
+	grey       = colour.CNRGBA64{R: 26496, G: 26496, B: 26496, A: 0xffff}
+	letterFill = colour.CNRGBA64{R: 41470, G: 41470, B: 41470, A: 0xffff}
 )
 
 // Each abcd channel follows this format
@@ -47,7 +47,7 @@ type channel struct {
 
 func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 	// Kick off with filling it all in as grey
-	draw.Draw(canvas, canvas.Bounds(), &image.Uniform{grey}, image.Point{}, draw.Src)
+	draw.Draw(canvas, canvas.Bounds(), &image.Uniform{&grey}, image.Point{}, draw.Src)
 
 	xOff, yOff := 0, 0
 	// Flexible option to get figure out where the image is to be placed
@@ -97,6 +97,8 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 	connections["C"] = channel{yOff: 1, xOff: 0, Letter: "C"}
 	connections["D"] = channel{yOff: 1, xOff: 2, Letter: "D"}
 
+	letterColour := letterFill
+	letterColour.UpdateColorSpace(t.ColourSpace)
 	// Generate the letter that is only relevant to its channel
 	for k, v := range connections {
 		// Generate the mask and the canvas
@@ -107,7 +109,7 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 		point := fixed.Point26_6{X: fixed.Int26_6(0 * 64), Y: fixed.Int26_6(letterSize * 64)}
 		d := &font.Drawer{
 			Dst:  v.mask,
-			Src:  image.NewUniform(letterFill),
+			Src:  image.NewUniform(&letterColour),
 			Face: myFace,
 			Dot:  point,
 		}
@@ -148,7 +150,7 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 	letterProperties := letterMetrics{letterSize: letterSize, startPoint: startPoint,
 		yOff: yOff, yScale: yScale, yDepth: yDepth,
 		xOff: xOff, xLength: xLength, lineOff: lineOff}
-	letterProperties.letterDrawer(canvas, letterOrder, connections, letterGap, channelGap, yStart)
+	letterProperties.letterDrawer(canvas, letterColour, letterOrder, connections, letterGap, channelGap, yStart)
 
 	return nil
 }
@@ -162,7 +164,7 @@ type letterMetrics struct {
 
 // letterdrawer loops through the letters and lines drawing them on the canvas
 // moving horizontally along each time when drawing a letter
-func (lm letterMetrics) letterDrawer(canvas draw.Image, letterOrder [][2]string, connections map[string]channel, letterGap, channelGap, yStart int) {
+func (lm letterMetrics) letterDrawer(canvas draw.Image, letterColour colour.CNRGBA64, letterOrder [][2]string, connections map[string]channel, letterGap, channelGap, yStart int) {
 
 	position := aPos(lm.startPoint) + lm.xOff
 	realY := aPos(yStart + lm.letterSize + lm.lineOff) // Y start for some of the lines
@@ -174,16 +176,16 @@ func (lm letterMetrics) letterDrawer(canvas draw.Image, letterOrder [][2]string,
 
 		if left.xOff != right.xOff {
 			// then draw the vertical lines
-			verticalLines(canvas, left, right, position, realY, lm.yDepth, lm.lineOff)
+			verticalLines(canvas, letterColour, left, right, position, realY, lm.yDepth, lm.lineOff)
 		}
 
 		if left.yOff != right.yOff {
 			// draw the horizontal lines
-			horizontalLines(canvas, left, right, position, realY, lm.xLength, lm.lineOff)
+			horizontalLines(canvas, letterColour, left, right, position, realY, lm.xLength, lm.lineOff)
 		}
 
 		// Draw diagonal lines regardless of the offsets
-		diagonalLines(canvas, left, right, position, realY, lm.xLength, lm.yDepth, lm.lineOff, lm.yScale)
+		diagonalLines(canvas, letterColour, left, right, position, realY, lm.xLength, lm.yDepth, lm.lineOff, lm.yScale)
 
 		// draw the letters last
 		draw.Draw(canvas, canvas.Bounds(), left.mask, image.Point{-position, -yStart}, draw.Over)
@@ -195,7 +197,7 @@ func (lm letterMetrics) letterDrawer(canvas draw.Image, letterOrder [][2]string,
 	}
 }
 
-func verticalLines(canvas draw.Image, left, right channel, position, realY, yDepth, lineOff int) {
+func verticalLines(canvas draw.Image, letterColour colour.CNRGBA64, left, right channel, position, realY, yDepth, lineOff int) {
 	relativePos := position / 4
 	leftShift := 1
 	rightShift := 0
@@ -203,17 +205,18 @@ func verticalLines(canvas draw.Image, left, right channel, position, realY, yDep
 		leftShift = 0
 		rightShift = 1
 	}
+
 	for y := realY + lineOff; y < realY+yDepth; y += 2 { // Set the x positions all along y
 
-		canvas.Set(4*relativePos+leftShift+left.xOff, y+left.yOff, letterFill)
-		canvas.Set(4*relativePos+8+leftShift+left.xOff, y+left.yOff, letterFill)
-		canvas.Set(4*relativePos+8+rightShift+right.xOff, y+right.yOff, letterFill)
-		canvas.Set(4*relativePos+16+rightShift+right.xOff, y+right.yOff, letterFill)
+		canvas.Set(4*relativePos+leftShift+left.xOff, y+left.yOff, &letterColour)
+		canvas.Set(4*relativePos+8+leftShift+left.xOff, y+left.yOff, &letterColour)
+		canvas.Set(4*relativePos+8+rightShift+right.xOff, y+right.yOff, &letterColour)
+		canvas.Set(4*relativePos+16+rightShift+right.xOff, y+right.yOff, &letterColour)
 
 	}
 }
 
-func horizontalLines(canvas draw.Image, left, right channel, position, realY, xLength, lineOff int) {
+func horizontalLines(canvas draw.Image, letterColour colour.CNRGBA64, left, right channel, position, realY, xLength, lineOff int) {
 	m := (realY) / 2
 	ys := []int{2*m + left.yOff, 2*m + 6 + right.yOff, 2*m + 8 + left.yOff, 2*m + 14 + right.yOff}
 	offsets := []int{left.xOff, right.xOff, left.xOff, right.xOff}
@@ -221,14 +224,14 @@ func horizontalLines(canvas draw.Image, left, right channel, position, realY, xL
 	for i, y := range ys {
 		for x := (position + 6) / 4; x < (position+xLength)/4; x++ {
 
-			canvas.Set(4*x+offsets[i], y, letterFill)
-			canvas.Set(4*x+offsets[i]+1, y, letterFill)
+			canvas.Set(4*x+offsets[i], y, &letterColour)
+			canvas.Set(4*x+offsets[i]+1, y, &letterColour)
 
 		}
 	}
 }
 
-func diagonalLines(canvas draw.Image, left, right channel, position, realY, xLength, yDepth, lineOff int, yScale float64) {
+func diagonalLines(canvas draw.Image, letterColour colour.CNRGBA64, left, right channel, position, realY, xLength, yDepth, lineOff int, yScale float64) {
 	pos := (position + xLength) / 4
 	if (pos-left.xOff)%4 != 0 {
 		pos += 4 - ((pos - left.xOff) % 4)
@@ -263,7 +266,7 @@ func diagonalLines(canvas draw.Image, left, right channel, position, realY, xLen
 		for _, xp := range x {
 			if xp > min && xp < max && (ystart+y+yshift) > realY+lineOff+int(12*yScale) {
 
-				canvas.Set(xp, ystart+y+yshift, letterFill)
+				canvas.Set(xp, ystart+y+yshift, &letterColour)
 			}
 		}
 

@@ -11,8 +11,8 @@ import (
 
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/qr"
-	errhandle "github.com/mrmxf/opentsg-core/errHandle"
-	"github.com/mrmxf/opentsg-core/widgethandler"
+	errhandle "github.com/mmTristan/opentsg-core/errHandle"
+	"github.com/mmTristan/opentsg-core/widgethandler"
 )
 
 const (

@@ -3,7 +3,7 @@ package addimage
 import (
 	_ "embed"
 
-	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mmTristan/opentsg-core/config"
 )
 
 /*

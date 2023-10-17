@@ -4,13 +4,13 @@ package bars
 import (
 	"context"
 	"image"
-	"image/color"
 	"image/draw"
 	"math"
 	"sync"
 
-	errhandle "github.com/mrmxf/opentsg-core/errHandle"
-	"github.com/mrmxf/opentsg-core/widgethandler"
+	"github.com/mmTristan/opentsg-core/colour"
+	errhandle "github.com/mmTristan/opentsg-core/errHandle"
+	"github.com/mmTristan/opentsg-core/widgethandler"
 )
 
 const (
@@ -27,54 +27,54 @@ func BarGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc 
 // these colours should all be relative to BT 2100 (rec 2020)
 // they were given as 10 bit but moved to 16 bit for running with go
 var (
-	white   = color.NRGBA64{60160, 60160, 60160, 0xffff}
-	yellow  = color.NRGBA64{60160, 60160, 4096, 0xffff}
-	cyan    = color.NRGBA64{4096, 60160, 60160, 0xffff}
-	green   = color.NRGBA64{4096, 60160, 4096, 0xffff}
-	magenta = color.NRGBA64{60160, 4096, 60160, 0xffff}
-	red     = color.NRGBA64{60160, 4096, 4096, 0xffff}
-	blue    = color.NRGBA64{4096, 4096, 60160, 0xffff}
-	grey    = color.NRGBA64{26496, 26496, 26496, 0xffff}
+	white   = colour.CNRGBA64{R: 60160, G: 60160, B: 60160, A: 0xffff}
+	yellow  = colour.CNRGBA64{R: 60160, G: 60160, B: 4096, A: 0xffff}
+	cyan    = colour.CNRGBA64{R: 4096, G: 60160, B: 60160, A: 0xffff}
+	green   = colour.CNRGBA64{R: 4096, G: 60160, B: 4096, A: 0xffff}
+	magenta = colour.CNRGBA64{R: 60160, G: 4096, B: 60160, A: 0xffff}
+	red     = colour.CNRGBA64{R: 60160, G: 4096, B: 4096, A: 0xffff}
+	blue    = colour.CNRGBA64{R: 4096, G: 4096, B: 60160, A: 0xffff}
+	grey    = colour.CNRGBA64{R: 26496, G: 26496, B: 26496, A: 0xffff}
 )
 
 var (
-	white40   = color.NRGBA64{46144, 46144, 46144, 0xffff}
-	yellow40  = color.NRGBA64{46144, 46144, 4096, 0xffff}
-	cyan40    = color.NRGBA64{4096, 46144, 46144, 0xffff}
-	green40   = color.NRGBA64{4096, 46144, 4096, 0xffff}
-	magenta40 = color.NRGBA64{46144, 4096, 46144, 0xffff}
-	red40     = color.NRGBA64{46144, 4096, 4096, 0xffff}
-	blue40    = color.NRGBA64{4096, 4096, 46144, 0xffff}
+	white40   = colour.CNRGBA64{R: 46144, G: 46144, B: 46144, A: 0xffff}
+	yellow40  = colour.CNRGBA64{R: 46144, G: 46144, B: 4096, A: 0xffff}
+	cyan40    = colour.CNRGBA64{R: 4096, G: 46144, B: 46144, A: 0xffff}
+	green40   = colour.CNRGBA64{R: 4096, G: 46144, B: 4096, A: 0xffff}
+	magenta40 = colour.CNRGBA64{R: 46144, G: 4096, B: 46144, A: 0xffff}
+	red40     = colour.CNRGBA64{R: 46144, G: 4096, B: 4096, A: 0xffff}
+	blue40    = colour.CNRGBA64{R: 4096, G: 4096, B: 46144, A: 0xffff}
 )
 var (
-	dLWhite   = color.NRGBA64{38528, 38528, 38528, 0xffff}
-	dLYellow  = color.NRGBA64{594 << 6, 601 << 6, 246 << 6, 0xffff}
-	dLCyan    = color.NRGBA64{408 << 6, 591 << 6, 601 << 6, 0xffff}
-	dLGreen   = color.NRGBA64{388 << 6, 589 << 6, 232 << 6, 0xffff}
-	dLMagenta = color.NRGBA64{534 << 6, 227 << 6, 595 << 6, 0xffff}
-	dLRed     = color.NRGBA64{522 << 6, 216 << 6, 138 << 6, 0xffff}
-	dLBlue    = color.NRGBA64{187 << 6, 127 << 6, 602 << 6, 0xffff}
+	dLWhite   = colour.CNRGBA64{R: 38528, G: 38528, B: 38528, A: 0xffff}
+	dLYellow  = colour.CNRGBA64{R: 594 << 6, G: 601 << 6, B: 246 << 6, A: 0xffff}
+	dLCyan    = colour.CNRGBA64{R: 408 << 6, G: 591 << 6, B: 601 << 6, A: 0xffff}
+	dLGreen   = colour.CNRGBA64{R: 388 << 6, G: 589 << 6, B: 232 << 6, A: 0xffff}
+	dLMagenta = colour.CNRGBA64{R: 534 << 6, G: 227 << 6, B: 595 << 6, A: 0xffff}
+	dLRed     = colour.CNRGBA64{R: 522 << 6, G: 216 << 6, B: 138 << 6, A: 0xffff}
+	dLBlue    = colour.CNRGBA64{R: 187 << 6, G: 127 << 6, B: 602 << 6, A: 0xffff}
 )
 
 var (
-	sLWhite   = color.NRGBA64{39552, 39552, 39552, 0xffff}
-	sLYellow  = color.NRGBA64{610 << 6, 616 << 6, 253 << 6, 0xffff}
-	sLCyan    = color.NRGBA64{422 << 6, 605 << 6, 615 << 6, 0xffff}
-	sLGreen   = color.NRGBA64{400 << 6, 603 << 6, 238 << 6, 0xffff}
-	sLMagenta = color.NRGBA64{541 << 6, 230 << 6, 601 << 6, 0xffff}
-	sLRed     = color.NRGBA64{527 << 6, 218 << 6, 139 << 6, 0xffff}
-	sLBlue    = color.NRGBA64{186 << 6, 126 << 6, 598 << 6, 0xffff}
+	sLWhite   = colour.CNRGBA64{R: 39552, G: 39552, B: 39552, A: 0xffff}
+	sLYellow  = colour.CNRGBA64{R: 610 << 6, G: 616 << 6, B: 253 << 6, A: 0xffff}
+	sLCyan    = colour.CNRGBA64{R: 422 << 6, G: 605 << 6, B: 615 << 6, A: 0xffff}
+	sLGreen   = colour.CNRGBA64{R: 400 << 6, G: 603 << 6, B: 238 << 6, A: 0xffff}
+	sLMagenta = colour.CNRGBA64{R: 541 << 6, G: 230 << 6, B: 601 << 6, A: 0xffff}
+	sLRed     = colour.CNRGBA64{R: 527 << 6, G: 218 << 6, B: 139 << 6, A: 0xffff}
+	sLBlue    = colour.CNRGBA64{R: 186 << 6, G: 126 << 6, B: 598 << 6, A: 0xffff}
 )
 
 func (bar barJSON) Generate(canvas draw.Image, opt ...any) error {
 	b := canvas.Bounds().Max
 
-	draw.Draw(canvas, canvas.Bounds(), &image.Uniform{grey}, image.Point{}, draw.Src)
+	draw.Draw(canvas, canvas.Bounds(), &image.Uniform{&grey}, image.Point{}, draw.Src)
 	wScale := (float64(b.X) / 3840.0)
 	barWidth := wScale * 412
 
 	heights := []float64{200, 560, 200, 200}
-	cbars := [][]color.NRGBA64{
+	cbars := [][]colour.CNRGBA64{
 		{white, yellow, cyan, green, magenta, red, blue},
 		{white40, yellow40, cyan40, green40, magenta40, red40, blue40},
 		{dLWhite, dLYellow, dLCyan, dLGreen, dLMagenta, dLRed, dLBlue},
@@ -96,7 +96,10 @@ func (bar barJSON) Generate(canvas draw.Image, opt ...any) error {
 		off := wScale * 480
 		for _, c := range cbars[i] {
 			area := image.Rect(int(off), int(hOff), int(off+barWidth), int(boxHeight))
-			draw.Draw(canvas, area, &image.Uniform{c}, image.Point{}, draw.Over)
+
+			fill := c
+			fill.UpdateColorSpace(bar.ColourSpace)
+			draw.Draw(canvas, area, &image.Uniform{&fill}, image.Point{}, draw.Over)
 			off += barWidth
 		}
 
