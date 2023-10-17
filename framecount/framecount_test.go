@@ -12,7 +12,7 @@ import (
 	"runtime/debug"
 	"testing"
 
-	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
+	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -178,7 +178,7 @@ func TestInterpret(t *testing.T) {
 		body := []byte(testbody)
 		var f frameJSON
 		json.Unmarshal(body, &f)
-	//	fmt.Println(f.Imgpos)
+		//	fmt.Println(f.Imgpos)
 		x, y := userPos(f.Imgpos.(map[string]interface{}), image.Point{100, 100}, image.Point{10, 10})
 		// Generate the image and the string
 

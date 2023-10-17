@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/mmTristan/opentsg-core/config"
-	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
+	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

@@ -17,7 +17,7 @@ import (
 	"github.com/mmTristan/opentsg-core/colourgen"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/widgethandler"
-	"github.com/mrmxf/opentsg-widgets/textbox"
+	"github.com/mmTristan/opentsg-widgets/textbox"
 
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"

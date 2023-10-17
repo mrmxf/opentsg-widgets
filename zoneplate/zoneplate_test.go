@@ -9,8 +9,8 @@ import (
 	"os"
 	"testing"
 
-	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
-	"github.com/mrmxf/opentsg-widgets/mask"
+	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
+	"github.com/mmTristan/opentsg-widgets/mask"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
