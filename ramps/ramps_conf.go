@@ -1,9 +1,12 @@
 package ramps
 
+import "github.com/mmTristan/opentsg-core/colour"
+
 type Ramp struct {
 	Gradients        groupContents
 	Groups           []RampProperties
 	WidgetProperties control
+	ColourSpace      colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
 }
 
 type groupContents struct {

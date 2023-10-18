@@ -59,5 +59,27 @@
             "textHeight": 70,
             "textColor": "#345AB6"
         }
+    },
+    "ColorSpace": {
+        "ColorSpace": "",
+        "TransformType": "",
+        "Primaries": {
+            "Red": {
+                "X": 0,
+                "Y": 0
+            },
+            "Green": {
+                "X": 0,
+                "Y": 0
+            },
+            "Blue": {
+                "X": 0,
+                "Y": 0
+            },
+            "WhitePoint": {
+                "X": 0,
+                "Y": 0
+            }
+        }
     }
 }

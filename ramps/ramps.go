@@ -1,6 +1,7 @@
 package ramps
 
 import (
+	"context"
 	"fmt"
 	"image"
 	"image/color"
@@ -9,6 +10,8 @@ import (
 	"strings"
 
 	"github.com/mmTristan/opentsg-core/anglegen"
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-core/gridgen"
 )
 
 const (
@@ -18,8 +21,10 @@ const (
 	noRotation = "xy"
 )
 
+// TODO  make it into the open tsg formula
 func firstrun(target draw.Image, input Ramp) error {
 	// calculate the whole height of each one
+	holderc := context.Background()
 
 	rotation, err := setBase(&input.WidgetProperties, target.Bounds().Max)
 
@@ -51,9 +56,10 @@ func firstrun(target draw.Image, input Ramp) error {
 			// draw the header
 			end := int(position + groupStep*float64(rowHeight))
 			rowCut := input.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
-			row := image.NewNRGBA64(rowCut)
+			row := gridgen.ImageGenerator(holderc, rowCut)
+			//	row := image.NewNRGBA64(rowCut)
 			posPoint := input.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
-			hidden(target, row, posPoint, input.Gradients.GroupSeparator)
+			hidden(target, row, input.ColourSpace, posPoint, input.Gradients.GroupSeparator)
 
 			position += groupStep * float64(rowHeight)
 
@@ -63,7 +69,8 @@ func firstrun(target draw.Image, input Ramp) error {
 
 			end := int(position + groupStep*float64(ramp.Height))
 			rowCut := input.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
-			rrow := image.NewNRGBA64(rowCut)
+			rrow := gridgen.ImageGenerator(holderc, rowCut)
+			//rrow := image.NewNRGBA64(rowCut)
 
 			ramp.colour = str.Colour
 			ramp.startPoint = str.InitialPixelValue
@@ -71,7 +78,7 @@ func firstrun(target draw.Image, input Ramp) error {
 
 			ramp.base = input.WidgetProperties
 			posPoint := input.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
-			hidden(target, rrow, posPoint, ramp)
+			hidden(target, rrow, input.ColourSpace, posPoint, ramp)
 
 			position += groupStep * float64(ramp.Height)
 			//	posPoint = input.base.positionPoint(target.Bounds().Max, int(position))
@@ -81,12 +88,13 @@ func firstrun(target draw.Image, input Ramp) error {
 				end := int(position + groupStep*float64(interHeight))
 
 				rowCut := input.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
-				irow := image.NewNRGBA64(rowCut)
+				irow := gridgen.ImageGenerator(holderc, rowCut)
+				//irow := image.NewNRGBA64(rowCut)
 				altCopy := input.Gradients.GradientSeparator
 				altCopy.base = input.WidgetProperties
 				altCopy.step = input.Gradients.Gradients[i+1].BitDepth
 				posPoint := input.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
-				hidden(target, irow, posPoint, altCopy)
+				hidden(target, irow, input.ColourSpace, posPoint, altCopy)
 
 				position += groupStep * float64(interHeight)
 				//	posPoint = input.base.positionPoint(target.Bounds().Max, int(position))
@@ -176,16 +184,17 @@ func diff(angle float64, targets ...float64) (target float64, diff float64) {
 	return
 }
 
-func (h groupSeparator) Generate(img draw.Image) {
+func (h groupSeparator) Generate(img draw.Image, cspace colour.ColorSpace) {
 	if h.Height == 0 {
 		return
 	}
 
 	c, _ := assignRGBValues(h.Colour, 65535, 0, 65535)
-	draw.Draw(img, img.Bounds(), &image.Uniform{c}, image.Point{}, draw.Over)
+	c.UpdateColorSpace(cspace)
+	draw.Draw(img, img.Bounds(), &image.Uniform{&c}, image.Point{}, draw.Over)
 }
 
-func (a gradientSeparator) Generate(img draw.Image) {
+func (a gradientSeparator) Generate(img draw.Image, cspace colour.ColorSpace) {
 
 	if a.Height == 0 {
 		return
@@ -202,15 +211,15 @@ func (a gradientSeparator) Generate(img draw.Image) {
 		stepEnd := int(xPosition + shiftStep)
 		c, _ := assignRGBValues(a.Colours[altCount%len(a.Colours)], 65535, 0, 65535)
 		target := a.base.set(int(xPosition), stepEnd-int(xPosition), img.Bounds().Max)
-
-		draw.Draw(img, target, &image.Uniform{c}, image.Point{}, draw.Over)
+		c.UpdateColorSpace(cspace)
+		draw.Draw(img, target, &image.Uniform{&c}, image.Point{}, draw.Over)
 		altCount++
 		xPosition += shiftStep
 	}
 
 }
 
-func (s Gradient) Generate(img draw.Image) {
+func (s Gradient) Generate(img draw.Image, cspace colour.ColorSpace) {
 	shift16 := 1 << (16 - s.BitDepth)
 
 	//set the steps relative to the max bitdepth
@@ -248,8 +257,8 @@ func (s Gradient) Generate(img draw.Image) {
 		target := s.base.set(int(xPosition), stepEnd-int(xPosition), img.Bounds().Max)
 
 		// draw.Draw(img, image.Rect(x, img.Bounds().Min.Y, x+step, img.Bounds().Max.Y), &image.Uniform{c}, image.Point{}, draw.Over)
-
-		draw.Draw(img, target, &image.Uniform{c}, image.Point{}, draw.Over)
+		c.UpdateColorSpace(cspace)
+		draw.Draw(img, target, &image.Uniform{&c}, image.Point{}, draw.Over)
 		altCount++
 
 		//make the colour steps 16 bit
@@ -334,37 +343,37 @@ func (c control) set(position, step int, bounds image.Point) image.Rectangle {
 }
 
 type maker interface {
-	Generate(img draw.Image)
+	Generate(img draw.Image, cspace colour.ColorSpace)
 }
 
 // Defaults give the optional extras?
-func hidden(base, img draw.Image, start image.Point, G maker) {
+func hidden(base, img draw.Image, cspace colour.ColorSpace, start image.Point, G maker) {
 
 	/*
 		hidden needs to be something that can be generic and useful
 
 	*/
-	G.Generate(img) //add optional parameterss?
+	G.Generate(img, cspace) //add optional parameterss?
 
 	draw.Draw(base, img.Bounds().Add(start), img, image.Point{}, draw.Over)
 }
 
-func assignRGBValues(colour string, rgb float64, maxBlack, maxWhite uint16) (color.NRGBA64, error) {
-	switch strings.ToLower(colour) {
+func assignRGBValues(colourString string, rgb float64, maxBlack, maxWhite uint16) (colour.CNRGBA64, error) {
+	switch strings.ToLower(colourString) {
 	case "grey", "gray": // "black", "white",
-		return color.NRGBA64{uint16(rgb), uint16(rgb), uint16(rgb), uint16(0xffff)}, nil
+		return colour.CNRGBA64{R: uint16(rgb), G: uint16(rgb), B: uint16(rgb), A: 0xffff}, nil
 	case "black":
-		return color.NRGBA64{maxBlack, maxBlack, maxBlack, uint16(0xffff)}, nil
+		return colour.CNRGBA64{R: maxBlack, G: maxBlack, B: maxBlack, A: 0xffff}, nil
 	case "white":
-		return color.NRGBA64{maxWhite, maxWhite, maxWhite, uint16(0xffff)}, nil
+		return colour.CNRGBA64{R: maxWhite, G: maxWhite, B: maxWhite, A: 0xffff}, nil
 	case "red":
-		return color.NRGBA64{uint16(rgb), 0, 0, uint16(0xffff)}, nil
+		return colour.CNRGBA64{R: uint16(rgb), A: 0xffff}, nil
 	case "green":
-		return color.NRGBA64{0, uint16(rgb), 0, uint16(0xffff)}, nil
+		return colour.CNRGBA64{G: uint16(rgb), A: 0xffff}, nil
 	case "blue":
-		return color.NRGBA64{0, 0, uint16(rgb), uint16(0xffff)}, nil
+		return colour.CNRGBA64{B: uint16(rgb), A: uint16(0xffff)}, nil
 	default:
-		return color.NRGBA64{0, 0, 0, 0}, fmt.Errorf("%s Non specific colour called, rgb values set at 0", colour) // Unused error
+		return colour.CNRGBA64{}, fmt.Errorf("%s Non specific colour called, rgb values set at 0", colourString) // Unused error
 	}
 }
 

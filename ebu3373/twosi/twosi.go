@@ -42,7 +42,7 @@ var (
 type channel struct {
 	yOff, xOff int
 	Letter     string
-	mask       *image.NRGBA64
+	mask       draw.Image
 }
 
 func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
@@ -52,10 +52,13 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 	xOff, yOff := 0, 0
 	// Flexible option to get figure out where the image is to be placed
 	// this then adds an offset to the genertaed image so it all lines up.
+
+	var c *context.Context
 	if len(opt) != 0 {
-		c, ok := opt[0].(*context.Context)
+		var ok bool
+		c, ok = opt[0].(*context.Context)
 		if !ok {
-			return fmt.Errorf("0172 Configuration error when assiging context")
+			return fmt.Errorf("0172 Widget Configuration error when assigning context")
 		}
 		_, canvasLocation, _, err := gridgen.GridSquareLocatorAndGenerator(t.Location(), t.Alias(), c)
 		if err != nil {
@@ -64,6 +67,11 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 		// Apply the offset
 		xOff = 4 - canvasLocation.X%4
 		yOff = 4 - canvasLocation.Y%4
+	} else {
+		// This is mainly for testing and allowing contexts through
+		// as otherwise a nil context will cause more issues
+		midc := context.Background()
+		c = &midc
 	}
 
 	b := canvas.Bounds().Max
@@ -81,6 +89,7 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 	letterSize := aPos(int(math.Round(72 * xScale)))
 
 	// Get the title font to be used
+	// @TODO susbtitute this all with the new text box functionality
 	fontByte := textbox.Title
 	fontain, err := freetype.ParseFont(fontByte)
 	if err != nil {
@@ -99,11 +108,13 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 
 	letterColour := letterFill
 	letterColour.UpdateColorSpace(t.ColourSpace)
+
 	// Generate the letter that is only relevant to its channel
 	for k, v := range connections {
 		// Generate the mask and the canvas
 		mid := mask(letterSize, letterSize, v.xOff, v.yOff)
-		v.mask = image.NewNRGBA64(image.Rect(0, 0, letterSize, letterSize))
+		v.mask = gridgen.ImageGenerator(*c, image.Rect(0, 0, letterSize, letterSize))
+		//v.mask = image.NewNRGBA64(image.Rect(0, 0, letterSize, letterSize))
 
 		// Set x as 0 and y as the bottom
 		point := fixed.Point26_6{X: fixed.Int26_6(0 * 64), Y: fixed.Int26_6(letterSize * 64)}
@@ -113,6 +124,7 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 			Face: myFace,
 			Dot:  point,
 		}
+
 		d.DrawString(v.Letter)
 		// Apply the mask relative to the A position
 		draw.DrawMask(v.mask, v.mask.Bounds(), v.mask, image.Point{}, mid, image.Point{}, draw.Src)
