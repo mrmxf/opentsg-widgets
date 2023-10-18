@@ -17,6 +17,7 @@ import (
 	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/colourgen"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
+	"github.com/mmTristan/opentsg-core/gridgen"
 	"github.com/mmTristan/opentsg-core/widgethandler"
 	"github.com/mmTristan/opentsg-widgets/textbox"
 
@@ -93,7 +94,8 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	// Keep it square with +1 for tolerance
 	square := image.Point{height + 1, height + 1}
 
-	frame := image.NewNRGBA64(image.Rect(0, 0, square.X, square.Y))
+	frame := gridgen.ImageGenerator(*c, image.Rect(0, 0, square.X, square.Y))
+	
 	defaultBackground := colour.CNRGBA64{R: uint16(195) << 8, G: uint16(195) << 8, B: uint16(195) << 8, A: uint16(195) << 8, Space: f.ColourSpace}
 	background := userColour(f.BackColour, defaultBackground, f.ColourSpace)
 	// Generate a semi transparent grey background

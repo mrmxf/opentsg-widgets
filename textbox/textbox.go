@@ -16,6 +16,7 @@ import (
 	"github.com/mmTristan/opentsg-core/colourgen"
 	"github.com/mmTristan/opentsg-core/config/core"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
+	"github.com/mmTristan/opentsg-core/gridgen"
 	"github.com/mmTristan/opentsg-core/widgethandler"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
@@ -72,7 +73,7 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) error {
 
 	borderSize := tb.BorderSize
 	if border.A != 0 && back.A != 0 { // only fill if there's colours to add
-		borderBox(border, back, borderSize, canvas) // generate a background filled box
+		borderBox(border, back, c, borderSize, canvas) // generate a background filled box
 	}
 
 	labels := tb.Text
@@ -128,7 +129,7 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) error {
 	return nil
 }
 
-func borderBox(border, background color.Color, borderPercent float64, box draw.Image) {
+func borderBox(border, background color.Color, c *context.Context, borderPercent float64, box draw.Image) {
 
 	// Fill the whole thing as a border
 	draw.Draw(box, box.Bounds(), &image.Uniform{border}, image.Point{}, draw.Src)
@@ -140,7 +141,7 @@ func borderBox(border, background color.Color, borderPercent float64, box draw.I
 	borderw := int(math.Ceil(borderPercent * float64(height)))
 
 	fills := image.Rect(0, 0, width-borderw*2, height-borderw*2)
-	fill := image.NewNRGBA64(fills)
+	fill := gridgen.ImageGenerator(*c, fills)
 	draw.Draw(fill, fill.Bounds(), &image.Uniform{background}, image.Point{}, draw.Src)
 
 	// Combine the elements

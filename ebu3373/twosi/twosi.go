@@ -150,7 +150,7 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 
 	if yStart < 0 || startPoint < 0 { // 0 means they're outside the box
 
-		return fmt.Errorf("0172 irregualr sized box, the two sample interleave pattern will not fit within the constraints of %v, %v", b.X, b.Y)
+		return fmt.Errorf("0172 irregular sized box, the two sample interleave pattern will not fit within the constraints of %v, %v", b.X, b.Y)
 	}
 
 	// If either of these are negative just error and leave the or return a gray canvas? Consult Bruce

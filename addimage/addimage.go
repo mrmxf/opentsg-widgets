@@ -18,7 +18,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mmTristan/opentsg-core/colourgen"
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config/core"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/widgethandler"
@@ -66,11 +66,11 @@ func (i addimageJSON) Generate(canvas draw.Image, opts ...any) error {
 		if errOpen != nil {
 			return fmt.Errorf("0162 %v", errOpen)
 		}
-		newImage, depth, err = fToImg(file, file.Name())
+		newImage, depth, err = fToImg(file, i.ColourSpace, file.Name())
 	} else {
 		bufRead := bytes.NewReader(webBytes)
 		name := strings.Split(filename, "/")
-		newImage, depth, err = fToImg(bufRead, name[len(name)-1])
+		newImage, depth, err = fToImg(bufRead, i.ColourSpace, name[len(name)-1])
 	}
 
 	if err != nil {
@@ -89,7 +89,9 @@ func (i addimageJSON) Generate(canvas draw.Image, opts ...any) error {
 		// https://pkg.go.dev/golang.org/x/image/draw#pkg-variables use a different resize
 	}
 
-	newImg64 := image.NewNRGBA64(image.Rect(0, 0, newImage.Bounds().Max.X, newImage.Bounds().Max.Y))
+	// newImg64 := gridgen.ImageGenerator(*c, image.Rect(0, 0, newImage.Bounds().Max.X, newImage.Bounds().Max.Y))
+
+	newImg64 := colour.NewNRGBA64(i.ColourSpace, newImage.Bounds())
 
 	if depth == 8 {
 		b := newImg64.Bounds().Max
@@ -97,25 +99,33 @@ func (i addimageJSON) Generate(canvas draw.Image, opts ...any) error {
 			for y := 0; y < b.Y; y++ {
 				got := newImage.At(x, y)
 
-				fullDepth := colourgen.ConvertNRGBA64(got)
+				// fullDepth := colourgen.ConvertNRGBA64(got)
 
-				newImg64.Set(x, y, fullDepth)
+				newImg64.Set(x, y, got) //fullDepth)
+
 			}
 		}
 	} else {
 		draw.Draw(newImg64, newImg64.Bounds(), newImage, image.Point{}, draw.Over)
 	}
 
-	draw.Draw(canvas, canvas.Bounds(), newImg64, image.Point{}, draw.Over)
+	// set the final image to ensure
+	// colour space transformations are preserved
+	b := canvas.Bounds().Max
+	for x := 0; x < b.X; x++ {
+		for y := 0; y < b.Y; y++ {
+			canvas.Set(x, y, newImg64.At(x, y))
+		}
+	}
 
 	return nil
 }
 
-func fToImg(file io.Reader, fname string) (img image.Image, depth int, err error) {
+func fToImg(file io.Reader, colourSpace colour.ColorSpace, fname string) (img image.Image, depth int, err error) {
 
 	regTIFF := regexp.MustCompile(`^[\w\W]{1,255}\.[tT][iI][fF]{1,2}$`)
 	regPNG := regexp.MustCompile(`^[\w\W]{1,255}\.[pP][nN][gG]$`)
-
+	// var img image.Image
 	// Add checks to ensure 16 bit for png and tiffs
 	switch {
 	case regPNG.MatchString(fname):

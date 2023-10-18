@@ -3,6 +3,7 @@ package addimage
 import (
 	_ "embed"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
 )
 
@@ -18,8 +19,9 @@ type addimageJSON struct {
 	Image string `json:"image" yaml:"image"`
 	// Imgsize *config.Framesize `json:"imagesize,omitempty" yaml:"imagesize,omitempty"`
 	//	Imgpos  *config.Position `json:"position,omitempty" yaml:"position,omitempty"`
-	GridLoc *config.Grid `json:"grid,omitempty" yaml:"grid,omitempty"`
-	ImgFill string       `json:"imageFill,omitempty" yaml:"imageFill,omitempty"`
+	GridLoc     *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
+	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	ImgFill     string            `json:"imageFill,omitempty" yaml:"imageFill,omitempty"`
 }
 
 //go:embed jsonschema/addimageschema.json
