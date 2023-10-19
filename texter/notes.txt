@@ -1,0 +1,2 @@
+Things to change, variable font sizes for multiple lines?
+Custom colours as well as color.CNRGA64

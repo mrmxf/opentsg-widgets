@@ -5,7 +5,7 @@ go 1.21.3
 require (
 	github.com/boombuler/barcode v1.0.1
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
-	github.com/mmTristan/opentsg-core v0.0.0-20231018073740-4e9e599c8144
+	github.com/mmTristan/opentsg-core v0.0.0-20231018130202-e0bc0df799ad
 	github.com/mrmxf/opentsg-core v0.0.0-20230830153622-6d3831e3c1ed
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/smartystreets/goconvey v1.8.1

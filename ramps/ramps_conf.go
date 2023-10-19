@@ -1,6 +1,9 @@
 package ramps
 
-import "github.com/mmTristan/opentsg-core/colour"
+import (
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-widgets/texter"
+)
 
 type Ramp struct {
 	Gradients        groupContents
@@ -59,7 +62,7 @@ type control struct {
 	CwRotation       string
 	ObjectFitFill    bool
 	PixelValueRepeat int
-	TextProperties   textObjectJSON
+	TextProperties   textboxer
 	// These are things the user does not set
 	/*
 		fill function - for rotation to automatically translate the fill location
@@ -72,4 +75,9 @@ type control struct {
 
 	angleType      string
 	truePixelShift float64
+}
+
+type textboxer struct {
+	TextHeight int
+	texter.TextboxJSON
 }

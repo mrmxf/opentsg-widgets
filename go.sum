@@ -52,6 +52,8 @@ github.com/matoous/go-nanoid v1.5.0 h1:VRorl6uCngneC4oUQqOYtO3S0H5QKFtKuKycFG3eu
 github.com/matoous/go-nanoid v1.5.0/go.mod h1:zyD2a71IubI24efhpvkJz+ZwfwagzgSO6UNiFsZKN7U=
 github.com/mmTristan/opentsg-core v0.0.0-20231018073740-4e9e599c8144 h1:DBtaLGrvYkSjurviyIpSq1Pg0dzgpNAJTVG4z/7MQVU=
 github.com/mmTristan/opentsg-core v0.0.0-20231018073740-4e9e599c8144/go.mod h1:VlHtv7mTERNAsj2q9ottC7BTk5RuVR6CSnr6A3h9yew=
+github.com/mmTristan/opentsg-core v0.0.0-20231018130202-e0bc0df799ad h1:2VKNW4Ujzzp4G9N5/QuYuSe3f3N9/JjqKGI/P0D2uCo=
+github.com/mmTristan/opentsg-core v0.0.0-20231018130202-e0bc0df799ad/go.mod h1:VlHtv7mTERNAsj2q9ottC7BTk5RuVR6CSnr6A3h9yew=
 github.com/mrmxf/opentsg-core v0.0.0-20230830153622-6d3831e3c1ed h1:N+0FXV0ULEhMdNcLHo9813sielgix024NpQpNF2jYNA=
 github.com/mrmxf/opentsg-core v0.0.0-20230830153622-6d3831e3c1ed/go.mod h1:CG5ZMRC8WLHnChyXKRqHjNBvFzySB5WMiWoLsE/hdXg=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 h1:zYyBkD/k9seD2A7fsi6Oo2LfFZAehjjQMERAvZLEDnQ=

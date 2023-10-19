@@ -1,66 +1,45 @@
 package ramps
 
 import (
+	"context"
 	"image"
 	"image/draw"
 	"strings"
 
 	"github.com/golang/freetype/truetype"
 	"github.com/mmTristan/opentsg-core/colour"
-	"github.com/mmTristan/opentsg-core/colourgen"
 	"github.com/mmTristan/opentsg-widgets/textbox"
+	"github.com/mmTristan/opentsg-widgets/texter"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
 )
 
-func xPos(cWidth int, userFont font.Face, labelText, position string) int {
-
-	boxw, _ := font.BoundString(userFont, labelText)
-	width := boxw.Max.X.Ceil()
-	switch strings.ToLower(position) {
-	case "center":
-		return (((cWidth) - width) / 2)
-	case "right":
-		return cWidth - width
-	default: // Doesn't need a case as the schema only allows three inputs
-		return 0
-	}
-
-}
-
-func yPos(font font.Face, position string, stripeHeight int) int {
-	// The two is for rounding errors
-	yOffset := (font.Metrics().Ascent - font.Metrics().Descent - fixed.Int26_6(2)).Ceil()
-	// YOffset := font.Ascent - font.Descent
-	switch strings.ToLower(position) {
-	case "top":
-		return yOffset
-	case "middle":
-		mid := (stripeHeight + yOffset) / 2
-
-		return mid
-	default: // Doesn't need a case as the schema only allows three inputs
-		return stripeHeight
-	}
-}
-
 // labels places the label on the stripe based on the angle of the stripe, the text does not change angle
-func (t *textObjectJSON) labels(target draw.Image, label, angle string) {
+func (con control) labels(target draw.Image, colourSpace colour.ColorSpace, label, angle string) {
 
 	var canvas draw.Image
 
 	// get the flat row
 	switch angle {
 	case rotate180, noRotation:
-		canvas = image.NewNRGBA64(target.Bounds())
+		bounds := target.Bounds()
+		bounds.Max.Y = (con.TextProperties.TextHeight * bounds.Max.Y) / 100
+		canvas = colour.NewNRGBA64(colourSpace, bounds)
+		// canvas = image.NewNRGBA64(bounds)
 	case rotate270, rotate90:
-		canvas = image.NewNRGBA64(image.Rect(0, 0, target.Bounds().Dy(), target.Bounds().Dx()))
+		// canvas = image.NewNRGBA64(image.Rect(0, 0, target.Bounds().Dy(), (con.TextProperties.TextHeight*target.Bounds().Dx())/100))
+		canvas = colour.NewNRGBA64(colourSpace, image.Rect(0, 0, target.Bounds().Dy(), (con.TextProperties.TextHeight*target.Bounds().Dx())/100))
 	}
 
-	gradientBounds := canvas.Bounds().Max
+	mc := context.Background()
+	con.TextProperties.Font = texter.FontPixel
+	con.TextProperties.FillType = texter.FillTypeFull
+	con.TextProperties.DrawString(canvas, &mc, label)
 
-	var stripeH int
-	stripeH = gradientBounds.Y
+	// gradientBounds := canvas.Bounds().Max
+
+	// var stripeH int
+	//stripeH = gradientBounds.Y
 	/*
 		switch angle {
 		case rotate180, noRotation:
@@ -68,50 +47,52 @@ func (t *textObjectJSON) labels(target draw.Image, label, angle string) {
 		case rotate270, rotate90:
 			stripeH = gradientBounds.X
 		}*/
-	lFont := fontGen(t.TextHeight, stripeH)
-
-	// @TODO update so it always draws the same thing then put over the image as a overlay
-	// so things are transposed we always draw the rows so they fit
-	// 180 is inverse x and y
-	// 90 is swap x and y
-	// 270 is inverse and swap x and y
-
-	col := colourgen.HexToColour(t.TextColour, colour.ColorSpace{})
-	b := canvas.Bounds().Max
-
-	xpos := xPos(b.X, lFont, label, t.TextXPosition)
-	ypos := yPos(lFont, t.TextYPosition, b.Y)
-
-	point := fixed.Point26_6{X: fixed.Int26_6(xpos * 64), Y: fixed.Int26_6(ypos * 64)}
 
 	/*
-		// Assign the point based on the rotation to ensure the label lines up with the bar
-		var point fixed.Point26_6
-		switch angle {
-		case rotate180, noRotation:
-			xpos := xPos(b.X, lFont, label, t.TextXPosition)
-			ypos := yPos(lFont, t.TextYPosition, stripeH)
-			// else do not change the y
-			point = fixed.Point26_6{X: fixed.Int26_6(xpos * 64), Y: fixed.Int26_6(ypos * 64)}
-		case rotate270, rotate90:
-			xpos := xPos(b.X, lFont, label, t.TextXPosition)
-			ypos := yPos(lFont, t.TextYPosition, b.Y)
+		lFont := fontGen(t.TextHeight, stripeH)
 
-			point = fixed.Point26_6{X: fixed.Int26_6(xpos * 64), Y: fixed.Int26_6(ypos * 64)}
-		}*/
+		// @TODO update so it always draws the same thing then put over the image as a overlay
+		// so things are transposed we always draw the rows so they fit
+		// 180 is inverse x and y
+		// 90 is swap x and y
+		// 270 is inverse and swap x and y
 
-	d := &font.Drawer{
-		Dst:  canvas,
-		Src:  image.NewUniform(col),
-		Face: lFont,
-		Dot:  point,
-	}
+		col := colourgen.HexToColour(t.TextColour, colour.ColorSpace{})
 
-	d.DrawString(label)
+
+		xpos := xPos(b.X, lFont, label, t.TextXPosition)
+		ypos := yPos(lFont, t.TextYPosition, b.Y)
+
+		point := fixed.Point26_6{X: fixed.Int26_6(xpos * 64), Y: fixed.Int26_6(ypos * 64)}
+
+		/*
+			// Assign the point based on the rotation to ensure the label lines up with the bar
+			var point fixed.Point26_6
+			switch angle {
+			case rotate180, noRotation:
+				xpos := xPos(b.X, lFont, label, t.TextXPosition)
+				ypos := yPos(lFont, t.TextYPosition, stripeH)
+				// else do not change the y
+				point = fixed.Point26_6{X: fixed.Int26_6(xpos * 64), Y: fixed.Int26_6(ypos * 64)}
+			case rotate270, rotate90:
+				xpos := xPos(b.X, lFont, label, t.TextXPosition)
+				ypos := yPos(lFont, t.TextYPosition, b.Y)
+
+				point = fixed.Point26_6{X: fixed.Int26_6(xpos * 64), Y: fixed.Int26_6(ypos * 64)}
+			}*/
+	/*
+		d := &font.Drawer{
+			Dst:  canvas,
+			Src:  image.NewUniform(col),
+			Face: lFont,
+			Dot:  point,
+		}
+
+		d.DrawString(label)*/
 
 	// rotate the text and transpose it on
 	// @TODO figure out how to make this more efficent
-
+	b := canvas.Bounds().Max
 	var intermediate draw.Image
 	intermediate = image.NewNRGBA64(target.Bounds())
 	switch angle {
@@ -145,6 +126,39 @@ func (t *textObjectJSON) labels(target draw.Image, label, angle string) {
 	}
 	// add the label
 	draw.Draw(target, target.Bounds(), intermediate, image.Point{}, draw.Over)
+}
+
+/////////////Invalid code
+
+func xPos(cWidth int, userFont font.Face, labelText, position string) int {
+
+	boxw, _ := font.BoundString(userFont, labelText)
+	width := boxw.Max.X.Ceil()
+	switch strings.ToLower(position) {
+	case "center":
+		return (((cWidth) - width) / 2)
+	case "right":
+		return cWidth - width
+	default: // Doesn't need a case as the schema only allows three inputs
+		return 0
+	}
+
+}
+
+func yPos(font font.Face, position string, stripeHeight int) int {
+	// The two is for rounding errors
+	yOffset := (font.Metrics().Ascent - font.Metrics().Descent - fixed.Int26_6(2)).Ceil()
+	// YOffset := font.Ascent - font.Descent
+	switch strings.ToLower(position) {
+	case "top":
+		return yOffset
+	case "middle":
+		mid := (stripeHeight + yOffset) / 2
+
+		return mid
+	default: // Doesn't need a case as the schema only allows three inputs
+		return stripeHeight
+	}
 }
 
 // Fontgen returns a font a percentage height of the input

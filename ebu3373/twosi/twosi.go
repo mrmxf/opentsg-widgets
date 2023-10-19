@@ -10,15 +10,11 @@ import (
 	"math"
 	"sync"
 
-	"github.com/golang/freetype"
-	"github.com/golang/freetype/truetype"
 	"github.com/mmTristan/opentsg-core/colour"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/gridgen"
 	"github.com/mmTristan/opentsg-core/widgethandler"
-	"github.com/mmTristan/opentsg-widgets/textbox"
-	"golang.org/x/image/font"
-	"golang.org/x/image/math/fixed"
+	"github.com/mmTristan/opentsg-widgets/texter"
 )
 
 const (
@@ -92,15 +88,16 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 
 	// Get the title font to be used
 	// @TODO susbtitute this all with the new text box functionality
-	fontByte := textbox.Title
-	fontain, err := freetype.ParseFont(fontByte)
-	if err != nil {
+	/*
+		fontByte := textbox.Title
+		fontain, err := freetype.ParseFont(fontByte)
+		if err != nil {
 
-		return err
-	}
-	// Assign the font all the relative size information
-	opt2 := truetype.Options{Size: 105 * xScale, SubPixelsY: 8, Hinting: 2}
-	myFace := truetype.NewFace(fontain, &opt2)
+			return err
+		}
+		// Assign the font all the relative size information
+		opt2 := truetype.Options{Size: 105 * xScale, SubPixelsY: 8, Hinting: 2}
+		myFace := truetype.NewFace(fontain, &opt2)*/
 
 	connections := make(map[string]channel)
 	connections["A"] = channel{yOff: 0, xOff: 0, Letter: "A"}
@@ -116,18 +113,20 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 		// Generate the mask and the canvas
 		mid := mask(letterSize, letterSize, v.xOff, v.yOff)
 		v.mask = gridgen.ImageGenerator(*c, image.Rect(0, 0, letterSize, letterSize))
+		texter.TextboxJSON{Font: texter.FontTitle, Textc: "rgb12(2591,2591,2591)", FillType: texter.FillTypeFull}.DrawString(v.mask, c, v.Letter)
 		//v.mask = image.NewNRGBA64(image.Rect(0, 0, letterSize, letterSize))
 
-		// Set x as 0 and y as the bottom
-		point := fixed.Point26_6{X: fixed.Int26_6(0 * 64), Y: fixed.Int26_6(letterSize * 64)}
-		d := &font.Drawer{
-			Dst:  v.mask,
-			Src:  image.NewUniform(&letterColour),
-			Face: myFace,
-			Dot:  point,
-		}
+		/*
+			// Set x as 0 and y as the bottom
+			point := fixed.Point26_6{X: fixed.Int26_6(0 * 64), Y: fixed.Int26_6(letterSize * 64)}
+			d := &font.Drawer{
+				Dst:  v.mask,
+				Src:  image.NewUniform(&letterColour),
+				Face: myFace,
+				Dot:  point,
+			}
 
-		d.DrawString(v.Letter)
+			d.DrawString(v.Letter)*/
 		// Apply the mask relative to the A position
 		draw.DrawMask(v.mask, v.mask.Bounds(), v.mask, image.Point{}, mid, image.Point{}, draw.Src)
 		connections[k] = v

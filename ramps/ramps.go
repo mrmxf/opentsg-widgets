@@ -272,7 +272,7 @@ func (s Gradient) Generate(img draw.Image, cspace colour.ColorSpace) {
 
 	// generate the label if needed
 	if s.Label != "" {
-		s.base.TextProperties.labels(img, s.Label, s.base.angleType)
+		s.base.labels(img, cspace, s.Label, s.base.angleType)
 	}
 
 	//run the labels here - use the other label code
@@ -415,7 +415,6 @@ func rotate(canvas draw.Image, radian float64) {
 			for k := 0; k < 4; k++ {
 				val[k] = uint16((1.0 / (float64(N * N))) * float64(((N-x)*(N-y)*int(rgbs[0][k]) + x*(N-y)*int(rgbs[1][k]) + y*(N-x)*int(rgbs[2][k]) + x*y*int(rgbs[3][k]))))
 			}
-
 
 			// If not empty then assign the value to ignore the black background
 			// colourspace is not required as it was already changed during the generation
