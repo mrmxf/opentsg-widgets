@@ -105,7 +105,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 		}
 	}
 
-	text := userColour(f.TextColour, colour.CNRGBA64{R: 0, G: 0, B: 0, A: 65535, Space: f.ColourSpace}, f.ColourSpace)
+	text := userColour(f.TextColour, colour.CNRGBA64{ A: 65535, Space: f.ColourSpace}, f.ColourSpace)
 	yOff := (float64(square.Y) / 29) * 5 // This constant is to place the y at the text at the center of the square for each height
 	point := fixed.Point26_6{X: fixed.Int26_6(1 * 64), Y: fixed.Int26_6(((float64(height) / 2) + yOff) * 64)}
 	d := &font.Drawer{

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"image"
-	"image/color"
 	"image/draw"
 	"math"
 	"strings"
@@ -416,11 +415,15 @@ func rotate(canvas draw.Image, radian float64) {
 			for k := 0; k < 4; k++ {
 				val[k] = uint16((1.0 / (float64(N * N))) * float64(((N-x)*(N-y)*int(rgbs[0][k]) + x*(N-y)*int(rgbs[1][k]) + y*(N-x)*int(rgbs[2][k]) + x*y*int(rgbs[3][k]))))
 			}
+
+
 			// If not empty then assign the value to ignore the black background
+			// colourspace is not required as it was already changed during the generation
+			// of the ramps
 			if val[3] != 0 {
-				canvas.Set(i, j, color.NRGBA64{val[0], val[1], val[2], uint16(0xffff)})
+				canvas.Set(i, j, &colour.CNRGBA64{R: val[0], G: val[1], B: val[2], A: 0xffff})
 			} else {
-				canvas.Set(i, j, color.NRGBA64{0, 0, 0, uint16(0x0000)})
+				canvas.Set(i, j, &colour.CNRGBA64{})
 			}
 		}
 	}

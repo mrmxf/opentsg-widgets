@@ -66,11 +66,11 @@ func (i addimageJSON) Generate(canvas draw.Image, opts ...any) error {
 		if errOpen != nil {
 			return fmt.Errorf("0162 %v", errOpen)
 		}
-		newImage, depth, err = fToImg(file, i.ColourSpace, file.Name())
+		newImage, depth, err = fToImg(file, file.Name())
 	} else {
 		bufRead := bytes.NewReader(webBytes)
 		name := strings.Split(filename, "/")
-		newImage, depth, err = fToImg(bufRead, i.ColourSpace, name[len(name)-1])
+		newImage, depth, err = fToImg(bufRead, name[len(name)-1])
 	}
 
 	if err != nil {
@@ -118,10 +118,14 @@ func (i addimageJSON) Generate(canvas draw.Image, opts ...any) error {
 		}
 	}
 
+	// draw.Src ensures the colourspace transformations are kept
+	// as long as the picture has no alpha
+	// draw.Draw(canvas, canvas.Bounds(), newImg64, image.Point{}, draw.Src)
+
 	return nil
 }
 
-func fToImg(file io.Reader, colourSpace colour.ColorSpace, fname string) (img image.Image, depth int, err error) {
+func fToImg(file io.Reader, fname string) (img image.Image, depth int, err error) {
 
 	regTIFF := regexp.MustCompile(`^[\w\W]{1,255}\.[tT][iI][fF]{1,2}$`)
 	regPNG := regexp.MustCompile(`^[\w\W]{1,255}\.[pP][nN][gG]$`)

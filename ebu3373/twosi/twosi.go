@@ -47,7 +47,9 @@ type channel struct {
 
 func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 	// Kick off with filling it all in as grey
-	draw.Draw(canvas, canvas.Bounds(), &image.Uniform{&grey}, image.Point{}, draw.Src)
+	backFill := grey
+	backFill.UpdateColorSpace(t.ColourSpace)
+	draw.Draw(canvas, canvas.Bounds(), &image.Uniform{&backFill}, image.Point{}, draw.Src)
 
 	xOff, yOff := 0, 0
 	// Flexible option to get figure out where the image is to be placed

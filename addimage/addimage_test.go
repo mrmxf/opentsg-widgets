@@ -13,7 +13,6 @@ import (
 	"runtime/debug"
 	"testing"
 
-	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
 	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
@@ -55,7 +54,7 @@ func Test16files(t *testing.T) {
 
 	for _, name := range goodString {
 		tfile, _ := os.Open(name)
-		_, _, genErr := fToImg(tfile, colour.ColorSpace{}, name)
+		_, _, genErr := fToImg(tfile, name)
 
 		Convey("Checking that 16 bit files get through the fence", t, func() {
 			Convey(fmt.Sprintf("using a %s as the file to open", name), func() {
@@ -75,7 +74,7 @@ func Test8files(t *testing.T) {
 
 	for _, name := range good8String {
 		tfile, _ := os.Open(name)
-		_, _, genErr := fToImg(tfile, colour.ColorSpace{}, name)
+		_, _, genErr := fToImg(tfile, name)
 
 		canvas := image.NewNRGBA64(image.Rect(0, 0, 1000, 1000))
 		mockImg := addimageJSON{Image: name}
@@ -225,13 +224,13 @@ func TestFillTypes(t *testing.T) {
 	}
 
 	/*
-	imgMock = addimageJSON{Image: "./testdata/test16bit.png", ColourSpace: colour.ColorSpace{ColorSpace: "p3"}}
-	base := colour.NewNRGBA64(colour.ColorSpace{ColorSpace: "rec2020"}, image.Rect(0, 0, 1000, 1000))
-	cb := context.Background()
-	fmt.Println(imgMock.Generate(base, &cb))
+		imgMock = addimageJSON{Image: "./testdata/test16bit.png", ColourSpace: colour.ColorSpace{ColorSpace: "rec709"}}
+		base := colour.NewNRGBA64(colour.ColorSpace{ColorSpace: "rec2020"}, image.Rect(0, 0, 1000, 1000))
+		cb := context.Background()
+		fmt.Println(imgMock.Generate(base, &cb))
 
-	f, _ := os.Create("test.png")
-	png.Encode(f, base)*/
+		f, _ := os.Create("test709.png")
+		png.Encode(f, base) */
 }
 
 func compare(base, new draw.Image) {

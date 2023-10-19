@@ -72,7 +72,7 @@ func (qrC qrcodeJSON) Generate(canvas draw.Image, opt ...any) error {
 	} else if y > b.Y-code.Bounds().Max.Y {
 		return fmt.Errorf("0133 the y position %v is greater than the y boundary of %v", y, canvas.Bounds().Max.Y)
 	}
-
+// draw qr code as a mid point, or make colour space agnostic
 	draw.Draw(canvas, canvas.Bounds().Add(image.Point{x, y}), code, image.Point{}, draw.Over)
 
 	return nil

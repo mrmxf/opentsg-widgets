@@ -6,6 +6,7 @@ import (
 
 	_ "embed"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
 )
 
@@ -18,14 +19,15 @@ const hooks = ""*/
 
 type rampJSON struct {
 	//	Type     string            `json:"type" yaml:"type"`
-	Angle    string             `json:"rampAngle" yaml:"rampAngle"`
-	Minimum  int                `json:"minimum" yaml:"minimum"`
-	Maximum  int                `json:"maximum" yaml:"maximum"`
-	Depth    int                `json:"depth" yaml:"depth"`
-	FillType string             `json:"fillType" yaml:"fillType"`
-	Stripes  *stripeHeadersJSON `json:"stripes,omitempty" yaml:"stripes,omitempty"`
-	GridLoc  *config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
-	Text     *textObjectJSON    `json:"text,omitempty" yaml:"text,omitempty"`
+	Angle       string             `json:"rampAngle" yaml:"rampAngle"`
+	Minimum     int                `json:"minimum" yaml:"minimum"`
+	Maximum     int                `json:"maximum" yaml:"maximum"`
+	Depth       int                `json:"depth" yaml:"depth"`
+	FillType    string             `json:"fillType" yaml:"fillType"`
+	Stripes     *stripeHeadersJSON `json:"stripes,omitempty" yaml:"stripes,omitempty"`
+	GridLoc     *config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
+	ColourSpace colour.ColorSpace  `json:"ColorSpace" yaml:"ColorSpace"`
+	Text        *textObjectJSON    `json:"text,omitempty" yaml:"text,omitempty"`
 }
 
 type textObjectJSON struct {

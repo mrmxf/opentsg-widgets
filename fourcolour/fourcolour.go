@@ -36,9 +36,7 @@ func (f fourJSON) Generate(canvas draw.Image, opt ...any) error {
 	pallette := make([]color.Color, len(f.Colourpallette))
 
 	for i, c := range f.Colourpallette {
-		fmt.Println(c)
 		pallette[i] = colourgen.HexToColour(c, f.ColourSpace)
-		fmt.Println(pallette[i])
 	}
 
 	var c *context.Context

@@ -7,13 +7,13 @@ import (
 
 	"fmt"
 	"image"
-	"image/color"
 	"image/draw"
 	"math"
 	"strings"
 	"sync"
 
 	"github.com/mmTristan/opentsg-core/anglegen"
+	"github.com/mmTristan/opentsg-core/colour"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/widgethandler"
 )
@@ -286,22 +286,22 @@ func ratioToHeight(heights []fill, canvasDepth, gMult int) ([]fill, error) {
 	return heights, nil
 }
 
-func assignRGBValues(colour string, rgb float64, maxBlack, maxWhite uint16) (color.NRGBA64, error) {
-	switch strings.ToLower(colour) {
+func assignRGBValues(colourString string, rgb float64, maxBlack, maxWhite uint16) (colour.CNRGBA64, error) {
+	switch strings.ToLower(colourString) {
 	case "grey", "gray": // "black", "white",
-		return color.NRGBA64{uint16(rgb) << 4, uint16(rgb) << 4, uint16(rgb) << 4, uint16(0xffff)}, nil
+		return colour.CNRGBA64{R: uint16(rgb) << 4, G: uint16(rgb) << 4, B: uint16(rgb) << 4, A: 0xffff}, nil
 	case "black":
-		return color.NRGBA64{maxBlack << 4, maxBlack << 4, maxBlack << 4, uint16(0xffff)}, nil
+		return colour.CNRGBA64{R: maxBlack << 4, G: maxBlack << 4, B: maxBlack << 4, A: 0xffff}, nil
 	case "white":
-		return color.NRGBA64{maxWhite << 4, maxWhite << 4, maxWhite << 4, uint16(0xffff)}, nil
+		return colour.CNRGBA64{R: maxWhite << 4, G: maxWhite << 4, B: maxWhite << 4, A: 0xffff}, nil
 	case "red":
-		return color.NRGBA64{uint16(rgb) << 4, 0, 0, uint16(0xffff)}, nil
+		return colour.CNRGBA64{R: uint16(rgb) << 4, A: 0xffff}, nil
 	case "green":
-		return color.NRGBA64{0, uint16(rgb) << 4, 0, uint16(0xffff)}, nil
+		return colour.CNRGBA64{G: uint16(rgb) << 4, A: 0xffff}, nil
 	case "blue":
-		return color.NRGBA64{0, 0, uint16(rgb) << 4, uint16(0xffff)}, nil
+		return colour.CNRGBA64{B: uint16(rgb) << 4, A: 0xffff}, nil
 	default:
-		return color.NRGBA64{0, 0, 0, 0}, fmt.Errorf("%s Non specific colour called, rgb values set at 0", colour) // Unused error
+		return colour.CNRGBA64{}, fmt.Errorf("%s Non specific colour called, rgb values set at 0", colourString) // Unused error
 	}
 }
 
@@ -376,18 +376,18 @@ const (
 )
 
 // func set sets the canvas values based on the roatation without running a transformation
-func set(ang string, canvas draw.Image, colourRGB color.NRGBA64, i, j float64) {
+func set(ang string, canvas draw.Image, colourRGB colour.CNRGBA64, i, j float64) {
 
 	b := canvas.Bounds().Max
 	switch ang {
 	case noRotation:
-		canvas.Set(int(i), int(j), colourRGB)
+		canvas.Set(int(i), int(j), &colourRGB)
 	case rotate180:
-		canvas.Set(b.X-(int(i)+1), b.Y-(int(j)+1), colourRGB)
+		canvas.Set(b.X-(int(i)+1), b.Y-(int(j)+1), &colourRGB)
 	case rotate270:
-		canvas.Set(b.X-int(j), b.Y-(int(i)+1), colourRGB)
+		canvas.Set(b.X-int(j), b.Y-(int(i)+1), &colourRGB)
 	default:
-		canvas.Set(int(j), int(i), colourRGB)
+		canvas.Set(int(j), int(i), &colourRGB)
 	}
 }
 
@@ -446,9 +446,9 @@ func rotate(canvas draw.Image, radian float64) {
 			}
 			// If not empty then assign the value to ignore the black background
 			if val[3] != 0 {
-				canvas.Set(i, j, color.NRGBA64{val[0], val[1], val[2], uint16(0xffff)})
+				canvas.Set(i, j, &colour.CNRGBA64{R: val[0], G: val[1], B: val[2], A: 0xffff})
 			} else {
-				canvas.Set(i, j, color.NRGBA64{0, 0, 0, uint16(0x0000)})
+				canvas.Set(i, j, &colour.CNRGBA64{})
 			}
 		}
 	}
