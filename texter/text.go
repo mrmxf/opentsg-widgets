@@ -94,6 +94,8 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 	bounds.Y /= lines
 
 	// @TODO give th fonts a uniform option
+	// mpa of precalculated values?
+	// fix point for things like framecount or is this unlikely to matter?
 	for i, label := range labels {
 
 		var labelBox fixed.Rectangle26_6
@@ -136,6 +138,89 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 		d := &font.Drawer{
 			Dst:  canvas,
 			Src:  image.NewUniform(textCB),
+			Face: myFace,
+			Dot:  point,
+		}
+		d.DrawString(label)
+	}
+
+	return nil
+}
+
+func (t TextboxJSON2) DrawStrings(canvas draw.Image, tsgContext *context.Context, labels []string) error {
+
+	// draw the background first
+	if t.Back.A != 0 {
+		draw.Draw(canvas, canvas.Bounds(), &image.Uniform{t.Back}, image.Point{}, draw.Src)
+	}
+
+	fontByte := FontSelector(tsgContext, t.Font)
+
+	fontain, err := freetype.ParseFont(fontByte)
+	if err != nil {
+		return fmt.Errorf("0101 %v", err)
+	}
+
+	lines := len(labels)
+
+	// scale the text to which ever dimension is smaller
+	height := /*4 / 3.0 * (6.0 / 8.0)* */ (float64(canvas.Bounds().Max.Y) / float64(lines))
+	width := /*4 / 3.0 * /*(6.0 / 8.0) * */ (float64(canvas.Bounds().Max.X))
+	if width < height {
+		height = width
+	}
+
+	opt := truetype.Options{Size: height, SubPixelsY: 8, Hinting: 2}
+	myFace := truetype.NewFace(fontain, &opt)
+
+	bounds := canvas.Bounds().Max
+	bounds.Y /= lines
+
+	// @TODO give th fonts a uniform option
+	// mpa of precalculated values?
+	// fix point for things like framecount or is this unlikely to matter?
+	for i, label := range labels {
+
+		var labelBox fixed.Rectangle26_6
+		switch t.FillType {
+		case FillTypeFull:
+			myFace, labelBox = fullFill(bounds, myFace, fontain, height, label)
+		default:
+			myFace, labelBox = relaxedFill(bounds, myFace, fontain, height, label)
+		}
+		/*labelBox, _ := font.BoundString(myFace, label)
+		textAreaX := float64(canvas.Bounds().Max.X)
+		textAreaY := float64(canvas.Bounds().Max.Y) // Both side
+		big := true
+
+		// scale the text down to fix the box
+		for big {
+
+			thresholdX := float64(labelBox.Max.X.Round() + labelBox.Min.X.Round())
+			thresholdY := float64(labelBox.Max.Y.Round() + labelBox.Min.Y.Round())
+			fmt.Println(thresholdX, thresholdY, labelBox, label, height)
+			// Compare the text width to the width of the text box
+			if (thresholdX > textAreaX) || (thresholdY > textAreaY) {
+
+				height *= 0.9
+				opt = truetype.Options{Size: height, SubPixelsY: 8, Hinting: 2}
+				myFace = truetype.NewFace(fontain, &opt)
+				labelBox, _ = font.BoundString(myFace, label)
+
+			} else {
+				big = false
+			}
+		} */
+
+		xOff := xPos(canvas, labelBox, t.XAlignment)
+		yOff := yPos(canvas, labelBox, t.YAlignment, float64(lines), i)
+
+		point := fixed.Point26_6{X: fixed.Int26_6(xOff * 64), Y: fixed.Int26_6(yOff * 64)}
+		//	fmt.Println(xOff, point.X.Round())
+		//	myFace := truetype.NewFace(fontain, &opt)
+		d := &font.Drawer{
+			Dst:  canvas,
+			Src:  image.NewUniform(t.Textc),
 			Face: myFace,
 			Dot:  point,
 		}

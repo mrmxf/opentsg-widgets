@@ -20,12 +20,19 @@ then the textbox in the middle
 
 type TextboxJSON struct {
 	// Type       string       `json:"type" yaml:"type"`
-	Text           []string `json:"text" yaml:"text"`
-	TextProperties texter.TextboxJSON
-	GridLoc        *config.Grid      `json:"grid" yaml:"grid"`
-	ColourSpace    colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
-	Border         string            `json:"bordercolor" yaml:"bordercolor"`
-	BorderSize     float64           `json:"bordersize" yaml:"bordersize"`
+	Text []string `json:"text" yaml:"text"`
+
+	GridLoc     *config.Grid      `json:"grid" yaml:"grid"`
+	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	Border      string            `json:"bordercolor" yaml:"bordercolor"`
+	BorderSize  float64           `json:"bordersize" yaml:"bordersize"`
+	Font        string            `json:"font" yaml:"font"`
+
+	Back       string `json:"backgroundcolor" yaml:"backgroundcolor"`
+	Textc      string `json:"textcolor" yaml:"textcolor"`
+	FillType   string
+	XAlignment string
+	YAlignment string
 }
 
 func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) {
@@ -52,7 +59,16 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) {
 	//get the colour
 	c := colour.NewNRGBA64(tb.ColourSpace, image.Rect(0, 0, canvas.Bounds().Max.X-borderwidth*2, canvas.Bounds().Max.Y-borderwidth*2))
 	cb := context.Background()
-	tb.TextProperties.DrawStrings(c, &cb, tb.Text)
+	textbox := texter.NewTextboxer(tb.ColourSpace,
+		texter.WithBackgroundColourString(tb.Back),
+		texter.WithTextColourString(tb.Textc),
+		texter.WithFill(tb.FillType),
+		texter.WithXAlignment(tb.XAlignment),
+		texter.WithYAlignment(tb.YAlignment),
+		texter.WithFont(tb.Font),
+	)
+
+	textbox.DrawStrings(c, &cb, tb.Text)
 	fmt.Println(c.Bounds())
 	draw.Draw(canvas, image.Rect(borderwidth, borderwidth, canvas.Bounds().Max.X-borderwidth, canvas.Bounds().Max.Y-borderwidth), c, image.Point{}, draw.Src)
 	// colourgen.HexToColour(tb.Border, tb.ColourSpace)

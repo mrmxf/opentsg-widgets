@@ -20,9 +20,7 @@ import (
 	"github.com/mmTristan/opentsg-core/gridgen"
 	"github.com/mmTristan/opentsg-core/widgethandler"
 	"github.com/mmTristan/opentsg-widgets/textbox"
-
-	"golang.org/x/image/font"
-	"golang.org/x/image/math/fixed"
+	"github.com/mmTristan/opentsg-widgets/texter"
 )
 
 const (
@@ -95,7 +93,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	square := image.Point{height + 1, height + 1}
 
 	frame := gridgen.ImageGenerator(*c, image.Rect(0, 0, square.X, square.Y))
-	
+
 	defaultBackground := colour.CNRGBA64{R: uint16(195) << 8, G: uint16(195) << 8, B: uint16(195) << 8, A: uint16(195) << 8, Space: f.ColourSpace}
 	background := userColour(f.BackColour, defaultBackground, f.ColourSpace)
 	// Generate a semi transparent grey background
@@ -105,17 +103,23 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 		}
 	}
 
-	text := userColour(f.TextColour, colour.CNRGBA64{ A: 65535, Space: f.ColourSpace}, f.ColourSpace)
-	yOff := (float64(square.Y) / 29) * 5 // This constant is to place the y at the text at the center of the square for each height
-	point := fixed.Point26_6{X: fixed.Int26_6(1 * 64), Y: fixed.Int26_6(((float64(height) / 2) + yOff) * 64)}
-	d := &font.Drawer{
-		Dst:  frame,
-		Src:  image.NewUniform(image.NewUniform(text)),
-		Face: myFace,
-		Dot:  point,
-	}
+	f.TextProperties.Font = texter.FontPixel
+	f.TextProperties.FillType = texter.FillTypeFull
+	f.TextProperties.Textc = "#000000"
+	// fmt.Println(f.TextProperties.DrawString(frame, c, mes))
+	// fmt.Println(mes, f.TextProperties.Textc)
+	/*
+		text := userColour(f.TextColour, colour.CNRGBA64{A: 65535, Space: f.ColourSpace}, f.ColourSpace)
+		yOff := (float64(square.Y) / 29) * 5 // This constant is to place the y at the text at the center of the square for each height
+		point := fixed.Point26_6{X: fixed.Int26_6(1 * 64), Y: fixed.Int26_6(((float64(height) / 2) + yOff) * 64)}
+		d := &font.Drawer{
+			Dst:  frame,
+			Src:  image.NewUniform(image.NewUniform(text)),
+			Face: myFace,
+			Dot:  point,
+		}
 
-	d.DrawString(mes)
+		d.DrawString(mes)*/
 
 	fb := frame.Bounds().Max
 	// If pos not given then draw it here
