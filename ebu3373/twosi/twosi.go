@@ -113,21 +113,16 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 		// Generate the mask and the canvas
 		mid := mask(letterSize, letterSize, v.xOff, v.yOff)
 		v.mask = gridgen.ImageGenerator(*c, image.Rect(0, 0, letterSize, letterSize))
-		texter.TextboxJSON{Font: texter.FontTitle, Textc: "rgb12(2591,2591,2591)", FillType: texter.FillTypeFull}.DrawString(v.mask, c, v.Letter)
-		//v.mask = image.NewNRGBA64(image.Rect(0, 0, letterSize, letterSize))
 
-		/*
-			// Set x as 0 and y as the bottom
-			point := fixed.Point26_6{X: fixed.Int26_6(0 * 64), Y: fixed.Int26_6(letterSize * 64)}
-			d := &font.Drawer{
-				Dst:  v.mask,
-				Src:  image.NewUniform(&letterColour),
-				Face: myFace,
-				Dot:  point,
-			}
+		// generate a textbox of A
+		txtBox := texter.NewTextboxer(t.ColourSpace,
+			texter.WithFont(texter.FontTitle),
+			texter.WithFill(texter.FillTypeFull),
+			texter.WithTextColour(&letterFill),
+		)
 
-			d.DrawString(v.Letter)*/
-		// Apply the mask relative to the A position
+		txtBox.DrawString(v.mask, c, v.Letter)
+		
 		draw.DrawMask(v.mask, v.mask.Bounds(), v.mask, image.Point{}, mid, image.Point{}, draw.Src)
 		connections[k] = v
 	}

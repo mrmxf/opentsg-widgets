@@ -14,21 +14,5 @@
             "WhitePoint": {}
         }
     },
-    "TextProperties": {
-        "font": "",
-        "ColorSpace": {
-            "Primaries": {
-                "Red": {},
-                "Green": {},
-                "Blue": {},
-                "WhitePoint": {}
-            }
-        },
-        "backgroundcolor": "",
-        "textcolor": "",
-        "FillType": "",
-        "XAlignment": "",
-        "YAlignment": ""
-    },
     "framenumber": 0
 }

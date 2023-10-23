@@ -54,21 +54,10 @@
         "ObjectFitFill": false,
         "PixelValueRepeat": 0,
         "TextProperties": {
-            "TextHeight": 30,
-            "font": "",
-            "ColorSpace": {
-                "Primaries": {
-                    "Red": {},
-                    "Green": {},
-                    "Blue": {},
-                    "WhitePoint": {}
-                }
-            },
-            "backgroundcolor": "",
-            "textcolor": "#345AB6",
-            "FillType": "",
-            "XAlignment": "left",
-            "YAlignment": "top"
+            "textyPosition": "top",
+            "textxPosition": "left",
+            "textHeight": 30,
+            "textColor": "#345AB6"
         }
     },
     "ColorSpace": {

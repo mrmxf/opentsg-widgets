@@ -5,7 +5,6 @@ import (
 
 	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
-	"github.com/mmTristan/opentsg-widgets/texter"
 )
 
 /*
@@ -25,7 +24,7 @@ type frameJSON struct {
 	FontSize     float64           `json:"fontsize" yaml:"fontsize"`
 	GridLoc      *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
 	ColourSpace  colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
-	TextProperties texter.TextboxJSON
+
 	//	DesignScale  string       `json:"designScale" yaml:"designScale"`
 	// This is added in for metadata purposes
 	FrameNumber int `json:"framenumber"`

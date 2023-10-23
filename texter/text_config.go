@@ -5,6 +5,7 @@ import (
 	"github.com/mmTristan/opentsg-core/colourgen"
 )
 
+/*
 type TextboxJSON struct {
 	// Type       string       `json:"type" yaml:"type"`
 	Font        string            `json:"font" yaml:"font"`
@@ -14,81 +15,84 @@ type TextboxJSON struct {
 	FillType    string
 	XAlignment  string
 	YAlignment  string
-}
+}*/
 
-type TextboxJSON2 struct {
+type TextboxJSON struct {
 	// Type       string       `json:"type" yaml:"type"`
-	Font        string            `json:"font" yaml:"font"`
-	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
-	Back        *colour.CNRGBA64  `json:"backgroundcolor" yaml:"backgroundcolor"`
-	Textc       *colour.CNRGBA64  `json:"textcolor" yaml:"textcolor"`
-	FillType    string
-	XAlignment  string
-	YAlignment  string
+	font        string            // `json:"font" yaml:"font"`
+	colourSpace colour.ColorSpace //`json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	back        *colour.CNRGBA64  //`json:"backgroundcolor" yaml:"backgroundcolor"`
+	textc       *colour.CNRGBA64  //`json:"textcolor" yaml:"textcolor"`
+	fillType    string
+	xAlignment  string
+	yAlignment  string
 }
 
-func NewTextboxer(ColourSpace colour.ColorSpace, options ...func(*TextboxJSON2)) *TextboxJSON2 {
-	txt := &TextboxJSON2{ColourSpace: ColourSpace}
+// NewText
+// the order in which the withs are specifired are the orderin which the executed
+func NewTextboxer(ColourSpace colour.ColorSpace, options ...func(*TextboxJSON)) *TextboxJSON {
+	txt := &TextboxJSON{colourSpace: ColourSpace}
 	for _, opt := range options {
 		opt(txt)
 	}
 	return txt
 }
 
-func WithFill(fill string) func(t *TextboxJSON2) {
+// WithFill sets the fill type
+func WithFill(fill string) func(t *TextboxJSON) {
 
-	return func(t *TextboxJSON2) {
-		t.FillType = fill
+	return func(t *TextboxJSON) {
+		t.fillType = fill
 	}
 }
 
-func WithFont(font string) func(t *TextboxJSON2) {
+func WithFont(font string) func(t *TextboxJSON) {
 
-	return func(t *TextboxJSON2) {
-		t.Font = font
+	return func(t *TextboxJSON) {
+		t.font = font
 	}
 }
 
-func WithTextColourString(colour string) func(t *TextboxJSON2) {
+func WithTextColourString(colour string) func(t *TextboxJSON) {
 
-	return func(t *TextboxJSON2) {
-		c := colourgen.HexToColour(colour, t.ColourSpace)
-		t.Textc = c
+	return func(t *TextboxJSON) {
+		c := colourgen.HexToColour(colour, t.colourSpace)
+		t.textc = c
 	}
 }
 
-func WithTextColour(colour *colour.CNRGBA64) func(t *TextboxJSON2) {
+func WithTextColour(colour *colour.CNRGBA64) func(t *TextboxJSON) {
 
-	return func(t *TextboxJSON2) {
+	return func(t *TextboxJSON) {
 
-		t.Textc = colour
+		t.textc = colour
 	}
 }
 
-func WithBackgroundColourString(colour string) func(t *TextboxJSON2) {
+func WithBackgroundColourString(colour string) func(t *TextboxJSON) {
 
-	return func(t *TextboxJSON2) {
-		c := colourgen.HexToColour(colour, t.ColourSpace)
-		t.Back = c
+	return func(t *TextboxJSON) {
+		c := colourgen.HexToColour(colour, t.colourSpace)
+		t.back = c
 	}
 }
 
-func WithBackgroundColour(colour *colour.CNRGBA64) func(t *TextboxJSON2) {
+func WithBackgroundColour(colour *colour.CNRGBA64) func(t *TextboxJSON) {
 
-	return func(t *TextboxJSON2) {
+	return func(t *TextboxJSON) {
 
-		t.Back = colour
+		t.back = colour
 	}
 }
 
-func WithXAlignment(x string) func(t *TextboxJSON2) {
-	return func(t *TextboxJSON2) {
-		t.XAlignment = x
+func WithXAlignment(x string) func(t *TextboxJSON) {
+	return func(t *TextboxJSON) {
+		t.xAlignment = x
 	}
 }
 
-func WithYAlignment(y string) func(t *TextboxJSON2) {
-	return func(t *TextboxJSON2) {
-		t.XAlignment = y
+func WithYAlignment(y string) func(t *TextboxJSON) {
+	return func(t *TextboxJSON) {
+		t.yAlignment = y
 	}
 }

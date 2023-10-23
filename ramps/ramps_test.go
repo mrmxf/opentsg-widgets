@@ -19,7 +19,7 @@ func TestTemp(t *testing.T) {
 		Gradients: groupContents{GroupSeparator: groupSeparator{Height: 0, Colour: "white"},
 			GradientSeparator: gradientSeparator{Colours: []string{"white", "black", "red", "blue"}, Height: 1},
 			Gradients:         []Gradient{{Height: 5, BitDepth: 4, Label: "4b"}, {Height: 5, BitDepth: 6, Label: "6b"}, {Height: 5, BitDepth: 8, Label: "8b"}, {Height: 5, BitDepth: 10, Label: "10b"}}},
-		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textboxer{30, texter.TextboxJSON{Textc: "#345AB6", XAlignment: texter.AlignmentLeft, YAlignment: texter.AlignmentTop}}}}
+		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textObjectJSON{TextHeight: 30, TextColour: "#345AB6", TextXPosition: texter.AlignmentLeft, TextYPosition: texter.AlignmentTop}}}
 	tester := image.NewNRGBA64(image.Rect(0, 0, 1024, 1000)) //960))
 	firstrun(tester, mock)
 
@@ -79,7 +79,7 @@ func TestRotation(t *testing.T) {
 		Gradients: groupContents{GroupSeparator: groupSeparator{Height: 0, Colour: "white"},
 			GradientSeparator: gradientSeparator{Colours: []string{"white", "black", "red", "blue"}, Height: 1},
 			Gradients:         []Gradient{{Height: 5, BitDepth: 4, Label: "4b"}, {Height: 5, BitDepth: 6, Label: "6b"}, {Height: 5, BitDepth: 8, Label: "8b"}, {Height: 5, BitDepth: 10, Label: "10b"}}},
-		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textboxer{30, texter.TextboxJSON{Textc: "#345AB6", XAlignment: texter.AlignmentLeft, YAlignment: texter.AlignmentTop}}}}
+		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textObjectJSON{TextHeight: 30, TextColour: "#345AB6", TextXPosition: texter.AlignmentLeft, TextYPosition: texter.AlignmentTop}}}
 
 	explanationRight := []string{"flat", "90degrees", "180degrees", "270degrees"}
 	anglesRight := []string{"", "π*1/2", "π*1", "π*3/2"}
@@ -107,8 +107,8 @@ func TestRotation(t *testing.T) {
 		htest := sha256.New()
 		hnormal.Write(readImage.Pix)
 		htest.Write(angleImage.Pix)
-		f, _ := os.Create(testFRight[i] + fmt.Sprintf("%v.png", i))
-		png.Encode(f, angleImage)
+		//	f, _ := os.Create(testFRight[i] + fmt.Sprintf("%v.png", i))
+		//  png.Encode(f, angleImage)
 
 		Convey("Checking the ramps are generated at 90 degree angles", t, func() {
 			Convey(fmt.Sprintf("Comparing the generated ramp to %v with an angle of %v", testFRight[i], angle), func() {

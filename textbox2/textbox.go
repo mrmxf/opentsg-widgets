@@ -60,6 +60,7 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) {
 	c := colour.NewNRGBA64(tb.ColourSpace, image.Rect(0, 0, canvas.Bounds().Max.X-borderwidth*2, canvas.Bounds().Max.Y-borderwidth*2))
 	cb := context.Background()
 	textbox := texter.NewTextboxer(tb.ColourSpace,
+
 		texter.WithBackgroundColourString(tb.Back),
 		texter.WithTextColourString(tb.Textc),
 		texter.WithFill(tb.FillType),
@@ -78,4 +79,6 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) {
 		run that as the text section
 
 	*/
+
+	
 }

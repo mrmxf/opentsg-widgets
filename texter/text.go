@@ -12,7 +12,6 @@ import (
 
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
-	"github.com/mmTristan/opentsg-core/colourgen"
 	"github.com/mrmxf/opentsg-core/config/core"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
@@ -53,7 +52,7 @@ text is a struct that has a function that takes an image. And writes text of a c
 Background s not considered?
 
 */
-
+/*
 // tsgContext is only required for when you are looking from the font from anywhere.
 // a simple context.Background can be used if you're using an inbuilt font like text.
 func (t TextboxJSON) DrawString(canvas draw.Image, tsgContext *context.Context, label string) error {
@@ -79,8 +78,8 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 	lines := len(labels)
 
 	// scale the text to which ever dimension is smaller
-	height := /*4 / 3.0 * (6.0 / 8.0)* */ (float64(canvas.Bounds().Max.Y) / float64(lines))
-	width := /*4 / 3.0 * /*(6.0 / 8.0) * */ (float64(canvas.Bounds().Max.X))
+	height := /*4 / 3.0 * (6.0 / 8.0)*  (float64(canvas.Bounds().Max.Y) / float64(lines))
+	width := /*4 / 3.0 * /*(6.0 / 8.0) *  (float64(canvas.Bounds().Max.X))
 	if width < height {
 		height = width
 	}
@@ -93,18 +92,27 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 	bounds := canvas.Bounds().Max
 	bounds.Y /= lines
 
+	var label string
+
+	for _, labl := range labels {
+		if len(labl) > len(label) {
+			label = labl
+		}
+	}
+
+	var labelBox fixed.Rectangle26_6
+	switch t.FillType {
+	case FillTypeFull:
+		myFace, _ = fullFill(bounds, myFace, fontain, height, label)
+	default:
+		myFace, _ = relaxedFill(bounds, myFace, fontain, height, label)
+	}
+
 	// @TODO give th fonts a uniform option
 	// mpa of precalculated values?
 	// fix point for things like framecount or is this unlikely to matter?
 	for i, label := range labels {
-
-		var labelBox fixed.Rectangle26_6
-		switch t.FillType {
-		case FillTypeFull:
-			myFace, labelBox = fullFill(bounds, myFace, fontain, height, label)
-		default:
-			myFace, labelBox = relaxedFill(bounds, myFace, fontain, height, label)
-		}
+		labelBox, _ = font.BoundString(myFace, label)
 		/*labelBox, _ := font.BoundString(myFace, label)
 		textAreaX := float64(canvas.Bounds().Max.X)
 		textAreaY := float64(canvas.Bounds().Max.Y) // Both side
@@ -127,7 +135,7 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 			} else {
 				big = false
 			}
-		} */
+		}
 
 		xOff := xPos(canvas, labelBox, t.XAlignment)
 		yOff := yPos(canvas, labelBox, t.YAlignment, float64(lines), i)
@@ -146,88 +154,85 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 
 	return nil
 }
+*/
 
-func (t TextboxJSON2) DrawStrings(canvas draw.Image, tsgContext *context.Context, labels []string) error {
+func (t TextboxJSON) DrawString(canvas draw.Image, tsgContext *context.Context, label string) error {
+	return t.DrawStrings(canvas, tsgContext, []string{label})
+}
 
-	// draw the background first
-	if t.Back.A != 0 {
-		draw.Draw(canvas, canvas.Bounds(), &image.Uniform{t.Back}, image.Point{}, draw.Src)
-	}
+func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context, labels []string) error {
 
-	fontByte := FontSelector(tsgContext, t.Font)
-
-	fontain, err := freetype.ParseFont(fontByte)
-	if err != nil {
-		return fmt.Errorf("0101 %v", err)
-	}
-
-	lines := len(labels)
-
-	// scale the text to which ever dimension is smaller
-	height := /*4 / 3.0 * (6.0 / 8.0)* */ (float64(canvas.Bounds().Max.Y) / float64(lines))
-	width := /*4 / 3.0 * /*(6.0 / 8.0) * */ (float64(canvas.Bounds().Max.X))
-	if width < height {
-		height = width
-	}
-
-	opt := truetype.Options{Size: height, SubPixelsY: 8, Hinting: 2}
-	myFace := truetype.NewFace(fontain, &opt)
-
-	bounds := canvas.Bounds().Max
-	bounds.Y /= lines
-
-	// @TODO give th fonts a uniform option
-	// mpa of precalculated values?
-	// fix point for things like framecount or is this unlikely to matter?
-	for i, label := range labels {
-
-		var labelBox fixed.Rectangle26_6
-		switch t.FillType {
-		case FillTypeFull:
-			myFace, labelBox = fullFill(bounds, myFace, fontain, height, label)
-		default:
-			myFace, labelBox = relaxedFill(bounds, myFace, fontain, height, label)
+	// check somethings been assigned first
+	if t.back != nil {
+		// draw the background first
+		if t.back.A != 0 {
+			draw.Draw(canvas, canvas.Bounds(), &image.Uniform{t.back}, image.Point{}, draw.Src)
 		}
-		/*labelBox, _ := font.BoundString(myFace, label)
-		textAreaX := float64(canvas.Bounds().Max.X)
-		textAreaY := float64(canvas.Bounds().Max.Y) // Both side
-		big := true
+	}
+	
+	// only do the text calculations if there's any
+	// text colour
+	if t.textc != nil {
+		if t.textc.A != 0 {
+			fontByte := FontSelector(tsgContext, t.font)
 
-		// scale the text down to fix the box
-		for big {
-
-			thresholdX := float64(labelBox.Max.X.Round() + labelBox.Min.X.Round())
-			thresholdY := float64(labelBox.Max.Y.Round() + labelBox.Min.Y.Round())
-			fmt.Println(thresholdX, thresholdY, labelBox, label, height)
-			// Compare the text width to the width of the text box
-			if (thresholdX > textAreaX) || (thresholdY > textAreaY) {
-
-				height *= 0.9
-				opt = truetype.Options{Size: height, SubPixelsY: 8, Hinting: 2}
-				myFace = truetype.NewFace(fontain, &opt)
-				labelBox, _ = font.BoundString(myFace, label)
-
-			} else {
-				big = false
+			fontain, err := freetype.ParseFont(fontByte)
+			if err != nil {
+				return fmt.Errorf("0101 %v", err)
 			}
-		} */
 
-		xOff := xPos(canvas, labelBox, t.XAlignment)
-		yOff := yPos(canvas, labelBox, t.YAlignment, float64(lines), i)
+			lines := len(labels)
 
-		point := fixed.Point26_6{X: fixed.Int26_6(xOff * 64), Y: fixed.Int26_6(yOff * 64)}
-		//	fmt.Println(xOff, point.X.Round())
-		//	myFace := truetype.NewFace(fontain, &opt)
-		d := &font.Drawer{
-			Dst:  canvas,
-			Src:  image.NewUniform(t.Textc),
-			Face: myFace,
-			Dot:  point,
+			// scale the text to which ever dimension is smaller
+			height := /*4 / 3.0 * (6.0 / 8.0)* */ (float64(canvas.Bounds().Max.Y) / float64(lines))
+			width := /*4 / 3.0 * /*(6.0 / 8.0) * */ (float64(canvas.Bounds().Max.X))
+			if width < height {
+				height = width
+			}
+
+			opt := truetype.Options{Size: height, SubPixelsY: 8, Hinting: 2}
+			myFace := truetype.NewFace(fontain, &opt)
+
+			bounds := canvas.Bounds().Max
+			bounds.Y /= lines
+
+			var label string
+			for _, labl := range labels {
+				if len(labl) > len(label) {
+					label = labl
+				}
+			}
+
+			switch t.fillType {
+			case FillTypeFull:
+				myFace, _ = fullFill(bounds, myFace, fontain, height, label)
+			default:
+				myFace, _ = relaxedFill(bounds, myFace, fontain, height, label)
+			}
+
+			// fix point for things like framecount or is this unlikely to matter?
+			for i, label := range labels {
+
+				labelBox, _ := font.BoundString(myFace, label)
+
+				xOff := xPos(canvas, labelBox, t.xAlignment)
+				yOff := yPos(canvas, labelBox, t.yAlignment, float64(lines), i)
+
+				point := fixed.Point26_6{X: fixed.Int26_6(xOff * 64), Y: fixed.Int26_6(yOff * 64)}
+
+				//	myFace := truetype.NewFace(fontain, &opt)
+				d := &font.Drawer{
+					Dst:  canvas,
+					Src:  image.NewUniform(t.textc),
+					Face: myFace,
+					Dot:  point,
+				}
+				d.DrawString(label)
+			}
 		}
-		d.DrawString(label)
 	}
-
 	return nil
+
 }
 
 func fullFill(area image.Point, sizeFont font.Face, fontain *truetype.Font, height float64, label string) (font.Face, fixed.Rectangle26_6) {
@@ -280,7 +285,7 @@ func relaxedFill(area image.Point, sizeFont font.Face, fontain *truetype.Font, h
 
 		thresholdX := float64(labelBox.Max.X.Round()) // + labelBox.Min.X.Round())
 		thresholdY := float64(labelBox.Max.Y.Round() - labelBox.Min.Y.Round())
-		fmt.Println(thresholdX, thresholdY, labelBox, label, height)
+		// fmt.Println(thresholdX, thresholdY, labelBox, label, height)
 		// Compare the text width to the width of the text box
 		if (thresholdX > textAreaX) || (thresholdY > textAreaY) {
 
@@ -326,7 +331,7 @@ func yPos(canvas image.Image, rect fixed.Rectangle26_6, position string, lines f
 	case AlignmentTop:
 		return (canvas.Bounds().Max.Y*count)/int(lines) - rect.Min.Y.Round()
 	default:
-		fmt.Println(int(mid)+(canvas.Bounds().Max.Y*count)/int(lines), "Ypos", yOffset)
+		// fmt.Println(int(mid)+(canvas.Bounds().Max.Y*count)/int(lines), "Ypos", yOffset)
 		return int(mid) + (canvas.Bounds().Max.Y*count)/int(lines)
 	}
 

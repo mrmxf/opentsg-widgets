@@ -27,8 +27,8 @@ func TestStringGen(t *testing.T) {
 		numberToCheck := []int{0, 12, 134, 5666}
 		expecResult := []string{"0000", "0012", "0134", "5666"}
 		explanation := []string{"0000", "0012", "0134", "5666"}
-		var yesFrame frameJSON
-		yesFrame.FrameCounter = true
+		yesFrame := frameJSON{FrameCounter: true, FontSize: 100}
+		//	yesFrame.FrameCounter = true
 
 		for i := range numberToCheck {
 			// Generate the image and the string
@@ -52,8 +52,8 @@ func TestStringGen(t *testing.T) {
 			htest := sha256.New()
 			hnormal.Write(readImage.Pix)
 			htest.Write(myImage.Pix)
-			f, _ := os.Create("./testdata/framecount" + expecResult[i] + "2.png")
-			png.Encode(f, myImage)
+			//	f, _ := os.Create("./testdata/framecount" + expecResult[i] + "2.png")
+			//	png.Encode(f, myImage)
 			// GenResult, genErr := intTo4(numberToCheck[i])
 			Convey("Checking the frame count image is generated", t, func() {
 				Convey(fmt.Sprintf("using  %v as integer ", numberToCheck[i]), func() {

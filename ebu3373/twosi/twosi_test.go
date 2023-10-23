@@ -52,8 +52,8 @@ func TestChannels(t *testing.T) {
 			hnormal.Write(readImage.Pix)
 			htest.Write(chunk.Pix)
 
-			f, _ := os.Create(testBase[i] + let[j] + "er.png")
-			png.Encode(f, chunk)
+			// f, _ := os.Create(testBase[i] + let[j] + "er.png")
+			// png.Encode(f, chunk)
 
 			Convey("Checking the twosi images are generated", t, func() {
 				Convey(fmt.Sprintf("Comparing the generated image to the channe, %v%v.png", testBase[i], let[j]), func() {

@@ -12,14 +12,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/golang/freetype"
-	"github.com/golang/freetype/truetype"
 	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/colourgen"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/gridgen"
 	"github.com/mmTristan/opentsg-core/widgethandler"
-	"github.com/mmTristan/opentsg-widgets/textbox"
 	"github.com/mmTristan/opentsg-widgets/texter"
 )
 
@@ -66,46 +63,56 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 		return fmt.Errorf("0155 configuration error when assiging framecount context")
 	}
 
-	fontByte := textbox.FontSelector(c, f.Font)
-	fontain, err := freetype.ParseFont(fontByte)
-
-	if err != nil {
-		return fmt.Errorf("0152 %v", err)
-	}
 	// Size of the text in pixels to font
-	f.FontSize = (float64(b.Y) * (f.FontSize / 100)) / 0.75 // Convert from pixels to points
+	f.FontSize = (float64(b.Y) * (f.FontSize / 100)) // keep as pixels
+
 	if b.Y > b.X {
 		f.FontSize *= (float64(b.X) / float64(b.Y)) // Scale the font size for narrow grids
 	}
 
-	opt := truetype.Options{Size: f.FontSize, SubPixelsY: 8, Hinting: 2}
-	myFace := truetype.NewFace(fontain, &opt)
+	square := image.Point{int(f.FontSize), int(f.FontSize)}
+
+	frame := gridgen.ImageGenerator(*c, image.Rect(0, 0, square.X, square.Y))
+
+	defaultBackground := colour.CNRGBA64{R: uint16(195) << 8, G: uint16(195) << 8, B: uint16(195) << 8, A: uint16(195) << 8, Space: f.ColourSpace}
+	defaulText := colour.CNRGBA64{A: 65535, Space: f.ColourSpace}
+
+	txtBox := texter.NewTextboxer(f.ColourSpace,
+		texter.WithFill(texter.FillTypeFull),
+		texter.WithFont(texter.FontPixel),
+		texter.WithBackgroundColour(&defaultBackground),
+		texter.WithTextColour(&defaulText),
+	)
+
+	// update the colours if required
+	if f.BackColour != "" {
+		texter.WithBackgroundColourString(f.BackColour)(txtBox)
+	}
+
+	if f.TextColour != "" {
+		texter.WithTextColourString(f.TextColour)(txtBox)
+	}
 
 	// MyFont.Advance
 	mes, err := intTo4(pos())
 	if err != nil {
 		return err
 	}
-	// Get the width of 0
-	width, _ := myFace.GlyphAdvance('0')
-	height := (width.Ceil()) * len(mes)
-	// Keep it square with +1 for tolerance
-	square := image.Point{height + 1, height + 1}
 
-	frame := gridgen.ImageGenerator(*c, image.Rect(0, 0, square.X, square.Y))
-
-	defaultBackground := colour.CNRGBA64{R: uint16(195) << 8, G: uint16(195) << 8, B: uint16(195) << 8, A: uint16(195) << 8, Space: f.ColourSpace}
-	background := userColour(f.BackColour, defaultBackground, f.ColourSpace)
-	// Generate a semi transparent grey background
-	for i := 0; i < frame.Bounds().Max.Y; i++ {
-		for j := 0; j < frame.Bounds().Max.X; j++ {
-			frame.Set(j, i, background)
-		}
+	err = txtBox.DrawString(frame, c, mes)
+	if err != nil {
+		return err
 	}
 
-	f.TextProperties.Font = texter.FontPixel
-	f.TextProperties.FillType = texter.FillTypeFull
-	f.TextProperties.Textc = "#000000"
+	/*
+		background := userColour(f.BackColour, defaultBackground, f.ColourSpace)
+		// Generate a semi transparent grey background
+		for i := 0; i < frame.Bounds().Max.Y; i++ {
+			for j := 0; j < frame.Bounds().Max.X; j++ {
+				frame.Set(j, i, background)
+			}
+		}*/
+
 	// fmt.Println(f.TextProperties.DrawString(frame, c, mes))
 	// fmt.Println(mes, f.TextProperties.Textc)
 	/*
@@ -140,7 +147,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	}
 
 	// Corner := image.Point{-1 * (canvas.Bounds().Max.X - height - 1), -1 * (canvas.Bounds().Max.Y - height - 1)}
-	draw.Draw(canvas, canvas.Bounds(), frame, image.Point{-x, -y}, draw.Over)
+	draw.Draw(canvas, image.Rect(x, y, x+int(f.FontSize), y+int(f.FontSize)), frame, image.Point{}, draw.Over)
 
 	return nil
 }

@@ -30,7 +30,6 @@ func firstrun(target draw.Image, input Ramp) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(input.WidgetProperties)
 
 	// validate teh control here
 	//	input.StripeGroup.InterStripe.base = input.WidgetProperties
@@ -148,9 +147,9 @@ func setBase(target *control, dims image.Point) (float64, error) {
 	if target.MaxBitDepth == 0 {
 		target.MaxBitDepth = 16
 	}
-	stepLength := math.Pow(2, float64(target.MaxBitDepth))
-	step := float64(rowLength) / stepLength
-	fmt.Println(step)
+	//	stepLength := math.Pow(2, float64(target.MaxBitDepth))
+	// step := float64(rowLength) / stepLength
+	//fmt.Println(step)
 	if target.ObjectFitFill {
 
 		stepLength := math.Pow(2, float64(target.MaxBitDepth))
@@ -272,7 +271,7 @@ func (s Gradient) Generate(img draw.Image, cspace colour.ColorSpace) {
 
 	// generate the label if needed
 	if s.Label != "" {
-		s.base.labels(img, cspace, s.Label, s.base.angleType)
+		s.base.TextProperties.labels(img, cspace, s.Label, s.base.angleType)
 	}
 
 	//run the labels here - use the other label code

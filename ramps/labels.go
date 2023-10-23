@@ -15,7 +15,7 @@ import (
 )
 
 // labels places the label on the stripe based on the angle of the stripe, the text does not change angle
-func (con control) labels(target draw.Image, colourSpace colour.ColorSpace, label, angle string) {
+func (txt textObjectJSON) labels(target draw.Image, colourSpace colour.ColorSpace, label, angle string) {
 
 	var canvas draw.Image
 
@@ -23,18 +23,25 @@ func (con control) labels(target draw.Image, colourSpace colour.ColorSpace, labe
 	switch angle {
 	case rotate180, noRotation:
 		bounds := target.Bounds()
-		bounds.Max.Y = (con.TextProperties.TextHeight * bounds.Max.Y) / 100
+		bounds.Max.Y = int((txt.TextHeight) * float64(bounds.Max.Y) / 100)
 		canvas = colour.NewNRGBA64(colourSpace, bounds)
 		// canvas = image.NewNRGBA64(bounds)
 	case rotate270, rotate90:
 		// canvas = image.NewNRGBA64(image.Rect(0, 0, target.Bounds().Dy(), (con.TextProperties.TextHeight*target.Bounds().Dx())/100))
-		canvas = colour.NewNRGBA64(colourSpace, image.Rect(0, 0, target.Bounds().Dy(), (con.TextProperties.TextHeight*target.Bounds().Dx())/100))
+		canvas = colour.NewNRGBA64(colourSpace, image.Rect(0, 0, target.Bounds().Dy(), int((txt.TextHeight)*float64(target.Bounds().Max.X)/100)))
 	}
 
 	mc := context.Background()
-	con.TextProperties.Font = texter.FontPixel
-	con.TextProperties.FillType = texter.FillTypeFull
-	con.TextProperties.DrawString(canvas, &mc, label)
+
+	txtBox := texter.NewTextboxer(colourSpace,
+		texter.WithTextColourString(txt.TextColour),
+		texter.WithXAlignment(txt.TextXPosition),
+		texter.WithYAlignment(txt.TextYPosition),
+		texter.WithFont(texter.FontPixel),
+		texter.WithFill(texter.FillTypeFull),
+	)
+
+	txtBox.DrawString(canvas, &mc, label)
 
 	// gradientBounds := canvas.Bounds().Max
 
