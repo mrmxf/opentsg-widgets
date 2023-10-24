@@ -10,26 +10,26 @@ import (
 	"os"
 	"testing"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
+	"github.com/mmTristan/opentsg-widgets/text"
+
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestZoneGenAngle(t *testing.T) {
+func TestLines(t *testing.T) {
 	mockContext := context.Background()
 
-	var mockTB TextboxJSON
-
-	mockTB.Textc = "#C2A649"
-	mockTB.Border = "#C2A649"
-	mockTB.Back = "#ffffff"
-	mockTB.BorderSize = 0.02666
+	mockTB := TextboxJSON{
+		Textc: "#C2A649", Border: "#f0f0f0", Back: "#ffffff", BorderSize: 20,
+		YAlignment: text.AlignmentMiddle}
 	stringsToCheck := [][]string{{"sample text"}, {"sample", "text"}}
 	original := []string{"./testdata/singleline.png", "./testdata/multiline.png"}
 	explanation := []string{"singleline", "multiline"}
 
 	for i, str := range stringsToCheck {
 
-		myImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{1024, 240}})
+		myImage := colour.NewNRGBA64(colour.ColorSpace{}, image.Rectangle{image.Point{0, 0}, image.Point{1024, 240}})
 		mockTB.Text = str
 		genErr := mockTB.Generate(myImage, &mockContext)
 		examplejson.SaveExampleJson(mockTB, widgetType, explanation[i])
@@ -45,10 +45,10 @@ func TestZoneGenAngle(t *testing.T) {
 		hnormal := sha256.New()
 		htest := sha256.New()
 		hnormal.Write(readImage.Pix)
-		htest.Write(myImage.Pix)
+		htest.Write(myImage.Pix())
 
-		//	f, _ := os.Create("./testdata/" + fmt.Sprintf("%v", i) + ".png")
-		// Png.Encode(f, myImage)
+		//f, _ := os.Create("./testdata/" + fmt.Sprintf("%v", i) + ".png")
+		//colour.PngEncode(f, myImage)
 		// Save the file
 		Convey("Checking that strings are generated", t, func() {
 			Convey(fmt.Sprintf("Generating an image with the following strings: %v ", str), func() {
@@ -60,16 +60,16 @@ func TestZoneGenAngle(t *testing.T) {
 		})
 	}
 }
+func TestFontImport(t *testing.T) {
 
-/*
-` {
-	"text": ["4k-test00-white_noise"],
-	"textfile": "./MavenPro-Bold.ttf",
-	"savefile": "./newpub/noize.png",
-	"bordercolour": "#C2A649",
-	"textcolour": "#C2A649",
-	"backgroundcolour": "#ffffff",
-	"dimension": {
-		"w": 2560,
-		"h": 240
-	}`*/
+	//	mockContext := context.Background()
+
+	base := image.NewNRGBA64(image.Rect(0, 0, 1000, 1000))
+	//	text := texter.TextboxJSON{Textc: "#260498", Back: "#980609"}
+	TextboxJSON{Border: "#800080", BorderSize: 5, Textc: "#260498", Back: "#980609", Text: []string{"The quick",
+		"brown dog jumped", "over the lazy gray fox"}, Font: `https://get.fontspace.co/webfont/lgwK0/M2ZmY2VhZDMxMTNhNGE1Yzk2Y2JhZTEwNzgwOTNkN2YudHRm/halloween-clipart.ttf`}.Generate(base)
+
+	f, _ := os.Create("testdata/A.png")
+	png.Encode(f, base)
+
+}

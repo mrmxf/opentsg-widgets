@@ -1,4 +1,4 @@
-package texter
+package text
 
 import (
 	"context"
@@ -321,9 +321,9 @@ func xPos(canvas image.Image, rect fixed.Rectangle26_6, position string) int {
 
 // ypos calculates the yposition for the text
 func yPos(canvas image.Image, rect fixed.Rectangle26_6, position string, lines float64, count int) int {
-	yOffset := (rect.Max.Y.Round()) - (rect.Min.Y.Round())
-	mid := (float64(canvas.Bounds().Max.Y) + float64(yOffset)) / (2.0 * lines)
 
+	// mid := (float64(canvas.Bounds().Max.Y) + float64(yOffset)) / (2.0 * lines)
+	//	fmt.Println(rect, rect.Min, int(mid)+(canvas.Bounds().Max.Y*count)/int(lines))
 	switch position {
 	case AlignmentBottom:
 		// fmt.Println((canvas.Bounds().Max.Y*count)/int(lines) - yOffset)
@@ -331,8 +331,13 @@ func yPos(canvas image.Image, rect fixed.Rectangle26_6, position string, lines f
 	case AlignmentTop:
 		return (canvas.Bounds().Max.Y*count)/int(lines) - rect.Min.Y.Round()
 	default:
-		// fmt.Println(int(mid)+(canvas.Bounds().Max.Y*count)/int(lines), "Ypos", yOffset)
-		return int(mid) + (canvas.Bounds().Max.Y*count)/int(lines)
+		//total length is  rect.Max.Y.Round() - rect.Max.Y.Round()
+		barHeight := (canvas.Bounds().Max.Y) / int(lines)
+		textHeight := math.Abs(float64(rect.Max.Y.Round() - rect.Min.Y.Round()))
+		halfGap := (barHeight - int(textHeight)) / 2
+
+		// return int((float64(canvas.Bounds().Max.Y)*float64(count)+0.5)/lines) - rect.Max.Y.Round()
+		return (canvas.Bounds().Max.Y*(count+1))/int(lines) - rect.Max.Y.Round() - halfGap
 	}
 
 }

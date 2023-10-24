@@ -14,7 +14,7 @@ import (
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/gridgen"
 	"github.com/mmTristan/opentsg-core/widgethandler"
-	"github.com/mmTristan/opentsg-widgets/texter"
+	"github.com/mmTristan/opentsg-widgets/text"
 )
 
 const (
@@ -115,10 +115,10 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 		v.mask = gridgen.ImageGenerator(*c, image.Rect(0, 0, letterSize, letterSize))
 
 		// generate a textbox of A
-		txtBox := texter.NewTextboxer(t.ColourSpace,
-			texter.WithFont(texter.FontTitle),
-			texter.WithFill(texter.FillTypeFull),
-			texter.WithTextColour(&letterFill),
+		txtBox := text.NewTextboxer(t.ColourSpace,
+			text.WithFont(text.FontTitle),
+			text.WithFill(text.FillTypeFull),
+			text.WithTextColour(&letterFill),
 		)
 
 		txtBox.DrawString(v.mask, c, v.Letter)

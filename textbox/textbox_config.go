@@ -1,33 +1,34 @@
 package textbox
 
 import (
-	_ "embed"
-
 	"github.com/mmTristan/opentsg-core/colour"
-	"github.com/mmTristan/opentsg-core/config"
+	"github.com/mrmxf/opentsg-core/config"
 )
-
-/*
-// textbox definitions
-const wName = "textbox"
-const wType = "textbox"
-const wLibrary = "builtin"
-const hooks = ""*/
 
 type TextboxJSON struct {
 	// Type       string       `json:"type" yaml:"type"`
-	Text        []string          `json:"text" yaml:"text"`
-	Font        string            `json:"font" yaml:"font"`
+	Text []string `json:"text" yaml:"text"`
+
 	GridLoc     *config.Grid      `json:"grid" yaml:"grid"`
 	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
-	Back        string            `json:"backgroundcolor" yaml:"backgroundcolor"`
 	Border      string            `json:"bordercolor" yaml:"bordercolor"`
-	Textc       string            `json:"textcolor" yaml:"textcolor"`
 	BorderSize  float64           `json:"bordersize" yaml:"bordersize"`
+	Font        string            `json:"font" yaml:"font"`
+
+	Back       string `json:"backgroundcolor" yaml:"backgroundcolor"`
+	Textc      string `json:"textcolor" yaml:"textcolor"`
+	FillType   string
+	XAlignment string
+	YAlignment string
 }
 
-//go:embed jsonschema/textboxschema.json
-var textBoxSchema []byte
+var textBoxSchema = []byte(`{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://example.com/product.schema.json",
+	"title": "Allow anything through for tests",
+	"description": "An empty schema to allow custom structs to run through",
+	"type": "object"
+	}`)
 
 func (tb TextboxJSON) Alias() string {
 	return tb.GridLoc.Alias

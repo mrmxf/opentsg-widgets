@@ -1,4 +1,4 @@
-package texter
+package text
 
 import (
 	"context"

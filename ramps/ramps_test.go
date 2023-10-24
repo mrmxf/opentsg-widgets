@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
-	"github.com/mmTristan/opentsg-widgets/texter"
+	"github.com/mmTristan/opentsg-widgets/text"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -19,11 +19,11 @@ func TestTemp(t *testing.T) {
 		Gradients: groupContents{GroupSeparator: groupSeparator{Height: 0, Colour: "white"},
 			GradientSeparator: gradientSeparator{Colours: []string{"white", "black", "red", "blue"}, Height: 1},
 			Gradients:         []Gradient{{Height: 5, BitDepth: 4, Label: "4b"}, {Height: 5, BitDepth: 6, Label: "6b"}, {Height: 5, BitDepth: 8, Label: "8b"}, {Height: 5, BitDepth: 10, Label: "10b"}}},
-		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textObjectJSON{TextHeight: 30, TextColour: "#345AB6", TextXPosition: texter.AlignmentLeft, TextYPosition: texter.AlignmentTop}}}
+		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textObjectJSON{TextHeight: 30, TextColour: "#345AB6", TextXPosition: text.AlignmentLeft, TextYPosition: text.AlignmentTop}}}
 	tester := image.NewNRGBA64(image.Rect(0, 0, 1024, 1000)) //960))
 	firstrun(tester, mock)
 
-	examplejson.SaveExampleJson(mock, "builtin.ramps2", "demo")
+	examplejson.SaveExampleJson(mock, "builtin.ramps", "demo")
 
 	f, _ := os.Create("./testdata/tester.png")
 	png.Encode(f, tester)
@@ -79,7 +79,7 @@ func TestRotation(t *testing.T) {
 		Gradients: groupContents{GroupSeparator: groupSeparator{Height: 0, Colour: "white"},
 			GradientSeparator: gradientSeparator{Colours: []string{"white", "black", "red", "blue"}, Height: 1},
 			Gradients:         []Gradient{{Height: 5, BitDepth: 4, Label: "4b"}, {Height: 5, BitDepth: 6, Label: "6b"}, {Height: 5, BitDepth: 8, Label: "8b"}, {Height: 5, BitDepth: 10, Label: "10b"}}},
-		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textObjectJSON{TextHeight: 30, TextColour: "#345AB6", TextXPosition: texter.AlignmentLeft, TextYPosition: texter.AlignmentTop}}}
+		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textObjectJSON{TextHeight: 30, TextColour: "#345AB6", TextXPosition: text.AlignmentLeft, TextYPosition: text.AlignmentTop}}}
 
 	explanationRight := []string{"flat", "90degrees", "180degrees", "270degrees"}
 	anglesRight := []string{"", "π*1/2", "π*1", "π*3/2"}
@@ -90,7 +90,7 @@ func TestRotation(t *testing.T) {
 		mock.WidgetProperties.CwRotation = angle
 
 		angleImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{4096, 2000}})
-		examplejson.SaveExampleJson(mock, "builtin.ramps2", explanationRight[i])
+		examplejson.SaveExampleJson(mock, "builtin.ramps", explanationRight[i])
 		genErr := firstrun(angleImage, mock)
 		// Generate the ramp image
 		// genErr := mock.Generate(myImage)
@@ -127,7 +127,7 @@ func TestRotation(t *testing.T) {
 	for i, angle := range anglesOffRight {
 		mock.WidgetProperties.CwRotation = angle
 		angleImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{4096, 2000}})
-		examplejson.SaveExampleJson(mock, "builtin.ramps2", explanation[i])
+		examplejson.SaveExampleJson(mock, "builtin.ramps", explanation[i])
 		// Generate the ramp image
 		genErr := firstrun(angleImage, mock)
 		// Open the image to compare to

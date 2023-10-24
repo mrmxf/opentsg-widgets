@@ -1,4 +1,4 @@
-package texter
+package text
 
 import (
 	"github.com/mmTristan/opentsg-core/colour"

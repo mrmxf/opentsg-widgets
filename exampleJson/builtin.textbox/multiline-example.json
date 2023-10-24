@@ -3,7 +3,6 @@
         "sample",
         "text"
     ],
-    "font": "",
     "grid": null,
     "ColorSpace": {
         "Primaries": {
@@ -13,8 +12,12 @@
             "WhitePoint": {}
         }
     },
+    "bordercolor": "#f0f0f0",
+    "bordersize": 20,
+    "font": "",
     "backgroundcolor": "#ffffff",
-    "bordercolor": "#C2A649",
     "textcolor": "#C2A649",
-    "bordersize": 0.02666
+    "FillType": "",
+    "XAlignment": "",
+    "YAlignment": "middle"
 }

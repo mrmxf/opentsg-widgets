@@ -4,14 +4,9 @@ import (
 	"context"
 	"image"
 	"image/draw"
-	"strings"
 
-	"github.com/golang/freetype/truetype"
 	"github.com/mmTristan/opentsg-core/colour"
-	"github.com/mmTristan/opentsg-widgets/textbox"
-	"github.com/mmTristan/opentsg-widgets/texter"
-	"golang.org/x/image/font"
-	"golang.org/x/image/math/fixed"
+	"github.com/mmTristan/opentsg-widgets/text"
 )
 
 // labels places the label on the stripe based on the angle of the stripe, the text does not change angle
@@ -33,12 +28,12 @@ func (txt textObjectJSON) labels(target draw.Image, colourSpace colour.ColorSpac
 
 	mc := context.Background()
 
-	txtBox := texter.NewTextboxer(colourSpace,
-		texter.WithTextColourString(txt.TextColour),
-		texter.WithXAlignment(txt.TextXPosition),
-		texter.WithYAlignment(txt.TextYPosition),
-		texter.WithFont(texter.FontPixel),
-		texter.WithFill(texter.FillTypeFull),
+	txtBox := text.NewTextboxer(colourSpace,
+		text.WithTextColourString(txt.TextColour),
+		text.WithXAlignment(txt.TextXPosition),
+		text.WithYAlignment(txt.TextYPosition),
+		text.WithFont(text.FontPixel),
+		text.WithFill(text.FillTypeFull),
 	)
 
 	txtBox.DrawString(canvas, &mc, label)
@@ -134,68 +129,3 @@ func (txt textObjectJSON) labels(target draw.Image, colourSpace colour.ColorSpac
 	// add the label
 	draw.Draw(target, target.Bounds(), intermediate, image.Point{}, draw.Over)
 }
-
-/////////////Invalid code
-
-func xPos(cWidth int, userFont font.Face, labelText, position string) int {
-
-	boxw, _ := font.BoundString(userFont, labelText)
-	width := boxw.Max.X.Ceil()
-	switch strings.ToLower(position) {
-	case "center":
-		return (((cWidth) - width) / 2)
-	case "right":
-		return cWidth - width
-	default: // Doesn't need a case as the schema only allows three inputs
-		return 0
-	}
-
-}
-
-func yPos(font font.Face, position string, stripeHeight int) int {
-	// The two is for rounding errors
-	yOffset := (font.Metrics().Ascent - font.Metrics().Descent - fixed.Int26_6(2)).Ceil()
-	// YOffset := font.Ascent - font.Descent
-	switch strings.ToLower(position) {
-	case "top":
-		return yOffset
-	case "middle":
-		mid := (stripeHeight + yOffset) / 2
-
-		return mid
-	default: // Doesn't need a case as the schema only allows three inputs
-		return stripeHeight
-	}
-}
-
-// Fontgen returns a font a percentage height of the input
-func fontGen(pixelPercent float64, height int) font.Face {
-	var face font.Face
-	var textHeight float64
-	// Font is now out of a 100
-	pixelheight := int((pixelPercent / 100.0) * float64(height))
-
-	if pixelheight != 0 && pixelheight < height {
-		textHeight = float64(pixelheight) / 0.7767
-	} else {
-		// Default height
-		textHeight = float64(height) * 0.2 // * 0.005365
-	}
-
-	if textHeight < minTextHeightFont && !(minTextHeightPix > height) {
-		textHeight = minTextHeightFont
-	} else if height < minTextHeightPix {
-		textHeight = 0 // And don't draw the text height
-	}
-
-	fontain, _ := truetype.Parse(textbox.Pixel)
-	opt := truetype.Options{Size: textHeight}
-	face = truetype.NewFace(fontain, &opt)
-
-	return face
-}
-
-const ( // These are for the tiny font as it doesn't utilise all of the pixel space
-	minTextHeightPix  = 7
-	minTextHeightFont = 9
-)

@@ -17,7 +17,7 @@ import (
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/gridgen"
 	"github.com/mmTristan/opentsg-core/widgethandler"
-	"github.com/mmTristan/opentsg-widgets/texter"
+	"github.com/mmTristan/opentsg-widgets/text"
 )
 
 const (
@@ -77,20 +77,20 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	defaultBackground := colour.CNRGBA64{R: uint16(195) << 8, G: uint16(195) << 8, B: uint16(195) << 8, A: uint16(195) << 8, Space: f.ColourSpace}
 	defaulText := colour.CNRGBA64{A: 65535, Space: f.ColourSpace}
 
-	txtBox := texter.NewTextboxer(f.ColourSpace,
-		texter.WithFill(texter.FillTypeFull),
-		texter.WithFont(texter.FontPixel),
-		texter.WithBackgroundColour(&defaultBackground),
-		texter.WithTextColour(&defaulText),
+	txtBox := text.NewTextboxer(f.ColourSpace,
+		text.WithFill(text.FillTypeFull),
+		text.WithFont(text.FontPixel),
+		text.WithBackgroundColour(&defaultBackground),
+		text.WithTextColour(&defaulText),
 	)
 
 	// update the colours if required
 	if f.BackColour != "" {
-		texter.WithBackgroundColourString(f.BackColour)(txtBox)
+		text.WithBackgroundColourString(f.BackColour)(txtBox)
 	}
 
 	if f.TextColour != "" {
-		texter.WithTextColourString(f.TextColour)(txtBox)
+		text.WithTextColourString(f.TextColour)(txtBox)
 	}
 
 	// MyFont.Advance
