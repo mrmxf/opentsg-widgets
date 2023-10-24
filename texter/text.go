@@ -163,17 +163,17 @@ func (t TextboxJSON) DrawString(canvas draw.Image, tsgContext *context.Context, 
 func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context, labels []string) error {
 
 	// check somethings been assigned first
-	if t.back != nil {
+	if t.backgroundColour != nil {
 		// draw the background first
-		if t.back.A != 0 {
-			draw.Draw(canvas, canvas.Bounds(), &image.Uniform{t.back}, image.Point{}, draw.Src)
+		if t.backgroundColour.A != 0 {
+			draw.Draw(canvas, canvas.Bounds(), &image.Uniform{t.backgroundColour}, image.Point{}, draw.Src)
 		}
 	}
-	
+
 	// only do the text calculations if there's any
 	// text colour
-	if t.textc != nil {
-		if t.textc.A != 0 {
+	if t.textColour != nil {
+		if t.textColour.A != 0 {
 			fontByte := FontSelector(tsgContext, t.font)
 
 			fontain, err := freetype.ParseFont(fontByte)
@@ -223,7 +223,7 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 				//	myFace := truetype.NewFace(fontain, &opt)
 				d := &font.Drawer{
 					Dst:  canvas,
-					Src:  image.NewUniform(t.textc),
+					Src:  image.NewUniform(t.textColour),
 					Face: myFace,
 					Dot:  point,
 				}

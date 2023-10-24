@@ -19,13 +19,13 @@ type TextboxJSON struct {
 
 type TextboxJSON struct {
 	// Type       string       `json:"type" yaml:"type"`
-	font        string            // `json:"font" yaml:"font"`
-	colourSpace colour.ColorSpace //`json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
-	back        *colour.CNRGBA64  //`json:"backgroundcolor" yaml:"backgroundcolor"`
-	textc       *colour.CNRGBA64  //`json:"textcolor" yaml:"textcolor"`
-	fillType    string
-	xAlignment  string
-	yAlignment  string
+	font             string            // `json:"font" yaml:"font"`
+	colourSpace      colour.ColorSpace //`json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	backgroundColour *colour.CNRGBA64  //`json:"backgroundcolor" yaml:"backgroundcolor"`
+	textColour       *colour.CNRGBA64  //`json:"textcolor" yaml:"textcolor"`
+	fillType         string
+	xAlignment       string
+	yAlignment       string
 }
 
 // NewText
@@ -57,15 +57,14 @@ func WithTextColourString(colour string) func(t *TextboxJSON) {
 
 	return func(t *TextboxJSON) {
 		c := colourgen.HexToColour(colour, t.colourSpace)
-		t.textc = c
+		t.textColour = c
 	}
 }
 
 func WithTextColour(colour *colour.CNRGBA64) func(t *TextboxJSON) {
 
 	return func(t *TextboxJSON) {
-
-		t.textc = colour
+		t.textColour = colour
 	}
 }
 
@@ -73,15 +72,14 @@ func WithBackgroundColourString(colour string) func(t *TextboxJSON) {
 
 	return func(t *TextboxJSON) {
 		c := colourgen.HexToColour(colour, t.colourSpace)
-		t.back = c
+		t.backgroundColour = c
 	}
 }
 
 func WithBackgroundColour(colour *colour.CNRGBA64) func(t *TextboxJSON) {
 
 	return func(t *TextboxJSON) {
-
-		t.back = colour
+		t.backgroundColour = colour
 	}
 }
 

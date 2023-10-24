@@ -4,6 +4,8 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+
+	"github.com/mmTristan/opentsg-core/colour"
 )
 
 func bar(target draw.Image, fills [][]bars, heights []float64) {
@@ -27,7 +29,7 @@ func bar(target draw.Image, fills [][]bars, heights []float64) {
 				fill = f.fill(image.Rect(0, 0, area.Dx(), area.Dy()))
 			}
 
-			draw.Draw(target, area, fill, image.Point{}, draw.Src)
+			colour.Draw(target, area, fill, image.Point{}, draw.Src)
 
 			w += f.width * float64(b.X)
 		}
@@ -122,7 +124,7 @@ func yRamp(bounds image.Rectangle) draw.Image {
 
 		col := uint16(start + int(float64(x)*step))
 
-		draw.Draw(base, image.Rect(x, bounds.Min.Y, x+1, bounds.Max.Y), &image.Uniform{color.NRGBA64{R: col << 6, G: col << 6, B: col << 6, A: 0xffff}}, image.Point{}, draw.Src)
+		colour.Draw(base, image.Rect(x, bounds.Min.Y, x+1, bounds.Max.Y), &image.Uniform{color.NRGBA64{R: col << 6, G: col << 6, B: col << 6, A: 0xffff}}, image.Point{}, draw.Src)
 	}
 
 	return base
@@ -139,7 +141,7 @@ func yRampSD(bounds image.Rectangle) draw.Image {
 
 		col := uint8(start + int(float64(x)*step))
 
-		draw.Draw(base, image.Rect(x, bounds.Min.Y, x+1, bounds.Max.Y), &image.Uniform{color.NRGBA{R: col, G: col, B: col, A: 0xff}}, image.Point{}, draw.Src)
+		colour.Draw(base, image.Rect(x, bounds.Min.Y, x+1, bounds.Max.Y), &image.Uniform{color.NRGBA{R: col, G: col, B: col, A: 0xff}}, image.Point{}, draw.Src)
 	}
 
 	return base
@@ -148,7 +150,7 @@ func yRampSD(bounds image.Rectangle) draw.Image {
 func superBlack(bounds image.Rectangle) draw.Image {
 	base := image.NewNRGBA64(bounds)
 
-	draw.Draw(base, base.Bounds(), &image.Uniform{black0}, image.Point{}, draw.Src)
+	colour.Draw(base, base.Bounds(), &image.Uniform{black0}, image.Point{}, draw.Src)
 
 	start := 64
 	end := 4
@@ -163,7 +165,7 @@ func superBlack(bounds image.Rectangle) draw.Image {
 			rolling -= step
 		}
 		col := uint16(rolling)
-		draw.Draw(base, image.Rect(x, bounds.Dy()/3, x+1, 2*bounds.Dy()/3), &image.Uniform{color.NRGBA64{R: col << 6, G: col << 6, B: col << 6, A: 0xffff}}, image.Point{}, draw.Src)
+		colour.Draw(base, image.Rect(x, bounds.Dy()/3, x+1, 2*bounds.Dy()/3), &image.Uniform{color.NRGBA64{R: col << 6, G: col << 6, B: col << 6, A: 0xffff}}, image.Point{}, draw.Src)
 
 	}
 
@@ -173,7 +175,7 @@ func superBlack(bounds image.Rectangle) draw.Image {
 func superBlackSD(bounds image.Rectangle) draw.Image {
 	base := image.NewNRGBA(bounds)
 
-	draw.Draw(base, base.Bounds(), &image.Uniform{black0}, image.Point{}, draw.Src)
+	colour.Draw(base, base.Bounds(), &image.Uniform{black0}, image.Point{}, draw.Src)
 
 	start := 16
 	end := 1
@@ -188,7 +190,7 @@ func superBlackSD(bounds image.Rectangle) draw.Image {
 			rolling -= step
 		}
 		col := uint8(rolling)
-		draw.Draw(base, image.Rect(x, bounds.Dy()/3, x+1, 2*bounds.Dy()/3), &image.Uniform{color.NRGBA{R: col, G: col, B: col, A: 0xff}}, image.Point{}, draw.Src)
+		colour.Draw(base, image.Rect(x, bounds.Dy()/3, x+1, 2*bounds.Dy()/3), &image.Uniform{color.NRGBA{R: col, G: col, B: col, A: 0xff}}, image.Point{}, draw.Src)
 
 	}
 
@@ -198,7 +200,7 @@ func superBlackSD(bounds image.Rectangle) draw.Image {
 func superWhite(bounds image.Rectangle) draw.Image {
 	base := image.NewNRGBA64(bounds)
 
-	draw.Draw(base, base.Bounds(), &image.Uniform{white100}, image.Point{}, draw.Src)
+	colour.Draw(base, base.Bounds(), &image.Uniform{white100}, image.Point{}, draw.Src)
 
 	start := 940
 	end := 1020
@@ -213,7 +215,7 @@ func superWhite(bounds image.Rectangle) draw.Image {
 			rolling -= step
 		}
 		col := uint16(rolling)
-		draw.Draw(base, image.Rect(x, bounds.Dy()/3, x+1, 2*bounds.Dy()/3), &image.Uniform{color.NRGBA64{R: col << 6, G: col << 6, B: col << 6, A: 0xffff}}, image.Point{}, draw.Src)
+		colour.Draw(base, image.Rect(x, bounds.Dy()/3, x+1, 2*bounds.Dy()/3), &image.Uniform{color.NRGBA64{R: col << 6, G: col << 6, B: col << 6, A: 0xffff}}, image.Point{}, draw.Src)
 
 	}
 
@@ -223,7 +225,7 @@ func superWhite(bounds image.Rectangle) draw.Image {
 func superWhiteSD(bounds image.Rectangle) draw.Image {
 	base := image.NewNRGBA(bounds)
 
-	draw.Draw(base, base.Bounds(), &image.Uniform{white100}, image.Point{}, draw.Src)
+	colour.Draw(base, base.Bounds(), &image.Uniform{white100}, image.Point{}, draw.Src)
 
 	start := 235
 	end := 255
@@ -238,7 +240,7 @@ func superWhiteSD(bounds image.Rectangle) draw.Image {
 			rolling -= step
 		}
 		col := uint8(rolling)
-		draw.Draw(base, image.Rect(x, bounds.Dy()/3, x+1, 2*bounds.Dy()/3), &image.Uniform{color.NRGBA{R: col, G: col, B: col, A: 0xff}}, image.Point{}, draw.Src)
+		colour.Draw(base, image.Rect(x, bounds.Dy()/3, x+1, 2*bounds.Dy()/3), &image.Uniform{color.NRGBA{R: col, G: col, B: col, A: 0xff}}, image.Point{}, draw.Src)
 
 	}
 

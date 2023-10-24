@@ -1,4 +1,12 @@
 {
     "code": "https://mrmxf.io/",
-    "gridPosition": {}
+    "gridPosition": {},
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    }
 }

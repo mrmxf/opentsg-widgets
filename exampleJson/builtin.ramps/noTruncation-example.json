@@ -59,6 +59,14 @@
         "location": "a5:p8",
         "alias": "bottom"
     },
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    },
     "text": {
         "textyPosition": "top",
         "textxPosition": "left",

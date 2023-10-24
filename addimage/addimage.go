@@ -106,21 +106,21 @@ func (i addimageJSON) Generate(canvas draw.Image, opts ...any) error {
 			}
 		}
 	} else {
-		draw.Draw(newImg64, newImg64.Bounds(), newImage, image.Point{}, draw.Over)
+		colour.Draw(newImg64, newImg64.Bounds(), newImage, image.Point{}, draw.Over)
 	}
 
 	// set the final image to ensure
 	// colour space transformations are preserved
-	b := canvas.Bounds().Max
-	for x := 0; x < b.X; x++ {
-		for y := 0; y < b.Y; y++ {
-			canvas.Set(x, y, newImg64.At(x, y))
-		}
-	}
+	/*	b := canvas.Bounds().Max
+		for x := 0; x < b.X; x++ {
+			for y := 0; y < b.Y; y++ {
+				canvas.Set(x, y, newImg64.At(x, y))
+			}
+		}*/
 
 	// draw.Src ensures the colourspace transformations are kept
 	// as long as the picture has no alpha
-	// draw.Draw(canvas, canvas.Bounds(), newImg64, image.Point{}, draw.Src)
+	colour.Draw(canvas, canvas.Bounds(), newImg64, image.Point{}, draw.Src)
 
 	return nil
 }

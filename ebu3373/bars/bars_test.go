@@ -9,6 +9,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
 	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
@@ -33,7 +34,7 @@ func TestBars(t *testing.T) {
 		baseVals, _ := png.Decode(file)
 		// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 		readImage := image.NewNRGBA64(baseVals.Bounds())
-		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+		colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
 
 		// Make a hash of the pixels of each image
 		hnormal := sha256.New()

@@ -13,6 +13,7 @@ import (
 	"runtime/debug"
 	"testing"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
 	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
@@ -149,7 +150,7 @@ func TestZoneGenMask(t *testing.T) {
 			// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 			readImage := image.NewNRGBA64(baseVals.Bounds())
 
-			draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Src)
+			colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Src)
 			// Make a hash of the pixels of each image
 			hnormal := sha256.New()
 			htest := sha256.New()
@@ -157,6 +158,8 @@ func TestZoneGenMask(t *testing.T) {
 			htest.Write(myImage.Pix)
 
 			// Save the file
+			//	f, _ := os.Create(testF[i] + ".png")
+			//	colour.PngEncode(f, myImage)
 
 			Convey("Checking the size of the squeezed zoneplate to fill the canvas", t, func() {
 				Convey(fmt.Sprintf("Adding the image to a blank canvas the size of %v", sizeDummies[i]), func() {
@@ -202,7 +205,7 @@ func TestFillTypes(t *testing.T) {
 		baseVals, _ := png.Decode(file)
 		readImage := image.NewNRGBA64(baseVals.Bounds())
 
-		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Src)
+		colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Src)
 		// Decode to get the colour values
 		_ = png.Encode(file, myImage)
 		// Save the file
@@ -211,6 +214,9 @@ func TestFillTypes(t *testing.T) {
 		hnormal.Write(readImage.Pix)
 		htest.Write(myImage.Pix)
 		compare(myImage, readImage)
+
+		//	f, _ := os.Create(fmt.Sprintf("./testdata/fill%v.png", i) + ".png")
+		//	colour.PngEncode(f, myImage)
 
 		Convey("Checking the different fill methods of addimage", t, func() {
 			Convey(fmt.Sprintf("Adding the image to a blank canvas and using the fill type of %s", fill), func() {
@@ -241,7 +247,7 @@ func compare(base, new draw.Image) {
 		for y := 0; y < b.Y; y++ {
 			if base.At(x, y) != new.At(x, y) {
 				count++
-				fmt.Println(x, y, base.At(x, y), new.At(x, y))
+				// fmt.Println(x, y, base.At(x, y), new.At(x, y))
 			}
 
 		}
