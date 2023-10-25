@@ -8,15 +8,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/golang/freetype"
-	"github.com/golang/freetype/truetype"
-	"github.com/mmTristan/opentsg-core/colourgen"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/gridgen"
 	"github.com/mmTristan/opentsg-core/widgethandler"
-	"github.com/mmTristan/opentsg-widgets/textbox"
-	"golang.org/x/image/font"
-	"golang.org/x/image/math/fixed"
+	"github.com/mmTristan/opentsg-widgets/text"
 )
 
 func LabelGenerator(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
@@ -49,75 +44,92 @@ func (gt geomTextJSON) Generate(canvas draw.Image, opt ...any) error {
 	// fmt.Println(len(flats), gt.GridLoc)
 	// This is too intensive as text box does way more than this widget needs
 
+	geomBox := text.NewTextboxer(gt.ColourSpace,
+		text.WithFont(text.FontPixel),
+		text.WithTextColourString(gt.TextColour),
+	)
+
 	// extract colours here and text
-	colour := colourgen.HexToColour(gt.TextColour, gt.ColourSpace)
-	fontByte := textbox.FontSelector(c, "pixel")
+	/*
+		colour := colourgen.HexToColour(gt.TextColour, gt.ColourSpace)
+		fontByte := textbox.FontSelector(c, "pixel")
 
-	fontain, err := freetype.ParseFont(fontByte)
-	if err != nil {
-		return fmt.Errorf("0101 %v", err)
-	}
+		fontain, err := freetype.ParseFont(fontByte)
+		if err != nil {
+			return fmt.Errorf("0101 %v", err)
+		}
 
-	d := &font.Drawer{
-		Dst: canvas,
-		Src: image.NewUniform(colour),
-	}
+		d := &font.Drawer{
+			Dst: canvas,
+			Src: image.NewUniform(colour),
+		}
+	*/
+	///	cont := context.Background()
 	for _, f := range flats {
+
+		segment := gridgen.ImageGenerator(*c, image.Rect(0, 0, f.Shape.Dx(), f.Shape.Dy()))
 		lines := strings.Split(f.Name, " ")
-		//if i%1000 == 0 {
-		//	fmt.Println(i)
-		//}
-		height := (1.1 / 3.0) * (float64(f.Shape.Dy()))
-		width := (1.1 / 3.0) * (float64(f.Shape.Dx()))
-		if width < height {
-			height = width
-		}
-		// height /= 2
+		geomBox.DrawStrings(segment, c, lines)
+		draw.Draw(canvas, f.Shape, segment, image.Point{}, draw.Src)
+		// geomBox.DrawStrings(f.Shape, cont, lines)
 
-		opt := truetype.Options{Size: height, SubPixelsY: 8, Hinting: 2}
-		myFace := truetype.NewFace(fontain, &opt)
-
-		//	textAreaX := float64(f.Shape.Dx())
-		//	textAreaY := float64(f.Shape.Dy())
-		//	big := true
-
-		/*	for big {
-
-			thresholdX := float64(labelBox.Max.X.Round() + labelBox.Min.X.Round())
-			thresholdY := float64(labelBox.Max.Y.Round() + labelBox.Min.Y.Round())
-			// Comparre the text width to the width of the text box
-			if (thresholdX > textAreaX) || (thresholdY > textAreaY) {
-
-				height *= 0.9
-				opt = truetype.Options{Size: height, SubPixelsY: 8, Hinting: 2}
-				myFace = truetype.NewFace(fontain, &opt)
-				labelBox, _ = font.BoundString(myFace, label)
-
-			} else {
-				big = false
+		/*
+			//if i%1000 == 0 {
+			//	fmt.Println(i)
+			//}
+			height := (1.1 / 3.0) * (float64(f.Shape.Dy()))
+			width := (1.1 / 3.0) * (float64(f.Shape.Dx()))
+			if width < height {
+				height = width
 			}
-		}*/
+			// height /= 2
 
-		labelBox, _ := font.BoundString(myFace, lines[0])
-		xOff := xPos(f.Shape, labelBox)
+			opt := truetype.Options{Size: height, SubPixelsY: 8, Hinting: 2}
+			myFace := truetype.NewFace(fontain, &opt)
 
-		for i, line := range lines {
-			labelBox, _ := font.BoundString(myFace, line)
-			yOff := yPos(f.Shape, labelBox, float64(len(lines)), i)
+			//	textAreaX := float64(f.Shape.Dx())
+			//	textAreaY := float64(f.Shape.Dy())
+			//	big := true
 
-			//	fmt.Println(xOff, yOff)
-			point := fixed.Point26_6{X: fixed.Int26_6(xOff * 64), Y: fixed.Int26_6(yOff * 64)}
+			/*	for big {
 
-			//	myFace := truetype.NewFace(fontain, &opt)
-			d.Face = myFace
-			d.Dot = point
-			d.DrawString(line)
-		}
+				thresholdX := float64(labelBox.Max.X.Round() + labelBox.Min.X.Round())
+				thresholdY := float64(labelBox.Max.Y.Round() + labelBox.Min.Y.Round())
+				// Comparre the text width to the width of the text box
+				if (thresholdX > textAreaX) || (thresholdY > textAreaY) {
 
+					height *= 0.9
+					opt = truetype.Options{Size: height, SubPixelsY: 8, Hinting: 2}
+					myFace = truetype.NewFace(fontain, &opt)
+					labelBox, _ = font.BoundString(myFace, label)
+
+				} else {
+					big = false
+				}
+			}
+
+			labelBox, _ := font.BoundString(myFace, lines[0])
+			xOff := xPos(f.Shape, labelBox)
+
+			for i, line := range lines {
+				labelBox, _ := font.BoundString(myFace, line)
+				yOff := yPos(f.Shape, labelBox, float64(len(lines)), i)
+
+				//	fmt.Println(xOff, yOff)
+				point := fixed.Point26_6{X: fixed.Int26_6(xOff * 64), Y: fixed.Int26_6(yOff * 64)}
+
+				//	myFace := truetype.NewFace(fontain, &opt)
+				d.Face = myFace
+				d.Dot = point
+				d.DrawString(line)
+			}
+		*/
 	}
 
 	return nil
 }
+
+/*
 
 func xPos(canvas image.Rectangle, rect fixed.Rectangle26_6) int {
 	textWidth := rect.Max.X.Round() - rect.Min.X.Round()
@@ -132,4 +144,4 @@ func yPos(canvas image.Rectangle, rect fixed.Rectangle26_6, lines float64, count
 
 	return (canvas.Bounds().Min.Y + int(mid)) + int(canvas.Bounds().Dy()*count)/int(lines)
 
-}
+}*/

@@ -12,6 +12,12 @@ import (
 
 func TestBadStrings(t *testing.T) {
 
+	/*
+	test positions etc
+	fonts
+	internet fonts
+	*/
+
 	mockContext := context.Background()
 
 	base := image.NewNRGBA64(image.Rect(0, 0, 1000, 1000))

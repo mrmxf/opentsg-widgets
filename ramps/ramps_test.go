@@ -107,8 +107,8 @@ func TestRotation(t *testing.T) {
 		htest := sha256.New()
 		hnormal.Write(readImage.Pix)
 		htest.Write(angleImage.Pix)
-		//	f, _ := os.Create(testFRight[i] + fmt.Sprintf("%v.png", i))
-		//  png.Encode(f, angleImage)
+		// f, _ := os.Create(testFRight[i] + ".png")
+		// png.Encode(f, angleImage)
 
 		Convey("Checking the ramps are generated at 90 degree angles", t, func() {
 			Convey(fmt.Sprintf("Comparing the generated ramp to %v with an angle of %v", testFRight[i], angle), func() {
@@ -145,6 +145,10 @@ func TestRotation(t *testing.T) {
 		htest := sha256.New()
 		hnormal.Write(readImage.Pix)
 		htest.Write(angleImage.Pix)
+
+		//f, _ := os.Create(testFRightOff[i] + ".png")
+		// 	png.Encode(f, angleImage)
+
 		Convey("Checking the ramps are generated at angles other than 90 degrees", t, func() {
 			Convey(fmt.Sprintf("Comparing the generated ramp to %v with an angle of %v", testFRightOff[i], angle), func() {
 				Convey("No error is returned and the file matches", func() {
