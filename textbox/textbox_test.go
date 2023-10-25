@@ -66,10 +66,36 @@ func TestFontImport(t *testing.T) {
 
 	base := image.NewNRGBA64(image.Rect(0, 0, 1000, 1000))
 	//	text := texter.TextboxJSON{Textc: "#260498", Back: "#980609"}
-	TextboxJSON{Border: "#800080", BorderSize: 5, Textc: "#260498", Back: "#980609", Text: []string{"The quick",
+	genErr := TextboxJSON{Border: "#800080", BorderSize: 5, Textc: "#260498", Back: "#980609", Text: []string{"The quick",
 		"brown dog jumped", "over the lazy gray fox"}, Font: `https://get.fontspace.co/webfont/lgwK0/M2ZmY2VhZDMxMTNhNGE1Yzk2Y2JhZTEwNzgwOTNkN2YudHRm/halloween-clipart.ttf`}.Generate(base)
 
-	f, _ := os.Create("testdata/A.png")
-	png.Encode(f, base)
+	//	f, _ := os.Create("testdata/multiLongLines.png")
+	//	png.Encode(f, base)
+
+	file, _ := os.Open("testdata/multiLongLines.png")
+	// Decode to get the colour values
+	baseVals, _ := png.Decode(file)
+
+	// Assign the colour to the correct type of image NGRBA64 and replace the colour values
+	readImage := image.NewNRGBA64(baseVals.Bounds())
+	draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+
+	// Make a hash of the pixels of each image
+	hnormal := sha256.New()
+	htest := sha256.New()
+	hnormal.Write(readImage.Pix)
+	htest.Write(base.Pix)
+
+	//f, _ := os.Create("./testdata/" + fmt.Sprintf("%v", i) + ".png")
+	//colour.PngEncode(f, myImage)
+	// Save the file
+	Convey("Checking that multiple lines of small text are included", t, func() {
+		Convey("Generating an image with an imported string", func() {
+			Convey("No error is returned and the file matches exactly", func() {
+				So(genErr, ShouldBeNil)
+				So(htest.Sum(nil), ShouldResemble, hnormal.Sum(nil))
+			})
+		})
+	})
 
 }

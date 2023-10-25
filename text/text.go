@@ -174,7 +174,7 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 	// text colour
 	if t.textColour != nil {
 		if t.textColour.A != 0 {
-			fontByte := FontSelector(tsgContext, t.font)
+			fontByte := fontSelector(tsgContext, t.font)
 
 			fontain, err := freetype.ParseFont(fontByte)
 			if err != nil {
@@ -312,7 +312,9 @@ func xPos(canvas image.Image, rect fixed.Rectangle26_6, position string) int {
 	case AlignmentLeft:
 		return 0 - rect.Min.X.Round()
 	case AlignmentRight:
-		return canvas.Bounds().Max.X - textWidth
+		// get the start point, then account for the
+		// start postion of the text box
+		return canvas.Bounds().Max.X - textWidth - rect.Min.X.Round()
 	default:
 		return ((((canvas.Bounds().Max.X) - textWidth) / 2) - rect.Min.X.Round())
 	}
@@ -345,7 +347,7 @@ func yPos(canvas image.Image, rect fixed.Rectangle26_6, position string, lines f
 // font selector enumerates through the different sources of http,
 // local files,
 // then predetermined embedded fonts and returns the font based on the input string.
-func FontSelector(c *context.Context, fontLocation string) []byte {
+func fontSelector(c *context.Context, fontLocation string) []byte {
 
 	font, err := core.GetWebBytes(c, fontLocation)
 
