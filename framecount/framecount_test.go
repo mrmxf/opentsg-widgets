@@ -12,6 +12,7 @@ import (
 	"runtime/debug"
 	"testing"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
@@ -46,7 +47,7 @@ func TestStringGen(t *testing.T) {
 
 			// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 			readImage := image.NewNRGBA64(baseVals.Bounds())
-			draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Src)
+			colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Src)
 			// Make a hash of the pixels of each image
 			hnormal := sha256.New()
 			htest := sha256.New()

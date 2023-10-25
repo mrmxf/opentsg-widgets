@@ -39,7 +39,7 @@ func TestLines(t *testing.T) {
 
 		// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 		readImage := image.NewNRGBA64(baseVals.Bounds())
-		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+		colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
 
 		// Make a hash of the pixels of each image
 		hnormal := sha256.New()
@@ -62,6 +62,37 @@ func TestLines(t *testing.T) {
 }
 func TestFontImport(t *testing.T) {
 
+	/*
+
+		set up some demos
+
+		empty background
+		no border - colour or width
+		no text
+
+	*/
+
+	// these are some example jsons
+	tests := []TextboxJSON{{Textc: "rgb12(3000,1401,1116)", Font: text.FontHeader, Text: []string{"sample", "text"}, FillType: text.FillTypeFull},
+		{Textc: "rgb12(3000,1401,1116)", Back: "#99AD49", Font: text.FontBody, Text: []string{"sample", "text"}, XAlignment: text.AlignmentLeft, YAlignment: text.AlignmentTop},
+		{Textc: "rgb12(3000,1401,1116)", Back: "#99AD49", Border: "#000000", BorderSize: 5, Font: text.FontTitle, Text: []string{"sample", "text"}, XAlignment: text.AlignmentRight, YAlignment: text.AlignmentBottom},
+		{Back: "rgb(255,255,0)", Font: text.FontHeader, Text: []string{"sample", "text"}},
+		{Border: "rgb(134,24,180)", Text: []string{"sample", "text"}, BorderSize: 10},
+		{Border: "rgb(134,24,180)", Font: text.FontHeader, Text: []string{"sample", "text"}, BorderSize: 0},
+		{Textc: "rgb(134,24,180)", Back: "rgb(255,255,0)", Border: "rgb(134,24,180)", Font: text.FontPixel, Text: []string{"example space", "rec2020"}, BorderSize: 5, ColourSpace: colour.ColorSpace{ColorSpace: "rec2020"}, XAlignment: text.AlignmentMiddle, YAlignment: text.AlignmentMiddle},
+	}
+
+	explanation := []string{"text-only", "text-background", "text-background-border", "background", "border", "nothing", "rec2020"}
+
+	// generate the jsons as a list of examples
+	for i, e := range explanation {
+		//	bc := context.Background()
+		//	vase := image.NewNRGBA64(image.Rect(0, 0, 1000, 100))
+		//	tests[i].Generate(vase, bc)
+		examplejson.SaveExampleJson(tests[i], widgetType, e)
+		// f, _ := os.Create(e + ".png")
+		// colour.PngEncode(f, vase)
+	}
 	//	mockContext := context.Background()
 
 	base := image.NewNRGBA64(image.Rect(0, 0, 1000, 1000))
@@ -78,7 +109,7 @@ func TestFontImport(t *testing.T) {
 
 	// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 	readImage := image.NewNRGBA64(baseVals.Bounds())
-	draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+	colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
 
 	// Make a hash of the pixels of each image
 	hnormal := sha256.New()

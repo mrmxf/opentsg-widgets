@@ -37,6 +37,7 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) error {
 	 take the percentage of whatevers thinner?
 
 
+
 	*/
 	bounds := canvas.Bounds().Max
 	width, height := (float64(bounds.X)*tb.BorderSize)/100, (float64(bounds.Y)*tb.BorderSize)/100
@@ -48,10 +49,10 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) error {
 	}
 
 	borderColour := colourgen.HexToColour(tb.Border, tb.ColourSpace)
-	draw.Draw(canvas, image.Rect(0, 0, borderwidth, canvas.Bounds().Max.Y), &image.Uniform{borderColour}, image.Point{}, draw.Src)
-	draw.Draw(canvas, image.Rect(0, 0, canvas.Bounds().Max.X, borderwidth), &image.Uniform{borderColour}, image.Point{}, draw.Src)
-	draw.Draw(canvas, image.Rect(canvas.Bounds().Max.X-borderwidth, 0, canvas.Bounds().Max.X, canvas.Bounds().Max.Y), &image.Uniform{borderColour}, image.Point{}, draw.Src)
-	draw.Draw(canvas, image.Rect(0, canvas.Bounds().Max.Y-borderwidth, canvas.Bounds().Max.X, canvas.Bounds().Max.Y), &image.Uniform{borderColour}, image.Point{}, draw.Src)
+	colour.Draw(canvas, image.Rect(0, 0, borderwidth, canvas.Bounds().Max.Y), &image.Uniform{borderColour}, image.Point{}, draw.Src)
+	colour.Draw(canvas, image.Rect(0, 0, canvas.Bounds().Max.X, borderwidth), &image.Uniform{borderColour}, image.Point{}, draw.Src)
+	colour.Draw(canvas, image.Rect(canvas.Bounds().Max.X-borderwidth, 0, canvas.Bounds().Max.X, canvas.Bounds().Max.Y), &image.Uniform{borderColour}, image.Point{}, draw.Src)
+	colour.Draw(canvas, image.Rect(0, canvas.Bounds().Max.Y-borderwidth, canvas.Bounds().Max.X, canvas.Bounds().Max.Y), &image.Uniform{borderColour}, image.Point{}, draw.Src)
 
 	// get the text and background
 	c := colour.NewNRGBA64(tb.ColourSpace, image.Rect(0, 0, canvas.Bounds().Max.X-borderwidth*2, canvas.Bounds().Max.Y-borderwidth*2))
@@ -73,7 +74,7 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) error {
 	}
 
 	// apply the text
-	draw.Draw(canvas, image.Rect(borderwidth, borderwidth, canvas.Bounds().Max.X-borderwidth, canvas.Bounds().Max.Y-borderwidth), c, image.Point{}, draw.Src)
+	colour.Draw(canvas, image.Rect(borderwidth, borderwidth, canvas.Bounds().Max.X-borderwidth, canvas.Bounds().Max.Y-borderwidth), c, image.Point{}, draw.Src)
 
 	return nil
 }

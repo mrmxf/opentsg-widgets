@@ -102,33 +102,33 @@ func (s saturationJSON) Generate(canvas draw.Image, opt ...any) error {
 	// Scale the height offset to the number of colours called (max 3)
 	hOff := hScale * 200 * (3.0 / float64(len(inputC)))
 
-	draw.Draw(canvas, canvas.Bounds(), &image.Uniform{&grey}, image.Point{}, draw.Src)
+	colour.Draw(canvas, canvas.Bounds(), &image.Uniform{&grey}, image.Point{}, draw.Src)
 
 	wOff := wScale * 200 // 200 is the width at 3840
 	for _, cname := range inputC {
-		colour := colours[cname]
-		if colour == nil {
+		fillColour := colours[cname]
+		if fillColour == nil {
 			// Blow the doors of etc
 			return fmt.Errorf("TEST the colour %v is not an available colour", cname)
 		}
 		// Draw the narrow box
 		width := wScale * 100
-		start := colour[0]
+		start := fillColour[0]
 		start.UpdateColorSpace(s.ColourSpace)
-		draw.Draw(canvas, image.Rect(int(0), int(height), int(width), int(height+hOff)), &image.Uniform{&start}, image.Point{}, draw.Over)
+		colour.Draw(canvas, image.Rect(int(0), int(height), int(width), int(height+hOff)), &image.Uniform{&start}, image.Point{}, draw.Over)
 		// Draw the smaller boxes at a smaller fill
-		for _, c := range colour[1:] {
+		for _, c := range fillColour[1:] {
 			offx := 50 * wScale
 			offy := 50 * hScale
 			fill := c
 			fill.UpdateColorSpace(s.ColourSpace)
-			draw.Draw(canvas, image.Rect(int(width+offx), int(height+offy), int(width+wOff-offx), int(height+hOff-offy)), &image.Uniform{&fill}, image.Point{}, draw.Over)
+			colour.Draw(canvas, image.Rect(int(width+offx), int(height+offy), int(width+wOff-offx), int(height+hOff-offy)), &image.Uniform{&fill}, image.Point{}, draw.Over)
 			width += wOff
 		}
 		// Draw the final large box
-		end := colour[len(colour)-1]
+		end := fillColour[len(fillColour)-1]
 		end.UpdateColorSpace(s.ColourSpace)
-		draw.Draw(canvas, image.Rect(int(width), int(height), b.X, int(height+hOff)), &image.Uniform{&end}, image.Point{}, draw.Over)
+		colour.Draw(canvas, image.Rect(int(width), int(height), b.X, int(height+hOff)), &image.Uniform{&end}, image.Point{}, draw.Over)
 		height += hOff
 	}
 

@@ -8,6 +8,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/gridgen"
 	"github.com/mmTristan/opentsg-core/widgethandler"
@@ -70,7 +71,7 @@ func (gt geomTextJSON) Generate(canvas draw.Image, opt ...any) error {
 		segment := gridgen.ImageGenerator(*c, image.Rect(0, 0, f.Shape.Dx(), f.Shape.Dy()))
 		lines := strings.Split(f.Name, " ")
 		geomBox.DrawStrings(segment, c, lines)
-		draw.Draw(canvas, f.Shape, segment, image.Point{}, draw.Src)
+		colour.Draw(canvas, f.Shape, segment, image.Point{}, draw.Src)
 		// geomBox.DrawStrings(f.Shape, cont, lines)
 
 		/*

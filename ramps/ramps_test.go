@@ -9,6 +9,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	"github.com/mmTristan/opentsg-widgets/text"
 	. "github.com/smartystreets/goconvey/convey"
@@ -21,9 +22,9 @@ func TestTemp(t *testing.T) {
 			Gradients:         []Gradient{{Height: 5, BitDepth: 4, Label: "4b"}, {Height: 5, BitDepth: 6, Label: "6b"}, {Height: 5, BitDepth: 8, Label: "8b"}, {Height: 5, BitDepth: 10, Label: "10b"}}},
 		WidgetProperties: control{MaxBitDepth: 10, TextProperties: textObjectJSON{TextHeight: 30, TextColour: "#345AB6", TextXPosition: text.AlignmentLeft, TextYPosition: text.AlignmentTop}}}
 	tester := image.NewNRGBA64(image.Rect(0, 0, 1024, 1000)) //960))
-	firstrun(tester, mock)
+	mock.Generate(tester)
 
-	examplejson.SaveExampleJson(mock, "builtin.ramps", "demo")
+	examplejson.SaveExampleJson(mock, widgetType, "demo")
 
 	f, _ := os.Create("./testdata/tester.png")
 	png.Encode(f, tester)
@@ -90,8 +91,8 @@ func TestRotation(t *testing.T) {
 		mock.WidgetProperties.CwRotation = angle
 
 		angleImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{4096, 2000}})
-		examplejson.SaveExampleJson(mock, "builtin.ramps", explanationRight[i])
-		genErr := firstrun(angleImage, mock)
+		examplejson.SaveExampleJson(mock, widgetType, explanationRight[i])
+		genErr := mock.Generate(angleImage)
 		// Generate the ramp image
 		// genErr := mock.Generate(myImage)
 		// Open the image to compare to
@@ -100,7 +101,7 @@ func TestRotation(t *testing.T) {
 		baseVals, _ := png.Decode(file)
 		// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 		readImage := image.NewNRGBA64(baseVals.Bounds())
-		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+		colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
 		png.Encode(file, angleImage)
 		// Make a hash of the pixels of each image
 		hnormal := sha256.New()
@@ -127,9 +128,9 @@ func TestRotation(t *testing.T) {
 	for i, angle := range anglesOffRight {
 		mock.WidgetProperties.CwRotation = angle
 		angleImage := image.NewNRGBA64(image.Rectangle{image.Point{0, 0}, image.Point{4096, 2000}})
-		examplejson.SaveExampleJson(mock, "builtin.ramps", explanation[i])
+		examplejson.SaveExampleJson(mock, widgetType, explanation[i])
 		// Generate the ramp image
-		genErr := firstrun(angleImage, mock)
+		genErr := mock.Generate(angleImage)
 		// Open the image to compare to
 		file, _ := os.Open(testFRightOff[i])
 
@@ -138,7 +139,7 @@ func TestRotation(t *testing.T) {
 		baseVals, _ := png.Decode(file)
 		// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 		readImage := image.NewNRGBA64(baseVals.Bounds())
-		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+		colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
 
 		// Make a hash of the pixels of each image
 		hnormal := sha256.New()

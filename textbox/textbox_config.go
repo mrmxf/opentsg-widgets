@@ -17,9 +17,9 @@ type TextboxJSON struct {
 
 	Back       string `json:"backgroundcolor" yaml:"backgroundcolor"`
 	Textc      string `json:"textcolor" yaml:"textcolor"`
-	FillType   string
-	XAlignment string
-	YAlignment string
+	FillType   string `json:"fillType" yaml:"fillType"`
+	XAlignment string `json:"xAlignment" yaml:"xAlignment"`
+	YAlignment string `json:"yAlignment" yaml:"yAlignment"`
 }
 
 var textBoxSchema = []byte(`{

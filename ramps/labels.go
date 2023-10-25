@@ -127,5 +127,5 @@ func (txt textObjectJSON) labels(target draw.Image, colourSpace colour.ColorSpac
 
 	}
 	// add the label
-	draw.Draw(target, target.Bounds(), intermediate, image.Point{}, draw.Over)
+	colour.Draw(target, target.Bounds(), intermediate, image.Point{}, draw.Over)
 }

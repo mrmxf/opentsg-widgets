@@ -12,12 +12,12 @@
             "WhitePoint": {}
         }
     },
-    "bordercolor": "#f0f0f0",
-    "bordersize": 20,
-    "font": "",
-    "backgroundcolor": "#ffffff",
-    "textcolor": "#C2A649",
+    "bordercolor": "#000000",
+    "bordersize": 5,
+    "font": "title",
+    "backgroundcolor": "#99AD49",
+    "textcolor": "rgb12(3000,1401,1116)",
     "fillType": "",
-    "xAlignment": "",
-    "yAlignment": "middle"
+    "xAlignment": "right",
+    "yAlignment": "bottom"
 }

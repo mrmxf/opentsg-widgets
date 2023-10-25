@@ -1,6 +1,7 @@
 {
     "text": [
-        "sample text"
+        "sample",
+        "text"
     ],
     "grid": null,
     "ColorSpace": {
@@ -11,12 +12,12 @@
             "WhitePoint": {}
         }
     },
-    "bordercolor": "#f0f0f0",
-    "bordersize": 20,
-    "font": "",
-    "backgroundcolor": "#ffffff",
-    "textcolor": "#C2A649",
+    "bordercolor": "",
+    "bordersize": 0,
+    "font": "body",
+    "backgroundcolor": "#99AD49",
+    "textcolor": "rgb12(3000,1401,1116)",
     "fillType": "",
-    "xAlignment": "",
-    "yAlignment": "middle"
+    "xAlignment": "left",
+    "yAlignment": "top"
 }

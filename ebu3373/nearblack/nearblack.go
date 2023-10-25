@@ -40,7 +40,7 @@ func (nb nearblackJSON) Generate(canvas draw.Image, opt ...any) error {
 	b := canvas.Bounds().Max
 	greyRun := grey
 	greyRun.UpdateColorSpace(nb.ColourSpace)
-	draw.Draw(canvas, canvas.Bounds(), &image.Uniform{&greyRun}, image.Point{}, draw.Src)
+	colour.Draw(canvas, canvas.Bounds(), &image.Uniform{&greyRun}, image.Point{}, draw.Src)
 	// Scale everything so it fits the shape of the canvas
 	wScale := (float64(b.X) / 3840.0)
 	startPoint := wScale * 480
@@ -48,18 +48,18 @@ func (nb nearblackJSON) Generate(canvas draw.Image, opt ...any) error {
 
 	order := []colour.CNRGBA64{neg4, neg2, neg1, pos1, pos2, pos4}
 	area := image.Rect(int(startPoint), 0, int(startPoint+off*2), b.Y)
-	draw.Draw(canvas, area, &image.Uniform{&black}, image.Point{}, draw.Src)
+	colour.Draw(canvas, area, &image.Uniform{&black}, image.Point{}, draw.Src)
 	startPoint += off * 2
 	for _, c := range order {
 		// alternate through the colours
 		fill := c
 		fill.UpdateColorSpace(nb.ColourSpace)
-		draw.Draw(canvas, image.Rect(int(startPoint), 0, int(startPoint+off), b.Y), &image.Uniform{&c}, image.Point{}, draw.Src)
+		colour.Draw(canvas, image.Rect(int(startPoint), 0, int(startPoint+off), b.Y), &image.Uniform{&c}, image.Point{}, draw.Src)
 		startPoint += off
 		// append with the 0% black
 		blackRun := black
 		blackRun.UpdateColorSpace(nb.ColourSpace)
-		draw.Draw(canvas, image.Rect(int(startPoint), 0, int(startPoint+off), b.Y), &image.Uniform{&blackRun}, image.Point{}, draw.Src)
+		colour.Draw(canvas, image.Rect(int(startPoint), 0, int(startPoint+off), b.Y), &image.Uniform{&blackRun}, image.Point{}, draw.Src)
 		startPoint += off
 	}
 

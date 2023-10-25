@@ -6,6 +6,8 @@ import (
 	"image/color"
 	"image/draw"
 	"math"
+
+	"github.com/mmTristan/opentsg-core/colour"
 )
 
 // Generate a mask of correct size
@@ -22,7 +24,7 @@ func Mask(shape string, w, h, x, y int, oldCanvas image.Image) *image.NRGBA64 {
 	// Create an empty layer to move the image to
 	masked := image.NewNRGBA64(image.Rect(0, 0, w, h))
 
-	draw.DrawMask(masked, masked.Bounds(), oldCanvas, image.Point{x, y}, mask, image.Point{}, draw.Src)
+	colour.DrawMask(masked, masked.Bounds(), oldCanvas, image.Point{x, y}, mask, image.Point{}, draw.Src)
 	// _ = savefile.Savefile("circle", "png", masked)
 
 	return masked

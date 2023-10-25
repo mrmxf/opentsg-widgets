@@ -8,6 +8,7 @@ import (
 	"image/draw"
 	"sync"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/colourgen"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
 	"github.com/mmTristan/opentsg-core/gridgen"
@@ -96,7 +97,7 @@ func (f fourJSON) Generate(canvas draw.Image, opt ...any) error {
 	for _, node := range filled {
 		setcolour := node.color
 		// fmt.Println(node.area, canvas.Bounds(), setcolour)
-		draw.Draw(canvas, node.area, &image.Uniform{pallette[setcolour-1]}, image.Point{}, draw.Src)
+		colour.Draw(canvas, node.area, &image.Uniform{pallette[setcolour-1]}, image.Point{}, draw.Src)
 
 	}
 	// TODO add timeout feature with user and other input

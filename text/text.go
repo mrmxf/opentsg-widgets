@@ -12,6 +12,7 @@ import (
 
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mrmxf/opentsg-core/config/core"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
@@ -64,7 +65,7 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 	if t.Back != "" { //only draw the back if it's required
 		backgroundcolor := colourgen.HexToColour(t.Back, t.ColourSpace)
 		if backgroundcolor.A != 0 {
-			draw.Draw(canvas, canvas.Bounds(), &image.Uniform{backgroundcolor}, image.Point{}, draw.Src)
+			colour.Draw(canvas, canvas.Bounds(), &image.Uniform{backgroundcolor}, image.Point{}, draw.Src)
 		}
 	}
 
@@ -166,7 +167,7 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 	if t.backgroundColour != nil {
 		// draw the background first
 		if t.backgroundColour.A != 0 {
-			draw.Draw(canvas, canvas.Bounds(), &image.Uniform{t.backgroundColour}, image.Point{}, draw.Src)
+			colour.Draw(canvas, canvas.Bounds(), &image.Uniform{t.backgroundColour}, image.Point{}, draw.Src)
 		}
 	}
 

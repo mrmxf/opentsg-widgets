@@ -7,10 +7,13 @@ import (
 	"image/draw"
 	"math"
 	"strings"
+	"sync"
 
 	"github.com/mmTristan/opentsg-core/anglegen"
 	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/gridgen"
+	errhandle "github.com/mrmxf/opentsg-core/errHandle"
+	"github.com/mrmxf/opentsg-core/widgethandler"
 )
 
 const (
@@ -18,14 +21,24 @@ const (
 	rotate90   = "rotate90 "
 	rotate270  = "rotate270"
 	noRotation = "xy"
+
+	widgetType = "builtin.ramps"
 )
 
+// TextBoxGen generates text boxes on a given image based on config values
+func RampGenerate(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
+	defer wg.Done()
+
+	conf := widgethandler.GenConf[Ramp]{Debug: debug, Schema: textBoxSchema, WidgetType: widgetType}
+	widgethandler.WidgetRunner(canvasChan, conf, c, logs, wgc) // Update this to pass an error which is then formatted afterwards
+}
+
 // TODO  make it into the open tsg formula
-func firstrun(target draw.Image, input Ramp) error {
+func (r Ramp) Generate(target draw.Image, opts ...any) error {
 	// calculate the whole height of each one
 	holderc := context.Background()
 
-	rotation, err := setBase(&input.WidgetProperties, target.Bounds().Max)
+	rotation, err := setBase(&r.WidgetProperties, target.Bounds().Max)
 
 	if err != nil {
 		return err
@@ -34,39 +47,39 @@ func firstrun(target draw.Image, input Ramp) error {
 	// validate teh control here
 	//	input.StripeGroup.InterStripe.base = input.WidgetProperties
 
-	totalHeight := input.Gradients.GroupSeparator.Height + ((len(input.Gradients.Gradients) - 1) * input.Gradients.GradientSeparator.Height)
-	for _, r := range input.Gradients.Gradients {
+	totalHeight := r.Gradients.GroupSeparator.Height + ((len(r.Gradients.Gradients) - 1) * r.Gradients.GradientSeparator.Height)
+	for _, r := range r.Gradients.Gradients {
 		totalHeight += r.Height
 	}
 
-	totalHeight *= len(input.Groups)
-	rowHeight := input.WidgetProperties.rowDimension(target.Bounds())
+	totalHeight *= len(r.Groups)
+	rowHeight := r.WidgetProperties.rowDimension(target.Bounds())
 
 	groupStep := float64(rowHeight) / float64(totalHeight)
 
 	position := 0.0
 	// posPoint := image.Point{}
-	for _, str := range input.Groups {
+	for _, str := range r.Groups {
 
-		if input.Gradients.GroupSeparator.Height != 0 {
+		if r.Gradients.GroupSeparator.Height != 0 {
 
-			rowHeight := input.Gradients.GroupSeparator.Height
+			rowHeight := r.Gradients.GroupSeparator.Height
 			// draw the header
 			end := int(position + groupStep*float64(rowHeight))
-			rowCut := input.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
+			rowCut := r.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
 			row := gridgen.ImageGenerator(holderc, rowCut)
 			//	row := image.NewNRGBA64(rowCut)
-			posPoint := input.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
-			hidden(target, row, input.ColourSpace, posPoint, input.Gradients.GroupSeparator)
+			posPoint := r.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
+			hidden(target, row, r.ColourSpace, posPoint, r.Gradients.GroupSeparator)
 
 			position += groupStep * float64(rowHeight)
 
 		}
 
-		for i, ramp := range input.Gradients.Gradients {
+		for i, ramp := range r.Gradients.Gradients {
 
 			end := int(position + groupStep*float64(ramp.Height))
-			rowCut := input.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
+			rowCut := r.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
 			rrow := gridgen.ImageGenerator(holderc, rowCut)
 			//rrow := image.NewNRGBA64(rowCut)
 
@@ -74,25 +87,25 @@ func firstrun(target draw.Image, input Ramp) error {
 			ramp.startPoint = str.InitialPixelValue
 			ramp.reverse = str.Reverse
 
-			ramp.base = input.WidgetProperties
-			posPoint := input.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
-			hidden(target, rrow, input.ColourSpace, posPoint, ramp)
+			ramp.base = r.WidgetProperties
+			posPoint := r.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
+			hidden(target, rrow, r.ColourSpace, posPoint, ramp)
 
 			position += groupStep * float64(ramp.Height)
-			//	posPoint = input.base.positionPoint(target.Bounds().Max, int(position))
-			if i+1 < len(input.Gradients.Gradients) {
-				interHeight := input.Gradients.GradientSeparator.Height
+			//	posPoint = r.base.positionPoint(target.Bounds().Max, int(position))
+			if i+1 < len(r.Gradients.Gradients) {
+				interHeight := r.Gradients.GradientSeparator.Height
 				// accounts for jumps in floats and ints
 				end := int(position + groupStep*float64(interHeight))
 
-				rowCut := input.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
+				rowCut := r.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
 				irow := gridgen.ImageGenerator(holderc, rowCut)
 				//irow := image.NewNRGBA64(rowCut)
-				altCopy := input.Gradients.GradientSeparator
-				altCopy.base = input.WidgetProperties
-				altCopy.step = input.Gradients.Gradients[i+1].BitDepth
-				posPoint := input.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
-				hidden(target, irow, input.ColourSpace, posPoint, altCopy)
+				altCopy := r.Gradients.GradientSeparator
+				altCopy.base = r.WidgetProperties
+				altCopy.step = r.Gradients.Gradients[i+1].BitDepth
+				posPoint := r.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
+				hidden(target, irow, r.ColourSpace, posPoint, altCopy)
 
 				position += groupStep * float64(interHeight)
 				//	posPoint = input.base.positionPoint(target.Bounds().Max, int(position))
@@ -189,7 +202,7 @@ func (h groupSeparator) Generate(img draw.Image, cspace colour.ColorSpace) {
 
 	c, _ := assignRGBValues(h.Colour, 65535, 0, 65535)
 	c.UpdateColorSpace(cspace)
-	draw.Draw(img, img.Bounds(), &image.Uniform{&c}, image.Point{}, draw.Over)
+	colour.Draw(img, img.Bounds(), &image.Uniform{&c}, image.Point{}, draw.Over)
 }
 
 func (a gradientSeparator) Generate(img draw.Image, cspace colour.ColorSpace) {
@@ -210,7 +223,7 @@ func (a gradientSeparator) Generate(img draw.Image, cspace colour.ColorSpace) {
 		c, _ := assignRGBValues(a.Colours[altCount%len(a.Colours)], 65535, 0, 65535)
 		target := a.base.set(int(xPosition), stepEnd-int(xPosition), img.Bounds().Max)
 		c.UpdateColorSpace(cspace)
-		draw.Draw(img, target, &image.Uniform{&c}, image.Point{}, draw.Over)
+		colour.Draw(img, target, &image.Uniform{&c}, image.Point{}, draw.Over)
 		altCount++
 		xPosition += shiftStep
 	}
@@ -254,9 +267,9 @@ func (s Gradient) Generate(img draw.Image, cspace colour.ColorSpace) {
 		c, _ := assignRGBValues(s.colour, float64(startPoint), 0, 65535)
 		target := s.base.set(int(xPosition), stepEnd-int(xPosition), img.Bounds().Max)
 
-		// draw.Draw(img, image.Rect(x, img.Bounds().Min.Y, x+step, img.Bounds().Max.Y), &image.Uniform{c}, image.Point{}, draw.Over)
+		// colour.Draw(img, image.Rect(x, img.Bounds().Min.Y, x+step, img.Bounds().Max.Y), &image.Uniform{c}, image.Point{}, draw.Over)
 		c.UpdateColorSpace(cspace)
-		draw.Draw(img, target, &image.Uniform{&c}, image.Point{}, draw.Over)
+		colour.Draw(img, target, &image.Uniform{&c}, image.Point{}, draw.Over)
 		altCount++
 
 		//make the colour steps 16 bit
@@ -353,7 +366,7 @@ func hidden(base, img draw.Image, cspace colour.ColorSpace, start image.Point, G
 	*/
 	G.Generate(img, cspace) //add optional parameterss?
 
-	draw.Draw(base, img.Bounds().Add(start), img, image.Point{}, draw.Over)
+	colour.Draw(base, img.Bounds().Add(start), img, image.Point{}, draw.Over)
 }
 
 func assignRGBValues(colourString string, rgb float64, maxBlack, maxWhite uint16) (colour.CNRGBA64, error) {
@@ -385,7 +398,7 @@ func rotate(canvas draw.Image, radian float64) {
 	// Calculate these on initialisation
 	// Use base as a method of calculating it all without changing the canvas
 	base := image.NewNRGBA64(canvas.Bounds())
-	draw.Draw(base, base.Bounds(), canvas, image.Point{}, draw.Src)
+	colour.Draw(base, base.Bounds(), canvas, image.Point{}, draw.Src)
 	N := int(10)
 
 	rgbs := make([][]uint32, 4)

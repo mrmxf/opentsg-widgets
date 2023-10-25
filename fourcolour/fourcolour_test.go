@@ -11,6 +11,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
 	"github.com/mmTristan/opentsg-core/gridgen"
 	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
@@ -44,7 +45,7 @@ func TestFillMethod(t *testing.T) {
 		baseVals, _ := png.Decode(f)
 
 		readImage := image.NewNRGBA64(baseVals.Bounds())
-		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+		colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
 
 		hnormal := sha256.New()
 		htest := sha256.New()

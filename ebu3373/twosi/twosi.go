@@ -45,7 +45,7 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 	// Kick off with filling it all in as grey
 	backFill := grey
 	backFill.UpdateColorSpace(t.ColourSpace)
-	draw.Draw(canvas, canvas.Bounds(), &image.Uniform{&backFill}, image.Point{}, draw.Src)
+	colour.Draw(canvas, canvas.Bounds(), &image.Uniform{&backFill}, image.Point{}, draw.Src)
 
 	xOff, yOff := 0, 0
 	// Flexible option to get figure out where the image is to be placed
@@ -122,8 +122,8 @@ func (t twosiJSON) Generate(canvas draw.Image, opt ...any) error {
 		)
 
 		txtBox.DrawString(v.mask, c, v.Letter)
-		
-		draw.DrawMask(v.mask, v.mask.Bounds(), v.mask, image.Point{}, mid, image.Point{}, draw.Src)
+
+		colour.DrawMask(v.mask, v.mask.Bounds(), v.mask, image.Point{}, mid, image.Point{}, draw.Src)
 		connections[k] = v
 	}
 
@@ -196,10 +196,10 @@ func (lm letterMetrics) letterDrawer(canvas draw.Image, letterColour colour.CNRG
 		diagonalLines(canvas, letterColour, left, right, position, realY, lm.xLength, lm.yDepth, lm.lineOff, lm.yScale)
 
 		// draw the letters last
-		draw.Draw(canvas, canvas.Bounds(), left.mask, image.Point{-position, -yStart}, draw.Over)
+		colour.Draw(canvas, canvas.Bounds(), left.mask, image.Point{-position, -yStart}, draw.Over)
 		position += lm.letterSize + letterGap // 72+24
 
-		draw.Draw(canvas, canvas.Bounds(), right.mask, image.Point{-position, -yStart}, draw.Over)
+		colour.Draw(canvas, canvas.Bounds(), right.mask, image.Point{-position, -yStart}, draw.Over)
 		position += lm.letterSize + channelGap // 72+48
 
 	}

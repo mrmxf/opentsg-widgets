@@ -147,7 +147,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	}
 
 	// Corner := image.Point{-1 * (canvas.Bounds().Max.X - height - 1), -1 * (canvas.Bounds().Max.Y - height - 1)}
-	draw.Draw(canvas, image.Rect(x, y, x+int(f.FontSize), y+int(f.FontSize)), frame, image.Point{}, draw.Over)
+	colour.Draw(canvas, image.Rect(x, y, x+int(f.FontSize), y+int(f.FontSize)), frame, image.Point{}, draw.Over)
 
 	return nil
 }

@@ -2,13 +2,15 @@ package ramps
 
 import (
 	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mrmxf/opentsg-core/config"
 )
 
 type Ramp struct {
 	Gradients        groupContents
 	Groups           []RampProperties
-	WidgetProperties control
+	WidgetProperties control           `json:"widgetProperties,omitempty" yaml:"widgetProperties,omitempty"`
 	ColourSpace      colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	GridLoc          *config.Grid      `json:"grid" yaml:"grid"`
 }
 
 type groupContents struct {
@@ -25,14 +27,14 @@ type textObjectJSON struct {
 }
 
 type RampProperties struct {
-	Colour            string
-	InitialPixelValue int
-	Reverse           bool
+	Colour            string `json:"color" yaml:"color"`
+	InitialPixelValue int    `json:"initialPixelValue" yaml:"initialPixelValue"`
+	Reverse           bool   `json:"reverse" yaml:"reverse"`
 }
 type Gradient struct {
-	Height   int
-	BitDepth int
-	Label    string
+	Height   int    `json:"height" yaml:"height"`
+	BitDepth int    `json:"bitDepth" yaml:"bitDepth"`
+	Label    string `json:"label" yaml:"label"`
 
 	// things that are added on run throughs
 	startPoint int
@@ -44,23 +46,23 @@ type Gradient struct {
 }
 
 type groupSeparator struct {
-	Height int
-	Colour string
+	Height int    `json:"height" yaml:"height"`
+	Colour string `json:"color" yaml:"color"`
 }
 
 type gradientSeparator struct {
-	Colours []string
-	Height  int
+	Colours []string `json:"colors" yaml:"colors"`
+	Height  int      `json:"height" yaml:"height"`
 	// things the user does not assign
 	base control
 	step int
 }
 
 type control struct {
-	MaxBitDepth      int
-	CwRotation       string
-	ObjectFitFill    bool
-	PixelValueRepeat int
+	MaxBitDepth      int    `json:"maxBitDepth" yaml:"maxBitDepth"`
+	CwRotation       string `json:"cwRotation" yaml:"cwRotation"`
+	ObjectFitFill    bool   `json:"objectFitFill" yaml:"objectFitFill"`
+	PixelValueRepeat int    `json:"pixelValueRepeat" yaml:"pixelValueRepeat"`
 	TextProperties   textObjectJSON
 	// These are things the user does not set
 	/*
@@ -74,4 +76,20 @@ type control struct {
 
 	angleType      string
 	truePixelShift float64
+}
+
+var textBoxSchema = []byte(`{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://example.com/product.schema.json",
+	"title": "Allow anything through for tests",
+	"description": "An empty schema to allow custom structs to run through",
+	"type": "object"
+	}`)
+
+func (r Ramp) Alias() string {
+	return r.GridLoc.Alias
+}
+
+func (r Ramp) Location() string {
+	return r.GridLoc.Location
 }

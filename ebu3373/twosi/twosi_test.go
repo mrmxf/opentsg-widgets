@@ -10,6 +10,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
 	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
@@ -34,18 +35,18 @@ func TestChannels(t *testing.T) {
 		for j, off := range offsets {
 
 			chunk := image.NewNRGBA64(myImage.Bounds())
-			draw.Draw(chunk, chunk.Bounds(), &image.Uniform{color.White}, image.Point{}, draw.Src)
+			colour.Draw(chunk, chunk.Bounds(), &image.Uniform{color.White}, image.Point{}, draw.Src)
 
 			maskC := mask(b.X, b.Y, off[0], off[1])
 
-			draw.DrawMask(chunk, chunk.Bounds(), myImage, image.Point{}, maskC, image.Point{}, draw.Over)
+			colour.DrawMask(chunk, chunk.Bounds(), myImage, image.Point{}, maskC, image.Point{}, draw.Over)
 
 			file, _ := os.Open(testBase[i] + let[j] + ".png")
 			// Decode to get the colour values
 			baseVals, _ := png.Decode(file)
 			// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 			readImage := image.NewNRGBA64(baseVals.Bounds())
-			draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+			colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
 
 			hnormal := sha256.New()
 			htest := sha256.New()
