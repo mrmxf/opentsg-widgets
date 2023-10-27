@@ -27,7 +27,9 @@
                     "$ref": "#/$defs/fileinput/tiff"
                 }]
                
-        },
+        },		"ColorSpace" : {
+			"type" : "object"
+		},
         "imagesize": {
             "type": "object",
             "properties": {

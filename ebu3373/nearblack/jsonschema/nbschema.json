@@ -16,6 +16,9 @@
             "description": "This to be labelled as \"builtin.ebu3373/nearblack\", so that the json is correctly configured"
         }
     },
+    "ColorSpace" : {
+        "type" : "object"
+    },
     "required": [
         "grid",
         "type"

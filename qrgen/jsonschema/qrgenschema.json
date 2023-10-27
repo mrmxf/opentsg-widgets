@@ -13,6 +13,9 @@
             "maxLength": 255,
 			"description":"A string that is translated to a qr code, where longer strings generate a larger qr code"
         },
+        "ColorSpace" : {
+			"type" : "object"
+		},
         "type": {
             "type": "string",
             "enum": ["builtin.qrcode"],
