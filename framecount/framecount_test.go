@@ -54,8 +54,8 @@ func TestStringGen(t *testing.T) {
 			hnormal.Write(readImage.Pix)
 			htest.Write(myImage.Pix)
 
-			//	f, _ := os.Create("./testdata/framecount" + expecResult[i] + "2.png")
-			//	colour.PngEncode(f, myImage)
+			//f, _ := os.Create("./testdata/framecount" + expecResult[i] + "2.png")
+			//colour.PngEncode(f, myImage)
 			// GenResult, genErr := intTo4(numberToCheck[i])
 			Convey("Checking the frame count image is generated", t, func() {
 				Convey(fmt.Sprintf("using  %v as integer ", numberToCheck[i]), func() {

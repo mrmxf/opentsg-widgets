@@ -12,7 +12,6 @@ import (
 	"github.com/mmTristan/opentsg-core/anglegen"
 	"github.com/mmTristan/opentsg-core/colour"
 	errhandle "github.com/mmTristan/opentsg-core/errHandle"
-	"github.com/mmTristan/opentsg-core/gridgen"
 	"github.com/mmTristan/opentsg-core/widgethandler"
 )
 
@@ -36,7 +35,7 @@ func RampGenerate(canvasChan chan draw.Image, debug bool, c *context.Context, wg
 // TODO  make it into the open tsg formula
 func (r Ramp) Generate(target draw.Image, opts ...any) error {
 	// calculate the whole height of each one
-	holderc := context.Background()
+	// holderc := context.Background()
 
 	rotation, err := setBase(&r.WidgetProperties, target.Bounds().Max)
 
@@ -44,7 +43,7 @@ func (r Ramp) Generate(target draw.Image, opts ...any) error {
 		return err
 	}
 
-	// validate teh control here
+	// validate the control here
 	//	input.StripeGroup.InterStripe.base = input.WidgetProperties
 
 	totalHeight := r.Gradients.GroupSeparator.Height + ((len(r.Gradients.Gradients) - 1) * r.Gradients.GradientSeparator.Height)
@@ -67,7 +66,7 @@ func (r Ramp) Generate(target draw.Image, opts ...any) error {
 			// draw the header
 			end := int(position + groupStep*float64(rowHeight))
 			rowCut := r.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
-			row := gridgen.ImageGenerator(holderc, rowCut)
+			row := colour.NewNRGBA64(r.ColourSpace, rowCut)
 			//	row := image.NewNRGBA64(rowCut)
 			posPoint := r.WidgetProperties.positionPoint(target.Bounds().Max, end-int(position), int(position))
 			hidden(target, row, r.ColourSpace, posPoint, r.Gradients.GroupSeparator)
@@ -80,7 +79,7 @@ func (r Ramp) Generate(target draw.Image, opts ...any) error {
 
 			end := int(position + groupStep*float64(ramp.Height))
 			rowCut := r.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
-			rrow := gridgen.ImageGenerator(holderc, rowCut)
+			rrow := colour.NewNRGBA64(r.ColourSpace, rowCut)
 			//rrow := image.NewNRGBA64(rowCut)
 
 			ramp.colour = str.Colour
@@ -99,7 +98,7 @@ func (r Ramp) Generate(target draw.Image, opts ...any) error {
 				end := int(position + groupStep*float64(interHeight))
 
 				rowCut := r.WidgetProperties.rowOrColumn(target.Bounds(), end, position)
-				irow := gridgen.ImageGenerator(holderc, rowCut)
+				irow := colour.NewNRGBA64(r.ColourSpace, rowCut)
 				//irow := image.NewNRGBA64(rowCut)
 				altCopy := r.Gradients.GradientSeparator
 				altCopy.base = r.WidgetProperties

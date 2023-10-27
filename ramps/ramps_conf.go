@@ -10,7 +10,7 @@ type Ramp struct {
 	Groups           []RampProperties
 	WidgetProperties control           `json:"widgetProperties,omitempty" yaml:"widgetProperties,omitempty"`
 	ColourSpace      colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
-	GridLoc          *config.Grid      `json:"grid" yaml:"grid"`
+	GridLoc          *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
 }
 
 type groupContents struct {

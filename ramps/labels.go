@@ -126,6 +126,8 @@ func (txt textObjectJSON) labels(target draw.Image, colourSpace colour.ColorSpac
 		intermediate = canvas
 
 	}
+
+	// fmt.Println(intermediate.At(0, 0), txtBox, colourSpace)
 	// add the label
 	colour.Draw(target, target.Bounds(), intermediate, image.Point{}, draw.Over)
 }
