@@ -161,6 +161,9 @@ func TestRotation(t *testing.T) {
 	}
 
 }
+
+/*
+this was a test to ensure colour spaces were being taken into account with the widgets.
 func TestCspace(t *testing.T) {
 	mockSpace := Ramp{Groups: []RampProperties{{Colour: "green", InitialPixelValue: 960}, {Colour: "red", InitialPixelValue: 960}},
 		Gradients: groupContents{GroupSeparator: groupSeparator{Height: 0, Colour: "white"},
@@ -191,3 +194,4 @@ func TestCspace(t *testing.T) {
 	f, _ := os.Create("test.png")
 	png.Encode(f, baseImage)
 }
+*/

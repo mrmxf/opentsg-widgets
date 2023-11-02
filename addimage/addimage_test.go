@@ -216,7 +216,7 @@ func TestFillTypes(t *testing.T) {
 		compare(myImage, readImage)
 
 		// f, _ := os.Create(fmt.Sprintf("./testdata/fill%v.png", i) + ".png")
-		// colour.PngEncode(f, myImage)
+		//colour.PngEncode(f, myImage)
 
 		Convey("Checking the different fill methods of addimage", t, func() {
 			Convey(fmt.Sprintf("Adding the image to a blank canvas and using the fill type of %s", fill), func() {

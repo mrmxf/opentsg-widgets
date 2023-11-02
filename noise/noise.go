@@ -63,7 +63,7 @@ func whitenoise(random *rand.Rand, cspace colour.ColorSpace, canvas draw.Image, 
 			colourPos := uint16(random.Intn(max-min)+min) << 4
 			// Fill := color.NRGBA64{colourPos << 4, colourPos << 4, colourPos << 4, uint16(0xffff)}
 
-			canvas.Set(x, y, &colour.CNRGBA64{R: colourPos, G: colourPos, B: colourPos, A: 0xffff, Space: cspace})
+			canvas.Set(x, y, &colour.CNRGBA64{R: colourPos, G: colourPos, B: colourPos, A: 0xffff, ColorSpace: cspace})
 		}
 	}
 }

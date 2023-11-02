@@ -68,6 +68,8 @@ github.com/mmTristan/opentsg-core v0.0.0-20231027072649-f9a338c54061 h1:aI4QD1Zb
 github.com/mmTristan/opentsg-core v0.0.0-20231027072649-f9a338c54061/go.mod h1:TMh4AIuvZOYmp6I8/ze80gpPtHsnk0ozUwPAfVTYRuQ=
 github.com/mmTristan/opentsg-core v0.0.0-20231027072832-723c736f0bf2 h1:y6qDcM1T/bRWOh6wtT43UfVkgcTYmJxSMP7LxwjW1+o=
 github.com/mmTristan/opentsg-core v0.0.0-20231027072832-723c736f0bf2/go.mod h1:TMh4AIuvZOYmp6I8/ze80gpPtHsnk0ozUwPAfVTYRuQ=
+github.com/mmTristan/opentsg-core v0.0.0-20231102114340-2204bca16d3b h1:mIJ7m5Q2gM5aNM+nWHo9Kdb6wqNaHrdr+u9UVq+p/x4=
+github.com/mmTristan/opentsg-core v0.0.0-20231102114340-2204bca16d3b/go.mod h1:9gTyoZnrSrXu8vxYbVMt6g+N0fUyRJ8CYwtFf0mgzOU=
 github.com/mrmxf/opentsg-core v0.0.0-20230830153622-6d3831e3c1ed h1:N+0FXV0ULEhMdNcLHo9813sielgix024NpQpNF2jYNA=
 github.com/mrmxf/opentsg-core v0.0.0-20230830153622-6d3831e3c1ed/go.mod h1:CG5ZMRC8WLHnChyXKRqHjNBvFzySB5WMiWoLsE/hdXg=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 h1:zYyBkD/k9seD2A7fsi6Oo2LfFZAehjjQMERAvZLEDnQ=

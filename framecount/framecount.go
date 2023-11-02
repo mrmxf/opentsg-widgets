@@ -74,8 +74,8 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 
 	frame := gridgen.ImageGenerator(*c, image.Rect(0, 0, square.X, square.Y))
 
-	defaultBackground := colour.CNRGBA64{R: uint16(195) << 8, G: uint16(195) << 8, B: uint16(195) << 8, A: uint16(195) << 8, Space: f.ColourSpace}
-	defaulText := colour.CNRGBA64{A: 65535, Space: f.ColourSpace}
+	defaultBackground := colour.CNRGBA64{R: uint16(195) << 8, G: uint16(195) << 8, B: uint16(195) << 8, A: uint16(195) << 8, ColorSpace: f.ColourSpace}
+	defaulText := colour.CNRGBA64{A: 65535, ColorSpace: f.ColourSpace}
 
 	txtBox := text.NewTextboxer(f.ColourSpace,
 		text.WithFill(text.FillTypeFull),

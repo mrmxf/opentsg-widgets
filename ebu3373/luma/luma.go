@@ -38,15 +38,15 @@ func (l lumaJSON) Generate(canvas draw.Image, opt ...any) error {
 		// Check the x position and set the relevant colour
 		switch {
 		case x < blockWidth:
-			setColour = colour.CNRGBA64{R: 4096, G: 4096, B: 4096, A: 0xffff, Space: l.ColourSpace}
+			setColour = colour.CNRGBA64{R: 4096, G: 4096, B: 4096, A: 0xffff, ColorSpace: l.ColourSpace}
 		case x >= (blockWidth + int(math.Ceil(wScale3*1015.0))):
-			setColour = colour.CNRGBA64{R: 46144, G: 46144, B: 46144, A: 0xffff, Space: l.ColourSpace}
+			setColour = colour.CNRGBA64{R: 46144, G: 46144, B: 46144, A: 0xffff, ColorSpace: l.ColourSpace}
 		case x >= blockWidth && x < (blockWidth+int(math.Ceil(wScale3*1015.0))):
 			// Calculate the changer per pixel and add to the base off 4
 			pixVal := (float32(x-blockWidth) / float32(wScale3)) + 4.0
 			// Floor the value and assign it as a 16 bit value
 			// Aces.RGBA128{uint16(pixVal) << 6, uint16(pixVal) << 6, uint16(pixVal) << 6, 0xffff}
-			setColour = colour.CNRGBA64{R: uint16(pixVal) << 6, G: uint16(pixVal) << 6, B: uint16(pixVal) << 6, A: 0xffff, Space: l.ColourSpace}
+			setColour = colour.CNRGBA64{R: uint16(pixVal) << 6, G: uint16(pixVal) << 6, B: uint16(pixVal) << 6, A: 0xffff, ColorSpace: l.ColourSpace}
 		}
 
 		// Set for the same colour for the depth of the ramp

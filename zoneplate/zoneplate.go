@@ -62,7 +62,7 @@ func (z zoneplateJSON) Generate(canvas draw.Image, opts ...any) error {
 			// Assign colour as an integer between 0 and 4095 as g scaled out of
 			colourPos := uint16(4095*((zone+1)/2)) << 4 // Uint16 acts as a floor function
 
-			fill := colour.CNRGBA64{R: colourPos, G: colourPos, B: colourPos, A: 0xffff, Space: z.ColourSpace}
+			fill := colour.CNRGBA64{R: colourPos, G: colourPos, B: colourPos, A: 0xffff, ColorSpace: z.ColourSpace}
 			canvas.Set(int(j+zv.xPos), int(i+zv.yPos), &fill)
 		}
 	}
