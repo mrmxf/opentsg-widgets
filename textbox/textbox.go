@@ -1,3 +1,4 @@
+// package textbox generates textboxes.
 package textbox
 
 import (
@@ -13,12 +14,6 @@ import (
 	texter "github.com/mmTristan/opentsg-widgets/text"
 )
 
-/*
-textbox 2 has the border on the outside
-then the textbox in the middle
-
-*/
-
 const (
 	widgetType = "builtin.textbox"
 )
@@ -33,12 +28,7 @@ func TBGenerate(canvasChan chan draw.Image, debug bool, c *context.Context, wg, 
 
 func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) error {
 	// calculate the border here
-	/*
-	 take the percentage of whatevers thinner?
 
-
-
-	*/
 	bounds := canvas.Bounds().Max
 	width, height := (float64(bounds.X)*tb.BorderSize)/100, (float64(bounds.Y)*tb.BorderSize)/100
 

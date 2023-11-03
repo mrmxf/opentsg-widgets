@@ -1,3 +1,4 @@
+// Pckage ramps generates pixel gradient ramps
 package ramps
 
 import (

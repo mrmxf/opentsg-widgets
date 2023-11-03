@@ -18,7 +18,7 @@ import (
 func TestTextAlignments(t *testing.T) {
 	defaultContext := context.Background()
 
-	baseTextBox := TextboxJSON{font: "title", textColour: &colour.CNRGBA64{R: 194 << 8, G: 166 << 8, B: 73 << 8, A: 0xffff}, backgroundColour: &colour.CNRGBA64{R: 0x00f0, G: 0x00f0, B: 0x00f0, A: 0xffff}}
+	baseTextBox := TextboxProperties{font: "title", textColour: &colour.CNRGBA64{R: 194 << 8, G: 166 << 8, B: 73 << 8, A: 0xffff}, backgroundColour: &colour.CNRGBA64{R: 0x00f0, G: 0x00f0, B: 0x00f0, A: 0xffff}}
 
 	xPostitions := []string{AlignmentLeft, AlignmentRight, AlignmentMiddle}
 	xResults := []string{"xLeft.png", "xRight.png", "xMiddle.png"}

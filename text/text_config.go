@@ -17,7 +17,8 @@ type TextboxJSON struct {
 	YAlignment  string
 }*/
 
-type TextboxJSON struct {
+// TextboxProperties contains all the properties for generating a textbox
+type TextboxProperties struct {
 	// Type       string       `json:"type" yaml:"type"`
 	font             string            // `json:"font" yaml:"font"`
 	colourSpace      colour.ColorSpace //`json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
@@ -28,10 +29,11 @@ type TextboxJSON struct {
 	yAlignment       string
 }
 
-// NewText
-// the order in which the withs are specifired are the orderin which the executed
-func NewTextboxer(ColourSpace colour.ColorSpace, options ...func(*TextboxJSON)) *TextboxJSON {
-	txt := &TextboxJSON{colourSpace: ColourSpace}
+// NewTextBoxer generates a new TextBoxProperties object.
+// Tailored to the options provided and the
+// order in which the options are specified are the order in which the executed
+func NewTextboxer(ColourSpace colour.ColorSpace, options ...func(*TextboxProperties)) *TextboxProperties {
+	txt := &TextboxProperties{colourSpace: ColourSpace}
 	for _, opt := range options {
 		opt(txt)
 	}
@@ -39,58 +41,67 @@ func NewTextboxer(ColourSpace colour.ColorSpace, options ...func(*TextboxJSON)) 
 }
 
 // WithFill sets the fill type
-func WithFill(fill string) func(t *TextboxJSON) {
+// of full or relaxed.
+func WithFill(fill string) func(t *TextboxProperties) {
 
-	return func(t *TextboxJSON) {
+	return func(t *TextboxProperties) {
 		t.fillType = fill
 	}
 }
 
-func WithFont(font string) func(t *TextboxJSON) {
+// WithFont sets the font, this can be a web font, a locally
+// stored font or one of the textbox defaults.
+func WithFont(font string) func(t *TextboxProperties) {
 
-	return func(t *TextboxJSON) {
+	return func(t *TextboxProperties) {
 		t.font = font
 	}
 }
 
-func WithTextColourString(colour string) func(t *TextboxJSON) {
+// WithTextColourString sets the text colour as one of the openTSG string colours
+func WithTextColourString(colour string) func(t *TextboxProperties) {
 
-	return func(t *TextboxJSON) {
+	return func(t *TextboxProperties) {
 		c := colourgen.HexToColour(colour, t.colourSpace)
 		t.textColour = c
 	}
 }
 
-func WithTextColour(colour *colour.CNRGBA64) func(t *TextboxJSON) {
+// WithTextColour sets the color as a *colour.CNRGBA64
+func WithTextColour(colour *colour.CNRGBA64) func(t *TextboxProperties) {
 
-	return func(t *TextboxJSON) {
+	return func(t *TextboxProperties) {
 		t.textColour = colour
 	}
 }
 
-func WithBackgroundColourString(colour string) func(t *TextboxJSON) {
+// WithBackgroundColourString sets the text colour as one of the openTSG string colours
+func WithBackgroundColourString(colour string) func(t *TextboxProperties) {
 
-	return func(t *TextboxJSON) {
+	return func(t *TextboxProperties) {
 		c := colourgen.HexToColour(colour, t.colourSpace)
 		t.backgroundColour = c
 	}
 }
 
-func WithBackgroundColour(colour *colour.CNRGBA64) func(t *TextboxJSON) {
+// WithBackGroundColour sets the color as a *colour.CNRGBA64
+func WithBackgroundColour(colour *colour.CNRGBA64) func(t *TextboxProperties) {
 
-	return func(t *TextboxJSON) {
+	return func(t *TextboxProperties) {
 		t.backgroundColour = colour
 	}
 }
 
-func WithXAlignment(x string) func(t *TextboxJSON) {
-	return func(t *TextboxJSON) {
+// WithXAlignment sets the x alignment of the textbox
+func WithXAlignment(x string) func(t *TextboxProperties) {
+	return func(t *TextboxProperties) {
 		t.xAlignment = x
 	}
 }
 
-func WithYAlignment(y string) func(t *TextboxJSON) {
-	return func(t *TextboxJSON) {
+// WithYAlignment sets the x alignment of the textbox
+func WithYAlignment(y string) func(t *TextboxProperties) {
+	return func(t *TextboxProperties) {
 		t.yAlignment = y
 	}
 }

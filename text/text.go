@@ -1,3 +1,5 @@
+// package text is the inbuilt OpenTSG text handler.
+// All text should be handled through this module
 package text
 
 import (
@@ -157,11 +159,13 @@ func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context,
 }
 */
 
-func (t TextboxJSON) DrawString(canvas draw.Image, tsgContext *context.Context, label string) error {
+// DrawString draws a single string in a textbox
+func (t TextboxProperties) DrawString(canvas draw.Image, tsgContext *context.Context, label string) error {
 	return t.DrawStrings(canvas, tsgContext, []string{label})
 }
 
-func (t TextboxJSON) DrawStrings(canvas draw.Image, tsgContext *context.Context, labels []string) error {
+// drawstring draws multiple lines of text in a textbox
+func (t TextboxProperties) DrawStrings(canvas draw.Image, tsgContext *context.Context, labels []string) error {
 
 	// check somethings been assigned first
 	if t.backgroundColour != nil {
