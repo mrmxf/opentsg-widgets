@@ -15,7 +15,7 @@ const wLibrary = "builtin"
 const hooks = "[]"*/
 
 type frameJSON struct {
-	Type         string            `json:"type" yaml:"type"`
+//	Type         string            `json:"type" yaml:"type"`
 	FrameCounter bool              `json:"framecounter,omitempty" yaml:"framecounter,omitempty"`
 	Imgpos       interface{}       `json:"gridPosition" yaml:"gridPosition"`
 	TextColour   string            `json:"textcolor" yaml:"textcolor"`

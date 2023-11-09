@@ -51,7 +51,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	}
 
 	if f.Font == "" {
-		f.Font = "pixel"
+		f.Font = text.FontPixel
 	}
 
 	if len(extraOpts) != 1 {
