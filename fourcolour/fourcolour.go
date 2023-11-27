@@ -15,10 +15,6 @@ import (
 	"github.com/mmTristan/opentsg-core/widgethandler"
 )
 
-const (
-	widgetType = "builtin.fourcolor"
-)
-
 
 const (
 	widgetType = "builtin.fourcolor"

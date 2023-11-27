@@ -11,14 +11,9 @@ import (
 	"testing"
 
 	"github.com/boombuler/barcode/qr"
-<<<<<<< HEAD
 	"github.com/mmTristan/opentsg-core/colour"
 	"github.com/mmTristan/opentsg-core/config"
 	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
-=======
-	"github.com/mrmxf/opentsg-core/config"
-	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
->>>>>>> 29d264318c77ad454dd1c3699c885520f06e387d
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -38,20 +33,12 @@ func TestQrGen(t *testing.T) {
 		file, _ := os.Open("./testdata/zonepi.png")
 		baseVals, _ := png.Decode(file)
 		readImage := image.NewNRGBA64(baseVals.Bounds())
-<<<<<<< HEAD
 		colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{}, draw.Over)
-=======
-		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{}, draw.Over)
->>>>>>> 29d264318c77ad454dd1c3699c885520f06e387d
 		// Get the image to compare against
 		fileCont, _ := os.Open(fileCheck[i])
 		baseCont, _ := png.Decode(fileCont)
 		control := image.NewNRGBA64(baseCont.Bounds())
-<<<<<<< HEAD
 		colour.Draw(control, control.Bounds(), baseCont, image.Point{}, draw.Over)
-=======
-		draw.Draw(control, control.Bounds(), baseCont, image.Point{}, draw.Over)
->>>>>>> 29d264318c77ad454dd1c3699c885520f06e387d
 		// Generate the image and the string
 		var position config.Position
 		position.X = num[0]
@@ -92,11 +79,7 @@ func TestQrGen(t *testing.T) {
 	file, _ := os.Open("./testdata/full.png")
 	baseVals, _ := png.Decode(file)
 	readImage := image.NewNRGBA64(baseVals.Bounds())
-<<<<<<< HEAD
 	colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{}, draw.Over)
-=======
-	draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{}, draw.Over)
->>>>>>> 29d264318c77ad454dd1c3699c885520f06e387d
 
 	hnormal := sha256.New()
 	htest := sha256.New()

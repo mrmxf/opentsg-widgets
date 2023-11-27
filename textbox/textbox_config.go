@@ -2,7 +2,7 @@ package textbox
 
 import (
 	"github.com/mmTristan/opentsg-core/colour"
-	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mmTristan/opentsg-core/config"
 )
 
 type TextboxJSON struct {

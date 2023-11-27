@@ -12,9 +12,6 @@ import (
 	"github.com/mmTristan/opentsg-core/widgethandler"
 )
 
-const (
-	widgetType = "builtin.ebu3373/nearblack"
-)
 
 const (
 	widgetType = "builtin.ebu3373/nearblack"

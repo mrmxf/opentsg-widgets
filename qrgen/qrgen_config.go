@@ -16,20 +16,12 @@ const hooks = "[framecount]"*/
 
 type qrcodeJSON struct {
 	// Type    string             `json:"type" yaml:"type"`
-<<<<<<< HEAD
 	Code        string             `json:"code" yaml:"code"`
 	Imgpos      *config.Position   `json:"gridPosition,omitempty" yaml:"gridPosition,omitempty"`
 	Size        *sizeJSON          `json:"size,omitempty" yaml:"size,omitempty"`
 	Query       *[]objectQueryJSON `json:"objectQuery,omitempty" yaml:"objectQuery,omitempty"`
 	GridLoc     *config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
 	ColourSpace colour.ColorSpace  `json:"ColorSpace" yaml:"ColorSpace"`
-=======
-	Code    string             `json:"code" yaml:"code"`
-	Imgpos  *config.Position   `json:"gridPosition,omitempty" yaml:"gridPosition,omitempty"`
-	Size    *sizeJSON          `json:"size,omitempty" yaml:"size,omitempty"`
-	Query   *[]objectQueryJSON `json:"objectQuery,omitempty" yaml:"objectQuery,omitempty"`
-	GridLoc *config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
->>>>>>> 29d264318c77ad454dd1c3699c885520f06e387d
 }
 
 type sizeJSON struct {

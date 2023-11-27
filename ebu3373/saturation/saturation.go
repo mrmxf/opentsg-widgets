@@ -13,9 +13,6 @@ import (
 	"github.com/mmTristan/opentsg-core/widgethandler"
 )
 
-const (
-	widgetType = "builtin.ebu3373/saturation"
-)
 
 const (
 	widgetType = "builtin.ebu3373/saturation"

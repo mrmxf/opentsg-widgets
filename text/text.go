@@ -15,7 +15,7 @@ import (
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
 	"github.com/mmTristan/opentsg-core/colour"
-	"github.com/mrmxf/opentsg-core/config/core"
+	"github.com/mmTristan/opentsg-core/config/core"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
 )

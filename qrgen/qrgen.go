@@ -20,10 +20,6 @@ const (
 	widgetType = "builtin.qrcode"
 )
 
-const (
-	widgetType = "builtin.qrcode"
-)
-
 func QrGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
 	conf := widgethandler.GenConf[qrcodeJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType, ExtraOpt: []any{c}}
@@ -77,13 +73,8 @@ func (qrC qrcodeJSON) Generate(canvas draw.Image, opt ...any) error {
 	} else if y > b.Y-code.Bounds().Max.Y {
 		return fmt.Errorf("0133 the y position %v is greater than the y boundary of %v", y, canvas.Bounds().Max.Y)
 	}
-<<<<<<< HEAD
 	// draw qr code as a mid point, or make colour space agnostic
 	colour.Draw(canvas, canvas.Bounds().Add(image.Point{x, y}), code, image.Point{}, draw.Over)
-=======
-
-	draw.Draw(canvas, canvas.Bounds().Add(image.Point{x, y}), code, image.Point{}, draw.Over)
->>>>>>> 29d264318c77ad454dd1c3699c885520f06e387d
 
 	return nil
 }

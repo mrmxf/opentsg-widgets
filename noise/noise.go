@@ -18,10 +18,6 @@ const (
 	widgetType = "builtin.noise"
 )
 
-const (
-	widgetType = "builtin.noise"
-)
-
 // NGenerator generates images of noise
 func NGenerator(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()

@@ -20,10 +20,6 @@ const (
 	widgetType = "builtin.zoneplate"
 )
 
-const (
-	widgetType = "builtin.zoneplate"
-)
-
 // zoneGen takes a canvas and then returns an image of the zone plate layered ontop of the image
 func ZoneGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()

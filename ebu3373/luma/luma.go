@@ -16,10 +16,6 @@ const (
 	widgetType = "builtin.ebu3373/luma"
 )
 
-const (
-	widgetType = "builtin.ebu3373/luma"
-)
-
 func Generate(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
 	conf := widgethandler.GenConf[lumaJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType}

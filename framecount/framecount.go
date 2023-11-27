@@ -24,10 +24,6 @@ const (
 	widgetType = "builtin.framecounter"
 )
 
-const (
-	widgetType = "builtin.framecounter"
-)
-
 func CountGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
 	opts := []any{c}
