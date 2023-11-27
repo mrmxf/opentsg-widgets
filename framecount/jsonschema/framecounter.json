@@ -10,6 +10,8 @@
 				"builtin.framecounter"
 			],
 			"description": "This to be labelled as \"builtin.framecounter\", so that the json is correctly configured"
+		},		"ColorSpace" : {
+			"type" : "object"
 		},
 		"grid": {
             "$ref": "#/$defs/gridschema"

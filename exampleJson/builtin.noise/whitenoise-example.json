@@ -1,5 +1,13 @@
 {
     "noisetype": "white noise",
     "minimum": 0,
-    "maximum": 4095
+    "maximum": 4095,
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    }
 }

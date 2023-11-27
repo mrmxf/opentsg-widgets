@@ -12,15 +12,12 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/golang/freetype"
-	"github.com/golang/freetype/truetype"
-	"github.com/mrmxf/opentsg-core/colourgen"
-	errhandle "github.com/mrmxf/opentsg-core/errHandle"
-	"github.com/mrmxf/opentsg-core/widgethandler"
-	"github.com/mrmxf/opentsg-widgets/textbox"
-
-	"golang.org/x/image/font"
-	"golang.org/x/image/math/fixed"
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-core/colourgen"
+	errhandle "github.com/mmTristan/opentsg-core/errHandle"
+	"github.com/mmTristan/opentsg-core/gridgen"
+	"github.com/mmTristan/opentsg-core/widgethandler"
+	"github.com/mmTristan/opentsg-widgets/text"
 )
 
 const (
@@ -54,7 +51,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	}
 
 	if f.Font == "" {
-		f.Font = "pixel"
+		f.Font = text.FontPixel
 	}
 
 	if len(extraOpts) != 1 {
@@ -66,52 +63,70 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 		return fmt.Errorf("0155 configuration error when assiging framecount context")
 	}
 
-	fontByte := textbox.FontSelector(c, f.Font)
-	fontain, err := freetype.ParseFont(fontByte)
-
-	if err != nil {
-		return fmt.Errorf("0152 %v", err)
-	}
 	// Size of the text in pixels to font
-	f.FontSize = (float64(b.Y) * (f.FontSize / 100)) / 0.75 // Convert from pixels to points
+	f.FontSize = (float64(b.Y) * (f.FontSize / 100)) // keep as pixels
+
 	if b.Y > b.X {
 		f.FontSize *= (float64(b.X) / float64(b.Y)) // Scale the font size for narrow grids
 	}
 
-	opt := truetype.Options{Size: f.FontSize, SubPixelsY: 8, Hinting: 2}
-	myFace := truetype.NewFace(fontain, &opt)
+	square := image.Point{int(f.FontSize), int(f.FontSize)}
+
+	frame := gridgen.ImageGenerator(*c, image.Rect(0, 0, square.X, square.Y))
+
+	defaultBackground := colour.CNRGBA64{R: uint16(195) << 8, G: uint16(195) << 8, B: uint16(195) << 8, A: uint16(195) << 8, ColorSpace: f.ColourSpace}
+	defaulText := colour.CNRGBA64{A: 65535, ColorSpace: f.ColourSpace}
+
+	txtBox := text.NewTextboxer(f.ColourSpace,
+		text.WithFill(text.FillTypeFull),
+		text.WithFont(text.FontPixel),
+		text.WithBackgroundColour(&defaultBackground),
+		text.WithTextColour(&defaulText),
+	)
+
+	// update the colours if required
+	if f.BackColour != "" {
+		text.WithBackgroundColourString(f.BackColour)(txtBox)
+	}
+
+	if f.TextColour != "" {
+		text.WithTextColourString(f.TextColour)(txtBox)
+	}
 
 	// MyFont.Advance
 	mes, err := intTo4(pos())
 	if err != nil {
 		return err
 	}
-	// Get the width of 0
-	width, _ := myFace.GlyphAdvance('0')
-	height := (width.Ceil()) * len(mes)
-	// Keep it square with +1 for tolerance
-	square := image.Point{height + 1, height + 1}
 
-	frame := image.NewNRGBA64(image.Rect(0, 0, square.X, square.Y))
-	background := userColour(f.BackColour, color.NRGBA64{uint16(195) << 8, uint16(195) << 8, uint16(195) << 8, uint16(195) << 8})
-	// Generate a semi transparent grey background
-	for i := 0; i < frame.Bounds().Max.Y; i++ {
-		for j := 0; j < frame.Bounds().Max.X; j++ {
-			frame.SetNRGBA64(j, i, background)
+	err = txtBox.DrawString(frame, c, mes)
+	if err != nil {
+		return err
+	}
+
+	/*
+		background := userColour(f.BackColour, defaultBackground, f.ColourSpace)
+		// Generate a semi transparent grey background
+		for i := 0; i < frame.Bounds().Max.Y; i++ {
+			for j := 0; j < frame.Bounds().Max.X; j++ {
+				frame.Set(j, i, background)
+			}
+		}*/
+
+	// fmt.Println(f.TextProperties.DrawString(frame, c, mes))
+	// fmt.Println(mes, f.TextProperties.Textc)
+	/*
+		text := userColour(f.TextColour, colour.CNRGBA64{A: 65535, Space: f.ColourSpace}, f.ColourSpace)
+		yOff := (float64(square.Y) / 29) * 5 // This constant is to place the y at the text at the center of the square for each height
+		point := fixed.Point26_6{X: fixed.Int26_6(1 * 64), Y: fixed.Int26_6(((float64(height) / 2) + yOff) * 64)}
+		d := &font.Drawer{
+			Dst:  frame,
+			Src:  image.NewUniform(image.NewUniform(text)),
+			Face: myFace,
+			Dot:  point,
 		}
-	}
 
-	text := userColour(f.TextColour, color.NRGBA64{0, 0, 0, 65535})
-	yOff := (float64(square.Y) / 29) * 5 // This constant is to place the y at the text at the center of the square for each height
-	point := fixed.Point26_6{X: fixed.Int26_6(1 * 64), Y: fixed.Int26_6(((float64(height) / 2) + yOff) * 64)}
-	d := &font.Drawer{
-		Dst:  frame,
-		Src:  image.NewUniform(image.NewUniform(text)),
-		Face: myFace,
-		Dot:  point,
-	}
-
-	d.DrawString(mes)
+		d.DrawString(mes)*/
 
 	fb := frame.Bounds().Max
 	// If pos not given then draw it here
@@ -132,19 +147,19 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	}
 
 	// Corner := image.Point{-1 * (canvas.Bounds().Max.X - height - 1), -1 * (canvas.Bounds().Max.Y - height - 1)}
-	draw.Draw(canvas, canvas.Bounds(), frame, image.Point{-x, -y}, draw.Over)
+	colour.Draw(canvas, image.Rect(x, y, x+int(f.FontSize), y+int(f.FontSize)), frame, image.Point{}, draw.Over)
 
 	return nil
 }
 
-func userColour(input string, defaultC color.NRGBA64) color.NRGBA64 {
-	var gen color.NRGBA64
+func userColour(input string, defaultC colour.CNRGBA64, colourSpace colour.ColorSpace) color.Color {
+	var gen color.Color // colour.CNRGBA64
 
 	if input == "" {
-		gen = defaultC
+		gen = &defaultC
 	} else {
-		inter := colourgen.HexToColour(input)
-		gen = colourgen.ConvertNRGBA64(inter)
+		gen = colourgen.HexToColour(input, colourSpace)
+		// gen = colourgen.ConvertNRGBA64(inter)
 	}
 
 	return gen

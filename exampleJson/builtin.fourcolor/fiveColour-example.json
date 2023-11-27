@@ -5,6 +5,14 @@
         "#0000FF",
         "#FFFF00"
     ],
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    },
     "grid": {
         "location": "Nothing"
     }

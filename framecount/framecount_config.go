@@ -3,7 +3,8 @@ package framecount
 import (
 	_ "embed"
 
-	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-core/config"
 )
 
 /*
@@ -14,14 +15,16 @@ const wLibrary = "builtin"
 const hooks = "[]"*/
 
 type frameJSON struct {
-	Type         string       `json:"type" yaml:"type"`
-	FrameCounter bool         `json:"framecounter,omitempty" yaml:"framecounter,omitempty"`
-	Imgpos       interface{}  `json:"gridPosition" yaml:"gridPosition"`
-	TextColour   string       `json:"textcolor" yaml:"textcolor"`
-	BackColour   string       `json:"backgroundcolor" yaml:"backgroundcolor"`
-	Font         string       `json:"font" yaml:"font"`
-	FontSize     float64      `json:"fontsize" yaml:"fontsize"`
-	GridLoc      *config.Grid `json:"grid,omitempty" yaml:"grid,omitempty"`
+//	Type         string            `json:"type" yaml:"type"`
+	FrameCounter bool              `json:"framecounter,omitempty" yaml:"framecounter,omitempty"`
+	Imgpos       interface{}       `json:"gridPosition" yaml:"gridPosition"`
+	TextColour   string            `json:"textcolor" yaml:"textcolor"`
+	BackColour   string            `json:"backgroundcolor" yaml:"backgroundcolor"`
+	Font         string            `json:"font" yaml:"font"`
+	FontSize     float64           `json:"fontsize" yaml:"fontsize"`
+	GridLoc      *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
+	ColourSpace  colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+
 	//	DesignScale  string       `json:"designScale" yaml:"designScale"`
 	// This is added in for metadata purposes
 	FrameNumber int `json:"framenumber"`

@@ -14,7 +14,9 @@
                 "builtin.noise"
             ],
             "description": "This to be labelled as \"builtin.noise\", so that the json is correctly configured"
-        },
+        },		"ColorSpace" : {
+			"type" : "object"
+		},
         "minimum": {
             "description": "the minimum rgb value to be used as noise",
             "type": "integer",

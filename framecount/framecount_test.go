@@ -12,7 +12,8 @@ import (
 	"runtime/debug"
 	"testing"
 
-	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
+	"github.com/mmTristan/opentsg-core/colour"
+	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -27,8 +28,8 @@ func TestStringGen(t *testing.T) {
 		numberToCheck := []int{0, 12, 134, 5666}
 		expecResult := []string{"0000", "0012", "0134", "5666"}
 		explanation := []string{"0000", "0012", "0134", "5666"}
-		var yesFrame frameJSON
-		yesFrame.FrameCounter = true
+		yesFrame := frameJSON{FrameCounter: true, FontSize: 100}
+		//	yesFrame.FrameCounter = true
 
 		for i := range numberToCheck {
 			// Generate the image and the string
@@ -46,14 +47,15 @@ func TestStringGen(t *testing.T) {
 
 			// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 			readImage := image.NewNRGBA64(baseVals.Bounds())
-			draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Src)
+			colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Src)
 			// Make a hash of the pixels of each image
 			hnormal := sha256.New()
 			htest := sha256.New()
 			hnormal.Write(readImage.Pix)
 			htest.Write(myImage.Pix)
-			// F, _ := os.Create("./testdata/framecount" + expecResult[i] + "2.png")
-			// Png.Encode(f, myImage)
+
+			//f, _ := os.Create("./testdata/framecount" + expecResult[i] + "2.png")
+			//colour.PngEncode(f, myImage)
 			// GenResult, genErr := intTo4(numberToCheck[i])
 			Convey("Checking the frame count image is generated", t, func() {
 				Convey(fmt.Sprintf("using  %v as integer ", numberToCheck[i]), func() {
@@ -178,7 +180,7 @@ func TestInterpret(t *testing.T) {
 		body := []byte(testbody)
 		var f frameJSON
 		json.Unmarshal(body, &f)
-	//	fmt.Println(f.Imgpos)
+		//	fmt.Println(f.Imgpos)
 		x, y := userPos(f.Imgpos.(map[string]interface{}), image.Point{100, 100}, image.Point{10, 10})
 		// Generate the image and the string
 

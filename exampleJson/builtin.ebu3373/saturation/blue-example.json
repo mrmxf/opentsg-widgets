@@ -2,6 +2,14 @@
     "colors": [
         "blue"
     ],
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    },
     "grid": {
         "alias": "testlocation"
     }

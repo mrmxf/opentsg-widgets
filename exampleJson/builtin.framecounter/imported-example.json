@@ -1,10 +1,17 @@
 {
-    "type": "",
     "framecounter": true,
     "gridPosition": null,
     "textcolor": "",
     "backgroundcolor": "",
     "font": "./testdata/Timmy-Regular.ttf",
     "fontsize": 40,
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    },
     "framenumber": 0
 }

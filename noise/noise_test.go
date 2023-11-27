@@ -9,7 +9,8 @@ import (
 	"os"
 	"testing"
 
-	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
+	"github.com/mmTristan/opentsg-core/colour"
+	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -35,7 +36,7 @@ func TestZoneGenAngle(t *testing.T) {
 
 		// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 		readImage := image.NewNRGBA64(baseVals.Bounds())
-		draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+		colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
 
 		// Make a hash of the pixels of each image
 		hnormal := sha256.New()

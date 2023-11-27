@@ -1,10 +1,14 @@
 package geometrytext
 
-import "github.com/mrmxf/opentsg-core/config"
+import (
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-core/config"
+)
 
 type geomTextJSON struct {
-	TextColour string       `json:"textColor" yaml:"textColor"`
-	GridLoc    *config.Grid `json:"grid,omitempty" yaml:"grid,omitempty"`
+	TextColour  string            `json:"textColor" yaml:"textColor"`
+	GridLoc     *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
+	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
 }
 
 var schemaInit = []byte(`{

@@ -1,5 +1,13 @@
 {
     "platetype": "sweep",
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    },
     "startcolor": "white",
     "angle": null,
     "mask": ""

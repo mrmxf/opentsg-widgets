@@ -8,10 +8,11 @@ import (
 	"image/draw"
 	"sync"
 
-	"github.com/mrmxf/opentsg-core/colourgen"
-	errhandle "github.com/mrmxf/opentsg-core/errHandle"
-	"github.com/mrmxf/opentsg-core/gridgen"
-	"github.com/mrmxf/opentsg-core/widgethandler"
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-core/colourgen"
+	errhandle "github.com/mmTristan/opentsg-core/errHandle"
+	"github.com/mmTristan/opentsg-core/gridgen"
+	"github.com/mmTristan/opentsg-core/widgethandler"
 )
 
 
@@ -37,7 +38,7 @@ func (f fourJSON) Generate(canvas draw.Image, opt ...any) error {
 	pallette := make([]color.Color, len(f.Colourpallette))
 
 	for i, c := range f.Colourpallette {
-		pallette[i] = colourgen.HexToColour(c)
+		pallette[i] = colourgen.HexToColour(c, f.ColourSpace)
 	}
 
 	var c *context.Context
@@ -97,7 +98,7 @@ func (f fourJSON) Generate(canvas draw.Image, opt ...any) error {
 	for _, node := range filled {
 		setcolour := node.color
 		// fmt.Println(node.area, canvas.Bounds(), setcolour)
-		draw.Draw(canvas, node.area, &image.Uniform{pallette[setcolour-1]}, image.Point{}, draw.Src)
+		colour.Draw(canvas, node.area, &image.Uniform{pallette[setcolour-1]}, image.Point{}, draw.Src)
 
 	}
 	// TODO add timeout feature with user and other input

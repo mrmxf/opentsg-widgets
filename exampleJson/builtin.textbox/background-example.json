@@ -1,0 +1,23 @@
+{
+    "text": [
+        "sample",
+        "text"
+    ],
+    "grid": null,
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    },
+    "bordercolor": "",
+    "bordersize": 0,
+    "font": "header",
+    "backgroundcolor": "rgb(255,255,0)",
+    "textcolor": "",
+    "fillType": "",
+    "xAlignment": "",
+    "yAlignment": ""
+}

@@ -3,7 +3,8 @@ package qrgen
 import (
 	_ "embed"
 
-	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-core/config"
 )
 
 /*
@@ -15,11 +16,12 @@ const hooks = "[framecount]"*/
 
 type qrcodeJSON struct {
 	// Type    string             `json:"type" yaml:"type"`
-	Code    string             `json:"code" yaml:"code"`
-	Imgpos  *config.Position   `json:"gridPosition,omitempty" yaml:"gridPosition,omitempty"`
-	Size    *sizeJSON          `json:"size,omitempty" yaml:"size,omitempty"`
-	Query   *[]objectQueryJSON `json:"objectQuery,omitempty" yaml:"objectQuery,omitempty"`
-	GridLoc *config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
+	Code        string             `json:"code" yaml:"code"`
+	Imgpos      *config.Position   `json:"gridPosition,omitempty" yaml:"gridPosition,omitempty"`
+	Size        *sizeJSON          `json:"size,omitempty" yaml:"size,omitempty"`
+	Query       *[]objectQueryJSON `json:"objectQuery,omitempty" yaml:"objectQuery,omitempty"`
+	GridLoc     *config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
+	ColourSpace colour.ColorSpace  `json:"ColorSpace" yaml:"ColorSpace"`
 }
 
 type sizeJSON struct {

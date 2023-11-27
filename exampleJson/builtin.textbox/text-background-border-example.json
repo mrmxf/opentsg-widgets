@@ -1,0 +1,23 @@
+{
+    "text": [
+        "sample",
+        "text"
+    ],
+    "grid": null,
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    },
+    "bordercolor": "#000000",
+    "bordersize": 5,
+    "font": "title",
+    "backgroundcolor": "#99AD49",
+    "textcolor": "rgb12(3000,1401,1116)",
+    "fillType": "",
+    "xAlignment": "right",
+    "yAlignment": "bottom"
+}

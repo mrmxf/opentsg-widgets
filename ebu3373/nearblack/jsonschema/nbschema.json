@@ -8,6 +8,9 @@
             "$ref": "#/$defs/gridschema",
             "description": "The coordiantes of the location to be added, a->p is the x axis, 0->9 are the allowed y axis parameters. Alternativley an alias can be used if already declared"
         },
+        "ColorSpace" : {
+            "type" : "object"
+        },
         "type": {
             "type": "string",
             "enum": [
@@ -16,6 +19,7 @@
             "description": "This to be labelled as \"builtin.ebu3373/nearblack\", so that the json is correctly configured"
         }
     },
+    
     "required": [
         "grid",
         "type"

@@ -1,5 +1,13 @@
 {
     "grid": {
         "alias": "testlocation"
+    },
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
     }
 }

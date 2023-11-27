@@ -1,5 +1,13 @@
 {
     "platetype": "circular",
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    },
     "startcolor": "grey",
     "angle": null,
     "mask": "circle"

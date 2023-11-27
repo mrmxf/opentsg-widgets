@@ -4,13 +4,14 @@ package nearblack
 import (
 	"context"
 	"image"
-	"image/color"
 	"image/draw"
 	"sync"
 
-	errhandle "github.com/mrmxf/opentsg-core/errHandle"
-	"github.com/mrmxf/opentsg-core/widgethandler"
+	"github.com/mmTristan/opentsg-core/colour"
+	errhandle "github.com/mmTristan/opentsg-core/errHandle"
+	"github.com/mmTristan/opentsg-core/widgethandler"
 )
+
 
 const (
 	widgetType = "builtin.ebu3373/nearblack"
@@ -24,36 +25,42 @@ func NBGenerate(canvasChan chan draw.Image, debug bool, c *context.Context, wg, 
 }
 
 var (
-	neg4  = color.NRGBA64{2048, 2048, 2048, 0xffff}
-	neg2  = color.NRGBA64{3072, 3072, 3072, 0xffff}
-	neg1  = color.NRGBA64{3584, 3584, 3584, 0xffff}
-	black = color.NRGBA64{4096, 4096, 4096, 0xffff}
-	pos1  = color.NRGBA64{4608, 4608, 4608, 0xffff}
-	pos2  = color.NRGBA64{5120, 5120, 5120, 0xffff}
-	pos4  = color.NRGBA64{6144, 6144, 6144, 0xffff}
+	neg4  = colour.CNRGBA64{R: 2048, G: 2048, B: 2048, A: 0xffff}
+	neg2  = colour.CNRGBA64{R: 3072, G: 3072, B: 3072, A: 0xffff}
+	neg1  = colour.CNRGBA64{R: 3584, G: 3584, B: 3584, A: 0xffff}
+	black = colour.CNRGBA64{R: 4096, G: 4096, B: 4096, A: 0xffff}
+	pos1  = colour.CNRGBA64{R: 4608, G: 4608, B: 4608, A: 0xffff}
+	pos2  = colour.CNRGBA64{R: 5120, G: 5120, B: 5120, A: 0xffff}
+	pos4  = colour.CNRGBA64{R: 6144, G: 6144, B: 6144, A: 0xffff}
 
-	grey = color.NRGBA64{26496, 26496, 26496, 0xffff}
+	grey = colour.CNRGBA64{R: 26496, G: 26496, B: 26496, A: 0xffff}
 )
 
 func (nb nearblackJSON) Generate(canvas draw.Image, opt ...any) error {
 
 	b := canvas.Bounds().Max
-	draw.Draw(canvas, canvas.Bounds(), &image.Uniform{grey}, image.Point{}, draw.Src)
+	greyRun := grey
+	greyRun.UpdateColorSpace(nb.ColourSpace)
+	colour.Draw(canvas, canvas.Bounds(), &image.Uniform{&greyRun}, image.Point{}, draw.Src)
 	// Scale everything so it fits the shape of the canvas
 	wScale := (float64(b.X) / 3840.0)
 	startPoint := wScale * 480
 	off := wScale * 206
 
-	order := []color.NRGBA64{neg4, neg2, neg1, pos1, pos2, pos4}
+	order := []colour.CNRGBA64{neg4, neg2, neg1, pos1, pos2, pos4}
 	area := image.Rect(int(startPoint), 0, int(startPoint+off*2), b.Y)
-	draw.Draw(canvas, area, &image.Uniform{black}, image.Point{}, draw.Src)
+	colour.Draw(canvas, area, &image.Uniform{&black}, image.Point{}, draw.Src)
 	startPoint += off * 2
 	for _, c := range order {
 		// alternate through the colours
-		draw.Draw(canvas, image.Rect(int(startPoint), 0, int(startPoint+off), b.Y), &image.Uniform{c}, image.Point{}, draw.Src)
+		fill := c
+		fill.UpdateColorSpace(nb.ColourSpace)
+		colour.Draw(canvas, image.Rect(int(startPoint), 0, int(startPoint+off), b.Y), &image.Uniform{&c}, image.Point{}, draw.Src)
 		startPoint += off
 		// append with the 0% black
-		draw.Draw(canvas, image.Rect(int(startPoint), 0, int(startPoint+off), b.Y), &image.Uniform{black}, image.Point{}, draw.Src)
+		blackRun := black
+		blackRun.UpdateColorSpace(nb.ColourSpace)
+		colour.Draw(canvas, image.Rect(int(startPoint), 0, int(startPoint+off), b.Y), &image.Uniform{&blackRun}, image.Point{}, draw.Src)
 		startPoint += off
 	}
 

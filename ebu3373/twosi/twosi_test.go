@@ -10,8 +10,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mrmxf/opentsg-core/config"
-	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
+	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mmTristan/opentsg-core/config"
+	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -22,7 +23,7 @@ func TestChannels(t *testing.T) {
 	explanation := []string{"uhd", "hd", "obtuse"}
 
 	for i, size := range sizes {
-		mock := twosiJSON{config.Grid{Alias: "testlocation"}}
+		mock := twosiJSON{GridLoc: config.Grid{Alias: "testlocation"}}
 		myImage := image.NewNRGBA64(image.Rect(0, 0, size[0], size[1]))
 		examplejson.SaveExampleJson(mock, widgetType, explanation[i])
 		// Generate the ramp image
@@ -34,23 +35,26 @@ func TestChannels(t *testing.T) {
 		for j, off := range offsets {
 
 			chunk := image.NewNRGBA64(myImage.Bounds())
-			draw.Draw(chunk, chunk.Bounds(), &image.Uniform{color.White}, image.Point{}, draw.Src)
+			colour.Draw(chunk, chunk.Bounds(), &image.Uniform{color.White}, image.Point{}, draw.Src)
 
 			maskC := mask(b.X, b.Y, off[0], off[1])
 
-			draw.DrawMask(chunk, chunk.Bounds(), myImage, image.Point{}, maskC, image.Point{}, draw.Over)
+			colour.DrawMask(chunk, chunk.Bounds(), myImage, image.Point{}, maskC, image.Point{}, draw.Over)
 
 			file, _ := os.Open(testBase[i] + let[j] + ".png")
 			// Decode to get the colour values
 			baseVals, _ := png.Decode(file)
 			// Assign the colour to the correct type of image NGRBA64 and replace the colour values
 			readImage := image.NewNRGBA64(baseVals.Bounds())
-			draw.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
+			colour.Draw(readImage, readImage.Bounds(), baseVals, image.Point{0, 0}, draw.Over)
 
 			hnormal := sha256.New()
 			htest := sha256.New()
 			hnormal.Write(readImage.Pix)
 			htest.Write(chunk.Pix)
+
+			//f, _ := os.Create(testBase[i] + let[j] + "er.png")
+			//colour.PngEncode(f, chunk)
 
 			Convey("Checking the twosi images are generated", t, func() {
 				Convey(fmt.Sprintf("Comparing the generated image to the channe, %v%v.png", testBase[i], let[j]), func() {

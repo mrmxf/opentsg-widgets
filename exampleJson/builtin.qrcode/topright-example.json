@@ -3,5 +3,13 @@
     "gridPosition": {
         "x": 97.1,
         "y": 97.1
+    },
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
     }
 }

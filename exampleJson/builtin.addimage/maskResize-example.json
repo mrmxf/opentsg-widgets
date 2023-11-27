@@ -1,3 +1,11 @@
 {
-    "image": "../zoneplate/testdata/normalzpm.png"
+    "image": "../zoneplate/testdata/normalzpm.png",
+    "ColorSpace": {
+        "Primaries": {
+            "Red": {},
+            "Green": {},
+            "Blue": {},
+            "WhitePoint": {}
+        }
+    }
 }

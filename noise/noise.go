@@ -4,14 +4,14 @@ package noise
 import (
 	"context"
 	"fmt"
-	"image/color"
 	"image/draw"
 	"math/rand"
 	"sync"
 	"time"
 
-	errhandle "github.com/mrmxf/opentsg-core/errHandle"
-	"github.com/mrmxf/opentsg-core/widgethandler"
+	"github.com/mmTristan/opentsg-core/colour"
+	errhandle "github.com/mmTristan/opentsg-core/errHandle"
+	"github.com/mmTristan/opentsg-core/widgethandler"
 )
 
 const (
@@ -50,20 +50,20 @@ func (n noiseJSON) Generate(canvas draw.Image, opt ...any) error {
 	}
 
 	if n.Noisetype == "white noise" { // upgrade to switch statement when more types come in
-		whitenoise(random, canvas, min, max)
+		whitenoise(random, n.ColourSpace, canvas, min, max)
 	}
 
 	return nil
 }
 
-func whitenoise(random *rand.Rand, canvas draw.Image, min, max int) {
+func whitenoise(random *rand.Rand, cspace colour.ColorSpace, canvas draw.Image, min, max int) {
 	b := canvas.Bounds().Max
 	for y := 0; y < b.Y; y++ {
 		for x := 0; x < b.X; x++ {
 			colourPos := uint16(random.Intn(max-min)+min) << 4
 			// Fill := color.NRGBA64{colourPos << 4, colourPos << 4, colourPos << 4, uint16(0xffff)}
 
-			canvas.Set(x, y, color.NRGBA64{colourPos, colourPos, colourPos, 0xffff})
+			canvas.Set(x, y, &colour.CNRGBA64{R: colourPos, G: colourPos, B: colourPos, A: 0xffff, ColorSpace: cspace})
 		}
 	}
 }
