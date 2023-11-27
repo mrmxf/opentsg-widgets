@@ -1,8 +1,8 @@
 package text
 
 import (
-	"github.com/mmTristan/opentsg-core/colour"
-	"github.com/mmTristan/opentsg-core/colourgen"
+	"github.com/mrmxf/opentsg-core/colour"
+	"github.com/mrmxf/opentsg-core/colourgen"
 )
 
 /*

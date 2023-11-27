@@ -8,15 +8,14 @@ import (
 	"math"
 	"sync"
 
-	"github.com/mmTristan/opentsg-core/colour"
-	errhandle "github.com/mmTristan/opentsg-core/errHandle"
-	"github.com/mmTristan/opentsg-core/widgethandler"
+	"github.com/mrmxf/opentsg-core/colour"
+	errhandle "github.com/mrmxf/opentsg-core/errHandle"
+	"github.com/mrmxf/opentsg-core/widgethandler"
 )
 
 const (
 	widgetType = "builtin.ebu3373/bars"
 )
-
 
 func BarGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()

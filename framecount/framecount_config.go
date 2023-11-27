@@ -3,8 +3,8 @@ package framecount
 import (
 	_ "embed"
 
-	"github.com/mmTristan/opentsg-core/colour"
-	"github.com/mmTristan/opentsg-core/config"
+	"github.com/mrmxf/opentsg-core/colour"
+	"github.com/mrmxf/opentsg-core/config"
 )
 
 /*
@@ -15,7 +15,7 @@ const wLibrary = "builtin"
 const hooks = "[]"*/
 
 type frameJSON struct {
-//	Type         string            `json:"type" yaml:"type"`
+	//	Type         string            `json:"type" yaml:"type"`
 	FrameCounter bool              `json:"framecounter,omitempty" yaml:"framecounter,omitempty"`
 	Imgpos       interface{}       `json:"gridPosition" yaml:"gridPosition"`
 	TextColour   string            `json:"textcolor" yaml:"textcolor"`

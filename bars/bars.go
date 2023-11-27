@@ -5,7 +5,7 @@ import (
 	"image/color"
 	"image/draw"
 
-	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mrmxf/opentsg-core/colour"
 )
 
 func bar(target draw.Image, fills [][]bars, heights []float64) {

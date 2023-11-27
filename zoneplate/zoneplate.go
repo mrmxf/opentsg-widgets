@@ -9,11 +9,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mmTristan/opentsg-core/anglegen"
-	"github.com/mmTristan/opentsg-core/colour"
-	errhandle "github.com/mmTristan/opentsg-core/errHandle"
-	"github.com/mmTristan/opentsg-core/widgethandler"
-	"github.com/mmTristan/opentsg-widgets/mask"
+	"github.com/mrmxf/opentsg-core/anglegen"
+	"github.com/mrmxf/opentsg-core/colour"
+	errhandle "github.com/mrmxf/opentsg-core/errHandle"
+	"github.com/mrmxf/opentsg-core/widgethandler"
+	"github.com/mrmxf/opentsg-widgets/mask"
 )
 
 const (

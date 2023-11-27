@@ -7,7 +7,7 @@ import (
 	"image/draw"
 	"math"
 
-	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mrmxf/opentsg-core/colour"
 )
 
 // Generate a mask of correct size

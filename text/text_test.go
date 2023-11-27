@@ -10,7 +10,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mmTristan/opentsg-core/colour"
+	"github.com/mrmxf/opentsg-core/colour"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

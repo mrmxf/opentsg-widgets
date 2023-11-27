@@ -11,11 +11,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mmTristan/opentsg-core/colour"
-	"github.com/mmTristan/opentsg-core/config"
-	"github.com/mmTristan/opentsg-core/gridgen"
-	examplejson "github.com/mmTristan/opentsg-widgets/exampleJson"
-	geometrymock "github.com/mmTristan/opentsg-widgets/geometryMock"
+	"github.com/mrmxf/opentsg-core/colour"
+	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mrmxf/opentsg-core/gridgen"
+	examplejson "github.com/mrmxf/opentsg-widgets/exampleJson"
+	geometrymock "github.com/mrmxf/opentsg-widgets/geometryMock"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

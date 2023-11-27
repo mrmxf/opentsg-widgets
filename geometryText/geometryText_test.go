@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mmTristan/opentsg-core/config"
-	"github.com/mmTristan/opentsg-core/gridgen"
-	geometrymock "github.com/mmTristan/opentsg-widgets/geometryMock"
+	"github.com/mrmxf/opentsg-core/config"
+	"github.com/mrmxf/opentsg-core/gridgen"
+	geometrymock "github.com/mrmxf/opentsg-widgets/geometryMock"
 	// . "github.com/smartystreets/goconvey/convey"
 )
 
