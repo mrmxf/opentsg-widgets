@@ -19,6 +19,11 @@ const (
 	widgetType = "builtin.fourcolor"
 )
 
+
+const (
+	widgetType = "builtin.fourcolor"
+)
+
 func FourColourGenerator(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
 	opts := []any{c}
