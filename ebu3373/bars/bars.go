@@ -17,6 +17,10 @@ const (
 	widgetType = "builtin.ebu3373/bars"
 )
 
+const (
+	widgetType = "builtin.ebu3373/bars"
+)
+
 func BarGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
 	conf := widgethandler.GenConf[barJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType}

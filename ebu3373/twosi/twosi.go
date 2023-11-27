@@ -21,6 +21,10 @@ const (
 	widgetType = "builtin.ebu3373/twosi"
 )
 
+const (
+	widgetType = "builtin.ebu3373/twosi"
+)
+
 func SIGenerate(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
 	conf := widgethandler.GenConf[twosiJSON]{Debug: debug, Schema: schemaInit, WidgetType: widgetType, ExtraOpt: []any{c}}

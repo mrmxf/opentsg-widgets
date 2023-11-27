@@ -18,6 +18,10 @@ const (
 	widgetType = "builtin.textbox"
 )
 
+const (
+	widgetType = "builtin.textbox"
+)
+
 // TextBoxGen generates text boxes on a given image based on config values
 func TBGenerate(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
 	defer wg.Done()
