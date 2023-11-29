@@ -48,21 +48,21 @@ vLOCAL=$(git tag | tail -1)       && [ -z "$vLOCAL" ] && vLOCAL="${cE}untagged"
 vHEAD=$(git tag --points-at HEAD) && [ -z "$vHEAD" ]  && vHEAD="${cW}untagged"
 [ $OOPS -gt 0 ] && vLOCAL="$cW$vLOCAL"  # use color to warn that tag is dirty
 
-vRcore=$(   getRemoteTag opentsg-core )   ; OOPS=$?
-vRio=$(     getRemoteTag opentsg-io )     ; OOPS=$?
-vRlab=$(    getRemoteTag opentsg-lab )    ; OOPS=$?
-vRmhl=$(    getRemoteTag opentsg-mhl )    ; OOPS=$?
-vRwidget=$( getRemoteTag opentsg-widgets ) ; OOPS=$?
+vRcore=$(    getRemoteTag opentsg-core )    ; OOPS=$?
+vRio=$(      getRemoteTag opentsg-io )      ; OOPS=$?
+vRlab=$(     getRemoteTag opentsg-lab )     ; OOPS=$?
+vRmhl=$(     getRemoteTag opentsg-mhl )     ; OOPS=$?
+vRwidgets=$( getRemoteTag opentsg-widgets ) ; OOPS=$?
 
 #print out the matching tags
 printf "local  git latest     $cS $vLOCAL$cX\n"
 printf "local  git HEAD       $cS $vHEAD$cX\n"
-printf "remote opentsg-core   $cS $vRcore   $cX\n"
-printf "remote opentsg-io     $cS $vRio     $cX\n"
-printf "remote opentsg-lab    $cS $vRlab    $cX\n"
-printf "remote opentsg-mhl    $cS $vRmhl    $cX\n"
-printf "remote opentsg-node   $cS $vRnode   $cX\n"
-printf "remote opentsg-widgets$cS $vRwidget $cX\n"
+printf "remote opentsg-core   $cS $vRcore    $cX\n"
+printf "remote opentsg-io     $cS $vRio      $cX\n"
+printf "remote opentsg-lab    $cS $vRlab     $cX\n"
+printf "remote opentsg-mhl    $cS $vRmhl     $cX\n"
+printf "remote opentsg-node   $cS $vRnode    $cX\n"
+printf "remote opentsg-widgets$cS $vRwidgets $cX\n"
 
 # --- environemnt variables ---------------------------------------------------
 
