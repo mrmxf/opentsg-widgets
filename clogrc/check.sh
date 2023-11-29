@@ -39,30 +39,30 @@ issue=$(git status | grep 'branch is ahead')
 [ -n "$issue" ]  && printf "${cE}Push$cT changes before build$cX\n" && ((OOPS++))
 
 issue=$(git status | grep 'working tree clean')
-[ -z "$issue" ] && printf "${cE}???$cT Working Tree must be$cS clean$cT before build$cX\n" && ((OOPS++))
+[ -z "$issue" ] && printf "${cE}Changes!$cT Working Tree must be$cS clean$cT before build$cX\n" && ((OOPS++))
 
 # --- tag handling ------------------------------------------------------------
 vRnode=$( getRemoteTag opentsg-node ref)   ; OOPS=$?
 vREF="$vRnode"
-vLOCAL=$(git tag | tail -1)
-vHEAD=$(git tag --points-at HEAD) && [ -z "$vHEAD" ] && vHEAD="${cW}untagged"
+vLOCAL=$(git tag | tail -1)       && [ -z "$vLOCAL" ] && vLOCAL="${cE}untagged"
+vHEAD=$(git tag --points-at HEAD) && [ -z "$vHEAD" ]  && vHEAD="${cW}untagged"
 [ $OOPS -gt 0 ] && vLOCAL="$cW$vLOCAL"  # use color to warn that tag is dirty
 
 vRcore=$(   getRemoteTag opentsg-core )   ; OOPS=$?
 vRio=$(     getRemoteTag opentsg-io )     ; OOPS=$?
 vRlab=$(    getRemoteTag opentsg-lab )    ; OOPS=$?
 vRmhl=$(    getRemoteTag opentsg-mhl )    ; OOPS=$?
-vRwidget=$( getRemoteTag opentsg-widget ) ; OOPS=$?
+vRwidget=$( getRemoteTag opentsg-widgets ) ; OOPS=$?
 
 #print out the matching tags
-printf "local  git latest    $cS $vLOCAL$cX\n"
-printf "local  git HEAD      $cS $vHEAD$cX\n"
-printf "remote opentsg-core  $cS $vRcore   $cX\n"
-printf "remote opentsg-io    $cS $vRio     $cX\n"
-printf "remote opentsg-lab   $cS $vRlab    $cX\n"
-printf "remote opentsg-mhl   $cS $vRmhl    $cX\n"
-printf "remote opentsg-node  $cS $vRnode   $cX\n"
-printf "remote opentsg-widget$cS $vRwidget $cX\n"
+printf "local  git latest     $cS $vLOCAL$cX\n"
+printf "local  git HEAD       $cS $vHEAD$cX\n"
+printf "remote opentsg-core   $cS $vRcore   $cX\n"
+printf "remote opentsg-io     $cS $vRio     $cX\n"
+printf "remote opentsg-lab    $cS $vRlab    $cX\n"
+printf "remote opentsg-mhl    $cS $vRmhl    $cX\n"
+printf "remote opentsg-node   $cS $vRnode   $cX\n"
+printf "remote opentsg-widgets$cS $vRwidget $cX\n"
 
 # --- environemnt variables ---------------------------------------------------
 
