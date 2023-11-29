@@ -39,7 +39,7 @@ issue=$(git status | grep 'branch is ahead')
 [ -n "$issue" ]  && printf "${cE}Push$cT changes before build$cX\n" && ((OOPS++))
 
 issue=$(git status | grep 'working tree clean')
-[ -n "$issue" ] && printf "${cE}???$cT Working Tree must be$cS clean$cT before build$cX\n" && ((OOPS++))
+[ -z "$issue" ] && printf "${cE}???$cT Working Tree must be$cS clean$cT before build$cX\n" && ((OOPS++))
 
 # --- tag handling ------------------------------------------------------------
 vRnode=$( getRemoteTag opentsg-node ref)   ; OOPS=$?
