@@ -13,6 +13,7 @@ It has the following fields:
 
 ```json
 {
+    "type" :  "builtin.addimage",
     "image": "./exmaple/exampleImage.png",
     "imageFill": "fill"
 }

@@ -20,6 +20,7 @@ the path to a local or web file.
 
 ```json
 {
+    "type" :  "builtin.textbox",
     "text": [
         "sample",
         "text"

@@ -12,6 +12,7 @@ The default option is circular.
 
 ```json
 {
+    "type" :  "builtin.zoneplate",
     "platetype": "sweep",
     "startcolor": "white",
     "angle": "π*1",

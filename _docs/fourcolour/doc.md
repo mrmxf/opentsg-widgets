@@ -7,3 +7,9 @@ in the interest of computational speed for large objects.
 
 - `colors` - a list of TSG colors, it must be an array
 of four strings or more. The algorithm will use the fewest amount of colors required.
+
+```json
+{
+    "type" :  "builtin.fourcolour",
+}
+```

@@ -50,6 +50,7 @@ the colour direction and start value.
 
 ```json
 {
+    "type" :  "builtin.ramps",
     "Gradients": {
         "GroupSeparator": {
             "height": 0,

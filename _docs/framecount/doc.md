@@ -18,10 +18,13 @@ of the grid the inhabit. There are also the builtin positions of
 `"bottom right"`, `"bottom left"`,`"top right"` or `"top left"`.
 
 ```json
+{
+    "type" :  "builtin.framecounter",
     "framecounter": true,
     "textcolor": "",
     "backgroundcolor": "",
     "font": "",
     "fontsize": 22, 
     "gridPosition": "top left"
+}
 ```

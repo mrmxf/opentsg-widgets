@@ -8,9 +8,12 @@ It has the following fields
 of the grid the inhabit.
 
 ```json
+{
+    "type" :  "builtin.qrcode",
     "code": "https://opentsg.io/",
     "gridPosition": {
         "x": 97.1,
         "y": 97.1
     }
+}
 ```

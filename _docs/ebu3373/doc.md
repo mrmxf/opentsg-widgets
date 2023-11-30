@@ -15,6 +15,12 @@ Rec 709.
 
 It has no fields, only the location is required.
 
+```json
+{
+    "type":"builtin.ebu3373/bars"
+}
+```
+
 ## Luma
 
 A horizontal luma ramp from the 10 bit value 4 to 1019,
@@ -24,6 +30,12 @@ of lights and darks.
 
 It has no fields, only the location is required.
 
+```json
+{
+    "type":"builtin.ebu3373/luma"
+}
+```
+
 ## Near black
 
 Alternating segments of 10 bit 0% black (RGB10(64,64,64)) and
@@ -32,6 +44,12 @@ sub blacks are not removed in the production chain.
 This widget is generated to fill the widget area.
 
 It has no fields, only the location is required.
+
+```json
+{
+    "type":"builtin.ebu3373/nearblack"
+}
+```
 
 ## Saturation
 
@@ -46,6 +64,7 @@ they were declared. If only one colour is chosen then only that colour is used.
 
 ```json
 {
+    "type":"builtin.ebu3373/saturation"
     "colors": [
         "red",
         "green",
@@ -63,3 +82,9 @@ set of lines are linked to a cable. IF they don't match the expected
 layout then the cables are not correctly ordered.
 
 It has no fields, only the location is required.
+
+```json
+{
+    "type": "builtin.ebu3373/twosi"
+}
+```
