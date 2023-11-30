@@ -44,7 +44,9 @@ func (f *frameJSON) getFrames() bool {
 	return f.FrameCounter
 }
 
-func framePos() int { return framecount }
+func framePos() int {
+	return framecount
+}
 
 func (f frameJSON) Alias() string {
 	return f.GridLoc.Alias

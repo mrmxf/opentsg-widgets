@@ -70,6 +70,10 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 		f.FontSize *= (float64(b.X) / float64(b.Y)) // Scale the font size for narrow grids
 	}
 
+	if f.FontSize < 7 {
+		return fmt.Errorf("0DDEV The font size %v pixels is smaller thant the minimum value of 7 pixels", f.FontSize)
+	}
+
 	square := image.Point{int(f.FontSize), int(f.FontSize)}
 
 	frame := gridgen.ImageGenerator(*c, image.Rect(0, 0, square.X, square.Y))
@@ -92,7 +96,6 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	if f.TextColour != "" {
 		text.WithTextColourString(f.TextColour)(txtBox)
 	}
-
 	// MyFont.Advance
 	mes, err := intTo4(pos())
 	if err != nil {
@@ -145,7 +148,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	} else if y > b.Y-fb.Y {
 		return fmt.Errorf("_0153 the y position %v is greater than the y boundary of %v with frame height of %v", y, canvas.Bounds().Max.Y, fb.Y)
 	}
-
+	fmt.Println("HERE", x, y, f.FontSize)
 	// Corner := image.Point{-1 * (canvas.Bounds().Max.X - height - 1), -1 * (canvas.Bounds().Max.Y - height - 1)}
 	colour.Draw(canvas, image.Rect(x, y, x+int(f.FontSize), y+int(f.FontSize)), frame, image.Point{}, draw.Over)
 

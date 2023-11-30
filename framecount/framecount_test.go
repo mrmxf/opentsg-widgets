@@ -118,6 +118,7 @@ func TestErrors(t *testing.T) {
 
 	var yesFrame frameJSON
 	yesFrame.FrameCounter = true
+	yesFrame.FontSize = 90
 
 	for i, n := range numberToCheck {
 		// Generate the image and the string
