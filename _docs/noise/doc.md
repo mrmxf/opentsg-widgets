@@ -11,6 +11,10 @@ It has the following fields
     "type" :  "builtin.noise",
     "noiseType": "white noise",
     "minimum": 0,
-    "maximum": 4095
+    "maximum": 4095,
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```

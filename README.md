@@ -36,9 +36,9 @@ and contents it uses. And an example JSON
 - [Ebu3373](_docs/ebu3373/doc.md)
 - [Fourcolour](_docs/fourcolour/doc.md)
 - [FrameCount](_docs/framecount/doc.md)
+- [Gradients](_docs/gradients/doc.md)
 - [Noise](_docs/noise/doc.md)
 - [QrGen](_docs/qrgen/doc.md)
-- [Gradient](_docs/ramps/doc.md)
 - [TextBox](_docs/textbox/doc.md)
 - [ZonePlate](_docs/zoneplate/doc.md)
 

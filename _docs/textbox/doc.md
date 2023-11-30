@@ -32,6 +32,10 @@ the path to a local or web file.
     "textColor": "#C2A649",
     "fillType": "",
     "xAlignment": "",
-    "yAlignment": "middle"
+    "yAlignment": "middle",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```

@@ -15,6 +15,10 @@ It has the following fields:
 {
     "type" :  "builtin.addimage",
     "image": "./exmaple/exampleImage.png",
-    "imageFill": "fill"
+    "imageFill": "fill",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```

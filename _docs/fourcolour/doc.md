@@ -11,5 +11,9 @@ of four strings or more. The algorithm will use the fewest amount of colors requ
 ```json
 {
     "type" :  "builtin.fourcolour",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```

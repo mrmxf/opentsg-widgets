@@ -50,13 +50,13 @@ the colour direction and start value.
 
 ```json
 {
-    "type" :  "builtin.ramps",
-    "Gradients": {
-        "GroupSeparator": {
+    "type" :  "builtin.gradients",
+    "groupsTemplates": {
+        "separator": {
             "height": 0,
             "color": "white"
         },
-        "GradientSeparator": {
+        "gradientSeparator": {
             "colors": [
                 "white",
                 "black",
@@ -65,7 +65,7 @@ the colour direction and start value.
             ],
             "height": 1
         },
-        "Gradients": [
+        "gradients": [
             {
                 "height": 5,
                 "bitDepth": 4,
@@ -88,7 +88,7 @@ the colour direction and start value.
             }
         ]
     },
-    "Groups": [
+    "groups": [
         {
             "color": "green",
             "initialPixelValue": 960,
@@ -105,12 +105,16 @@ the colour direction and start value.
         "cwRotation": "",
         "objectFitFill": false,
         "pixelValueRepeat": 0,
-        "TextProperties": {
+        "textProperties": {
             "textyPosition": "top",
             "textxPosition": "left",
             "textHeight": 30,
             "textColor": "#345AB6"
         }
+    },
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
     }
 }
 ```

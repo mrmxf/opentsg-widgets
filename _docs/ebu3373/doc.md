@@ -17,7 +17,11 @@ It has no fields, only the location is required.
 
 ```json
 {
-    "type":"builtin.ebu3373/bars"
+    "type":"builtin.ebu3373/bars",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```
 
@@ -32,7 +36,11 @@ It has no fields, only the location is required.
 
 ```json
 {
-    "type":"builtin.ebu3373/luma"
+    "type":"builtin.ebu3373/luma",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```
 
@@ -47,7 +55,11 @@ It has no fields, only the location is required.
 
 ```json
 {
-    "type":"builtin.ebu3373/nearblack"
+    "type":"builtin.ebu3373/nearblack",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```
 
@@ -69,7 +81,11 @@ they were declared. If only one colour is chosen then only that colour is used.
         "red",
         "green",
         "blue"
-    ]
+    ],
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```
 
@@ -85,6 +101,10 @@ It has no fields, only the location is required.
 
 ```json
 {
-    "type": "builtin.ebu3373/twosi"
+    "type": "builtin.ebu3373/twosi",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```

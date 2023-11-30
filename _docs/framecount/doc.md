@@ -25,6 +25,10 @@ of the grid the inhabit. There are also the builtin positions of
     "backgroundColor": "",
     "font": "",
     "fontSize": 22, 
-    "gridPosition": "top left"
+    "gridPosition": "top left",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```

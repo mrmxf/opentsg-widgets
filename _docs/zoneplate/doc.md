@@ -16,5 +16,9 @@ The default option is circular.
     "plateType": "sweep",
     "startColor": "white",
     "angle": "π*1",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```

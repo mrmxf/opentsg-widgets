@@ -14,6 +14,10 @@ of the grid the inhabit.
     "gridPosition": {
         "x": 97.1,
         "y": 97.1
+    },
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
     }
 }
 ```

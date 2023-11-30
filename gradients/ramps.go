@@ -22,7 +22,7 @@ const (
 	rotate270  = "rotate270"
 	noRotation = "xy"
 
-	widgetType = "builtin.ramps"
+	widgetType = "builtin.gradients"
 )
 
 // TextBoxGen generates text boxes on a given image based on config values
