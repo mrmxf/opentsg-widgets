@@ -177,7 +177,8 @@ func (t TextboxProperties) DrawStrings(canvas draw.Image, tsgContext *context.Co
 
 	// only do the text calculations if there's any
 	// text colour
-	if t.textColour != nil {
+	// or any text
+	if t.textColour != nil && len(labels) > 0 {
 		if t.textColour.A != 0 {
 			fontByte := fontSelector(tsgContext, t.font)
 
@@ -236,8 +237,8 @@ func (t TextboxProperties) DrawStrings(canvas draw.Image, tsgContext *context.Co
 			}
 		}
 	}
-	return nil
 
+	return nil
 }
 
 func fullFill(area image.Point, sizeFont font.Face, fontain *truetype.Font, height float64, label string) (font.Face, fixed.Rectangle26_6) {
