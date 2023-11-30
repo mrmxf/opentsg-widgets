@@ -1,6 +1,6 @@
 # tpg-widgets
 
-`opentsg-widgets` is the library of builtin widgets, 
+`opentsg-widgets` is the library of builtin widgets,
 for the [Open Test Signal Generator](https://opentsg.io/).
 Feel free to use any as a demo to make your own widgets.
 
@@ -41,4 +41,3 @@ and contents it uses. And an example JSON
 - [QrGen](_docs/qrgen/doc.md)
 - [TextBox](_docs/textbox/doc.md)
 - [ZonePlate](_docs/zoneplate/doc.md)
-

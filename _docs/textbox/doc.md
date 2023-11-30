@@ -3,7 +3,7 @@
 Generates a text box of one or more lines, with an optional border.
 If a colour is not declared for text, background or the border then it
 will not be generated.
-It has the following fields:
+It has the following optional fields:
 
 - `text` - an array of strings, the font size is generated so the text fills the space, where multiple lines of
 text are used. The smallest font of the multiple lines is used.
@@ -15,8 +15,8 @@ the path to a local or web file.
 - `backgroundColor` - the colour of the background.
 - `textColor` - the colour of the text.
 - `fillType` - the fill of the text in the textbox, it can be full or relaxed.
-- `xAlignment` - the text alignment in the x direction, it can be left, right or middle.
-- `yAlignment` - the text alignment in the y direction, it can be top, bottom or middle.
+- `xAlignment` - the text alignment in the x direction, it can be `left`, `right` or `middle`.
+- `yAlignment` - the text alignment in the y direction, it can be `top`, `bottom` or `middle`.
 
 ```json
 {

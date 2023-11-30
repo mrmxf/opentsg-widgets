@@ -63,6 +63,11 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 		return fmt.Errorf("0155 configuration error when assiging framecount context")
 	}
 
+	// stop errors happening when font is not declared
+	if f.FontSize == 0 {
+		f.FontSize = 90
+	}
+
 	// Size of the text in pixels to font
 	f.FontSize = (float64(b.Y) * (f.FontSize / 100)) // keep as pixels
 

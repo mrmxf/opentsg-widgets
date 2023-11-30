@@ -69,10 +69,11 @@ The saturation generates the steps of red, green and blue
 from minimum to maximum saturation. These saturations
 are used to establish the colour space of the viewing device.
 
-It has the following fields
+It has the following optional fields
 
 - `colors` - An array of the "red", "green" and "blue". The saturation appears in the order
-they were declared. If only one colour is chosen then only that colour is used.
+they were declared. If only one colour is chosen then only that colour is used. If `colors` 
+is not declared then the default order of, red,green and blue is used.
 
 ```json
 {

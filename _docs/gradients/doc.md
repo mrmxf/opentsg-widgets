@@ -8,7 +8,10 @@ to have the same shift then the bit depth limit of the display
 may have been found. The total height of the ramps scales to the
 area it is given.
 
-Gradients has the following fields
+Gradients has the following fields:
+
+only the `color`/`colors` and `height` subfields are required
+for a ramp to be drawn. Everything else is optional
 
 - `Gradients` - contains the gradient information
   - `GroupSeparator` - the separator between the groups of gradients. This is the
@@ -32,6 +35,7 @@ The default is 0.
 than the default low to high.
 - `WidgetProperties` - the base properties for the widgets.
   - `maxBitDepth`- the overall maximum bit depth of the gradient widget.
+The default is 16
   - `cwRotation` - the clockwise rotation of the ramp.
   - `objectFitFill` - if true the gradient will not be accurate
 as values are shifted to fit the bit depth steps across the width the
