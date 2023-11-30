@@ -10,13 +10,13 @@ type TextboxJSON struct {
 	Text []string `json:"text" yaml:"text"`
 
 	GridLoc     *config.Grid      `json:"grid" yaml:"grid"`
-	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
-	Border      string            `json:"bordercolor" yaml:"bordercolor"`
-	BorderSize  float64           `json:"bordersize" yaml:"bordersize"`
+	ColourSpace colour.ColorSpace `json:"colorSpace,omitempty" yaml:"colorSpace,omitempty"`
+	Border      string            `json:"borderColor" yaml:"borderColor"`
+	BorderSize  float64           `json:"borderSize" yaml:"borderSize"`
 	Font        string            `json:"font" yaml:"font"`
 
-	Back       string `json:"backgroundcolor" yaml:"backgroundcolor"`
-	Textc      string `json:"textcolor" yaml:"textcolor"`
+	Back       string `json:"backgroundColor" yaml:"backgroundColor"`
+	Textc      string `json:"textColor" yaml:"textColor"`
 	FillType   string `json:"fillType" yaml:"fillType"`
 	XAlignment string `json:"xAlignment" yaml:"xAlignment"`
 	YAlignment string `json:"yAlignment" yaml:"yAlignment"`

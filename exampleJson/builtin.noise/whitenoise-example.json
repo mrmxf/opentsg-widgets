@@ -1,8 +1,8 @@
 {
-    "noisetype": "white noise",
+    "noiseType": "white noise",
     "minimum": 0,
     "maximum": 4095,
-    "ColorSpace": {
+    "colorSpace": {
         "Primaries": {
             "Red": {},
             "Green": {},

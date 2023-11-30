@@ -1,6 +1,6 @@
 {
     "image": "./testdata/test16bit.png",
-    "ColorSpace": {
+    "colorSpace": {
         "Primaries": {
             "Red": {},
             "Green": {},

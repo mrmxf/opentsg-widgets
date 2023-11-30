@@ -9,7 +9,7 @@ type Ramp struct {
 	Gradients        groupContents
 	Groups           []RampProperties
 	WidgetProperties control           `json:"widgetProperties,omitempty" yaml:"widgetProperties,omitempty"`
-	ColourSpace      colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	ColourSpace      colour.ColorSpace `json:"colorSpace,omitempty" yaml:"colorSpace,omitempty"`
 	GridLoc          *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
 }
 

@@ -20,7 +20,7 @@ type addimageJSON struct {
 	// Imgsize *config.Framesize `json:"imagesize,omitempty" yaml:"imagesize,omitempty"`
 	//	Imgpos  *config.Position `json:"position,omitempty" yaml:"position,omitempty"`
 	GridLoc     *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
-	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	ColourSpace colour.ColorSpace `json:"colorSpace,omitempty" yaml:"colorSpace,omitempty"`
 	ImgFill     string            `json:"imageFill,omitempty" yaml:"imageFill,omitempty"`
 }
 

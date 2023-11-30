@@ -21,7 +21,7 @@ type qrcodeJSON struct {
 	Size        *sizeJSON          `json:"size,omitempty" yaml:"size,omitempty"`
 	Query       *[]objectQueryJSON `json:"objectQuery,omitempty" yaml:"objectQuery,omitempty"`
 	GridLoc     *config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
-	ColourSpace colour.ColorSpace  `json:"ColorSpace" yaml:"ColorSpace"`
+	ColourSpace colour.ColorSpace  `json:"colorSpace" yaml:"colorSpace"`
 }
 
 type sizeJSON struct {

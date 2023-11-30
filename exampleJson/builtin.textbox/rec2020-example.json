@@ -4,7 +4,7 @@
         "rec2020"
     ],
     "grid": null,
-    "ColorSpace": {
+    "colorSpace": {
         "ColorSpace": "rec2020",
         "Primaries": {
             "Red": {},
@@ -13,11 +13,11 @@
             "WhitePoint": {}
         }
     },
-    "bordercolor": "rgb(134,24,180)",
-    "bordersize": 5,
+    "borderColor": "rgb(134,24,180)",
+    "borderSize": 5,
     "font": "pixel",
-    "backgroundcolor": "rgb(255,255,0)",
-    "textcolor": "rgb(134,24,180)",
+    "backgroundColor": "rgb(255,255,0)",
+    "textColor": "rgb(134,24,180)",
     "fillType": "",
     "xAlignment": "middle",
     "yAlignment": "middle"

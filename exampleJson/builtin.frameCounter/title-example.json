@@ -1,11 +1,11 @@
 {
-    "framecounter": true,
+    "frameCounter": true,
     "gridPosition": null,
-    "textcolor": "",
-    "backgroundcolor": "",
-    "font": "",
-    "fontsize": 100,
-    "ColorSpace": {
+    "textColor": "",
+    "backgroundColor": "",
+    "font": "title",
+    "fontSize": 24,
+    "colorSpace": {
         "Primaries": {
             "Red": {},
             "Green": {},
@@ -13,5 +13,5 @@
             "WhitePoint": {}
         }
     },
-    "framenumber": 0
+    "frameNumber": 0
 }

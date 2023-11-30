@@ -9,7 +9,7 @@ import (
 type TextboxJSON struct {
 	// Type       string       `json:"type" yaml:"type"`
 	Font        string            `json:"font" yaml:"font"`
-	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	ColourSpace colour.ColorSpace `json:"colorSpace,omitempty" yaml:"colorSpace,omitempty"`
 	Back        string            `json:"backgroundcolor" yaml:"backgroundcolor"`
 	Textc       string            `json:"textcolor" yaml:"textcolor"`
 	FillType    string
@@ -21,7 +21,7 @@ type TextboxJSON struct {
 type TextboxProperties struct {
 	// Type       string       `json:"type" yaml:"type"`
 	font             string            // `json:"font" yaml:"font"`
-	colourSpace      colour.ColorSpace //`json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	colourSpace      colour.ColorSpace //`json:"colorSpace,omitempty" yaml:"colorSpace,omitempty"`
 	backgroundColour *colour.CNRGBA64  //`json:"backgroundcolor" yaml:"backgroundcolor"`
 	textColour       *colour.CNRGBA64  //`json:"textcolor" yaml:"textcolor"`
 	fillType         string

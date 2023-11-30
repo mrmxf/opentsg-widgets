@@ -4,7 +4,7 @@
         "text"
     ],
     "grid": null,
-    "ColorSpace": {
+    "colorSpace": {
         "Primaries": {
             "Red": {},
             "Green": {},
@@ -12,11 +12,11 @@
             "WhitePoint": {}
         }
     },
-    "bordercolor": "rgb(134,24,180)",
-    "bordersize": 10,
+    "borderColor": "rgb(134,24,180)",
+    "borderSize": 10,
     "font": "",
-    "backgroundcolor": "",
-    "textcolor": "",
+    "backgroundColor": "",
+    "textColor": "",
     "fillType": "",
     "xAlignment": "",
     "yAlignment": ""

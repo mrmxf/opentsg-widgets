@@ -7,11 +7,11 @@ It has the following properties.
 
 - `font` - the font to be used, it can be an in built font of title, body,
 pixel or header. Or it can be the path to a local or web file.
-- `framecounter` - if true then the frame counter will be used. If false then
+- `frameCounter` - if true then the frame counter will be used. If false then
 the widget is skipped.
-- `textcolor` - the colour of the text.
-- `backgroundcolor` - the colour of the background.
-- `fontsize` - the font size of the frame counter,
+- `textColor` - the colour of the text.
+- `backgroundColor` - the colour of the background.
+- `fontSize` - the font size of the frame counter,
 this dictates the size of the frame counter box
 - `gridPosition` - the relative x,y positions as percentages
 of the grid the inhabit. There are also the builtin positions of
@@ -20,11 +20,11 @@ of the grid the inhabit. There are also the builtin positions of
 ```json
 {
     "type" :  "builtin.framecounter",
-    "framecounter": true,
-    "textcolor": "",
-    "backgroundcolor": "",
+    "frameCounter": true,
+    "textColor": "",
+    "backgroundColor": "",
     "font": "",
-    "fontsize": 22, 
+    "fontSize": 22, 
     "gridPosition": "top left"
 }
 ```

@@ -9,7 +9,7 @@ It has the following fields
 ```json
 {
     "type" :  "builtin.noise",
-    "noisetype": "white noise",
+    "noiseType": "white noise",
     "minimum": 0,
     "maximum": 4095
 }

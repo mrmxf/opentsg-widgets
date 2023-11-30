@@ -16,7 +16,7 @@ const hooks = ""*/
 
 type lumaJSON struct {
 	// Type    string      `json:"type" yaml:"type"`
-	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	ColourSpace colour.ColorSpace `json:"colorSpace,omitempty" yaml:"colorSpace,omitempty"`
 	GridLoc     config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
 }
 
