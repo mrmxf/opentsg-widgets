@@ -6,17 +6,17 @@ import (
 )
 
 type Ramp struct {
-	Gradients        groupContents
-	Groups           []RampProperties
+	Gradients        groupContents     `json:"groupsTemplates" yaml:"groupsTemplates"`
+	Groups           []RampProperties  `json:"groups" yaml:"groups"`
 	WidgetProperties control           `json:"widgetProperties,omitempty" yaml:"widgetProperties,omitempty"`
-	ColourSpace      colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	ColourSpace      colour.ColorSpace `json:"colorSpace,omitempty" yaml:"colorSpace,omitempty"`
 	GridLoc          *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
 }
 
 type groupContents struct {
-	GroupSeparator    groupSeparator
-	GradientSeparator gradientSeparator
-	Gradients         []Gradient
+	GroupSeparator    groupSeparator    `json:"separator" yaml:"separator"`
+	GradientSeparator gradientSeparator `json:"gradientSeparator" yaml:"gradientSeparator"`
+	Gradients         []Gradient        `json:"gradients" yaml:"gradients"`
 }
 
 type textObjectJSON struct {
@@ -59,11 +59,11 @@ type gradientSeparator struct {
 }
 
 type control struct {
-	MaxBitDepth      int    `json:"maxBitDepth" yaml:"maxBitDepth"`
-	CwRotation       string `json:"cwRotation" yaml:"cwRotation"`
-	ObjectFitFill    bool   `json:"objectFitFill" yaml:"objectFitFill"`
-	PixelValueRepeat int    `json:"pixelValueRepeat" yaml:"pixelValueRepeat"`
-	TextProperties   textObjectJSON
+	MaxBitDepth      int            `json:"maxBitDepth" yaml:"maxBitDepth"`
+	CwRotation       string         `json:"cwRotation" yaml:"cwRotation"`
+	ObjectFitFill    bool           `json:"objectFitFill" yaml:"objectFitFill"`
+	PixelValueRepeat int            `json:"pixelValueRepeat" yaml:"pixelValueRepeat"`
+	TextProperties   textObjectJSON `json:"textProperties" yaml:"textProperties"`
 	// These are things the user does not set
 	/*
 		fill function - for rotation to automatically translate the fill location

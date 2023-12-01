@@ -22,7 +22,7 @@ const (
 	rotate270  = "rotate270"
 	noRotation = "xy"
 
-	widgetType = "builtin.ramps"
+	widgetType = "builtin.gradients"
 )
 
 // TextBoxGen generates text boxes on a given image based on config values
@@ -159,6 +159,8 @@ func setBase(target *control, dims image.Point) (float64, error) {
 	*/
 	if target.MaxBitDepth == 0 {
 		target.MaxBitDepth = 16
+	} else if target.MaxBitDepth > 16 {
+		return 0.0, fmt.Errorf("0DEV The maximum bit depth is 16 bits, received a value of %v", target.MaxBitDepth)
 	}
 	//	stepLength := math.Pow(2, float64(target.MaxBitDepth))
 	// step := float64(rowLength) / stepLength

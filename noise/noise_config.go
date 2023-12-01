@@ -16,10 +16,10 @@ const hooks = ""*/
 
 type noiseJSON struct {
 	//	Type      string       `json:"type" yaml:"type"`
-	Noisetype   string            `json:"noisetype" yaml:"noisetype"`
+	NoiseType   string            `json:"noiseType" yaml:"noiseType"`
 	Minimum     int               `json:"minimum" yaml:"minimum"`
 	Maximum     int               `json:"maximum" yaml:"maximum"`
-	ColourSpace colour.ColorSpace `json:"ColorSpace" yaml:"ColorSpace"`
+	ColourSpace colour.ColorSpace `json:"colorSpace" yaml:"colorSpace"`
 	GridLoc     *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
 }
 

@@ -17,7 +17,7 @@ import (
 func TestZoneGenAngle(t *testing.T) {
 	var mockNoise noiseJSON
 
-	mockNoise.Noisetype = "white noise"
+	mockNoise.NoiseType = "white noise"
 	randnum = func() int64 { return 27 }
 
 	testF := []string{"./testdata/whitenoise.png"}

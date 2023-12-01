@@ -15,7 +15,7 @@
             ],
             "description": "This to be labelled as \"builtin.ebu3373/saturation\", so that the json is correctly configured"
         },
-        "ColorSpace" : {
+        "colorSpace" : {
 			"type" : "object"
 		},
         "colors" : {

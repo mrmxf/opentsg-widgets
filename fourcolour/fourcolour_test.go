@@ -31,7 +31,7 @@ func TestFillMethod(t *testing.T) {
 	mockJson5 := fourJSON{GridLoc: &mockG, Colourpallette: []string{"#FF0000", "#00FF00", "#0000FF", "#FFFF00"}}
 	mockJsons := []fourJSON{mockJson4, mockJson5}
 
-	explanation := []string{"fourColour", "fiveColour"}
+	explanation := []string{"fiveColour", "fourColour"}
 
 	for i, mj := range mockJsons {
 

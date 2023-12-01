@@ -1,6 +1,6 @@
 {
-    "platetype": "circular",
-    "ColorSpace": {
+    "plateType": "circular",
+    "colorSpace": {
         "Primaries": {
             "Red": {},
             "Green": {},
@@ -8,7 +8,7 @@
             "WhitePoint": {}
         }
     },
-    "startcolor": "grey",
+    "startColor": "grey",
     "angle": null,
     "mask": "circle"
 }

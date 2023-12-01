@@ -1,6 +1,6 @@
 {
     "image": "../zoneplate/testdata/normalzpm.png",
-    "ColorSpace": {
+    "colorSpace": {
         "Primaries": {
             "Red": {},
             "Green": {},

@@ -7,7 +7,7 @@
         "grid": {
             "$ref": "#/$defs/gridschema"
         },
-        "ColorSpace" : {
+        "colorSpace" : {
 			"type" : "object"
 		},
         "type": {
@@ -15,7 +15,7 @@
             "enum": ["builtin.zoneplate"],
             "description": "This to be labelled as \"builtin.zoneplate\", so that the json is correctly configured"
         },
-        "platetype": {
+        "plateType": {
             "enum": [
                 "circular",
                 "sweep",
@@ -23,7 +23,7 @@
             ],
             "description": "The type of zoneplate to be generated."
         },
-        "startcolor": {
+        "startColor": {
             "enum": [
                 "white",
                 "black",
@@ -52,7 +52,7 @@
             ],
             "description": "The type of mask that can be applied to the zoneplate"
         },
-        "zonesize": {
+        "zoneSize": {
             "type": "object",
             "properties": {
                 "w": {
@@ -84,8 +84,8 @@
         }
     },
     "required": [
-        "platetype",
-        "startcolor",
+        "plateType",
+        "startColor",
         "angle",
         "type",
 		"grid"

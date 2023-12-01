@@ -49,7 +49,7 @@ func (n noiseJSON) Generate(canvas draw.Image, opt ...any) error {
 		return fmt.Errorf("0141 The minimum noise value %v is greater than the maximum noise value %v", min, max)
 	}
 
-	if n.Noisetype == "white noise" { // upgrade to switch statement when more types come in
+	if n.NoiseType == "white noise" { // upgrade to switch statement when more types come in
 		whitenoise(random, n.ColourSpace, canvas, min, max)
 	}
 

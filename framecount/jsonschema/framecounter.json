@@ -7,16 +7,16 @@
 		"type": {
 			"type": "string",
 			"enum": [
-				"builtin.framecounter"
+				"builtin.frameCounter"
 			],
-			"description": "This to be labelled as \"builtin.framecounter\", so that the json is correctly configured"
-		},		"ColorSpace" : {
+			"description": "This to be labelled as \"builtin.frameCounter\", so that the json is correctly configured"
+		},		"colorSpace" : {
 			"type" : "object"
 		},
 		"grid": {
             "$ref": "#/$defs/gridschema"
         },
-		"framecounter": {
+		"frameCounter": {
 			"type": "boolean",
 			"description": "If true a frame counter is generated in the bottom right corner of the image that sequentially increases with each json object"
 		},
@@ -65,10 +65,10 @@
 				}
 			]
 		},
-		"textcolor": {
+		"textColor": {
 			"$ref": "#/$defs/anycolour"
 		},
-		"backgroundcolor": {
+		"backgroundColor": {
 			"$ref": "#/$defs/anycolour"
 		},
 		"font" :{
@@ -77,7 +77,7 @@
             "maxLength": 255,
 			"description": "The location of the font ttf file to be used, or a choice of one of the pre included ones of: \"body\", \"header\" and \"title\""
 		}, 
-		"fontsize": {
+		"fontSize": {
 			"description": "the height of the frame font",
 			"type": "number",
 			"minimum": 0
@@ -85,7 +85,7 @@
 	},
 	"required": [
 		"type",
-		"framecounter",
+		"frameCounter",
 		"grid"
 	],
 	"additionalProperties": false,

@@ -17,7 +17,7 @@ const hooks = ""*/
 type twosiJSON struct {
 	//	Type    string      `json:"type" yaml:"type"`
 	GridLoc     config.Grid       `json:"grid,omitempty" yaml:"grid,omitempty"`
-	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	ColourSpace colour.ColorSpace `json:"colorSpace,omitempty" yaml:"colorSpace,omitempty"`
 }
 
 //go:embed jsonschema/twoschema.json

@@ -30,7 +30,10 @@ func (tb TextboxJSON) Generate(canvas draw.Image, opts ...any) error {
 	// calculate the border here
 
 	bounds := canvas.Bounds().Max
-	width, height := (float64(bounds.X)*tb.BorderSize)/100, (float64(bounds.Y)*tb.BorderSize)/100
+	var width, height float64
+	if tb.BorderSize > 0 { //prevent div 0 errors
+		width, height = (float64(bounds.X)*tb.BorderSize)/100, (float64(bounds.Y)*tb.BorderSize)/100
+	} // else leave as 0
 
 	// draw the borders
 	borderwidth := int(height)

@@ -15,9 +15,9 @@ const wLibrary = "builtin"
 const hooks = ""*/
 
 type zoneplateJSON struct {
-	Platetype   string            `json:"platetype" yaml:"platetype"`
-	ColourSpace colour.ColorSpace `json:"ColorSpace" yaml:"ColorSpace"`
-	Startcolour string            `json:"startcolor" yaml:"startcolor"`
+	Platetype   string            `json:"plateType" yaml:"plateType"`
+	ColourSpace colour.ColorSpace `json:"colorSpace" yaml:"colorSpace"`
+	Startcolour string            `json:"startColor" yaml:"startColor"`
 	Angle       interface{}       `json:"angle" yaml:"angle"`
 	Mask        string            `json:"mask" yaml:"mask"`
 	GridLoc     *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`

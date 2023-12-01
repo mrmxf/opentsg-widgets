@@ -16,18 +16,18 @@ const hooks = "[]"*/
 
 type frameJSON struct {
 	//	Type         string            `json:"type" yaml:"type"`
-	FrameCounter bool              `json:"framecounter,omitempty" yaml:"framecounter,omitempty"`
+	FrameCounter bool              `json:"frameCounter,omitempty" yaml:"frameCounter,omitempty"`
 	Imgpos       interface{}       `json:"gridPosition" yaml:"gridPosition"`
-	TextColour   string            `json:"textcolor" yaml:"textcolor"`
-	BackColour   string            `json:"backgroundcolor" yaml:"backgroundcolor"`
+	TextColour   string            `json:"textColor" yaml:"textColor"`
+	BackColour   string            `json:"backgroundColor" yaml:"backgroundColor"`
 	Font         string            `json:"font" yaml:"font"`
-	FontSize     float64           `json:"fontsize" yaml:"fontsize"`
+	FontSize     float64           `json:"fontSize" yaml:"fontSize"`
 	GridLoc      *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
-	ColourSpace  colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	ColourSpace  colour.ColorSpace `json:"colorSpace,omitempty" yaml:"colorSpace,omitempty"`
 
 	//	DesignScale  string       `json:"designScale" yaml:"designScale"`
 	// This is added in for metadata purposes
-	FrameNumber int `json:"framenumber"`
+	FrameNumber int `json:"frameNumber"`
 }
 
 // start the count at -1 as it is incremented before being returned
@@ -44,7 +44,9 @@ func (f *frameJSON) getFrames() bool {
 	return f.FrameCounter
 }
 
-func framePos() int { return framecount }
+func framePos() int {
+	return framecount
+}
 
 func (f frameJSON) Alias() string {
 	return f.GridLoc.Alias

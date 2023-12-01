@@ -7,7 +7,7 @@
         "grid": {
             "$ref": "#/$defs/gridschema",
             "description": "The coordiantes of the location to be added, a->p is the x axis, 0->9 are the allowed y axis parameters. Alternativley an alias can be used if already declared"
-        },		"ColorSpace" : {
+        },		"colorSpace" : {
 			"type" : "object"
 		},
         "type": {

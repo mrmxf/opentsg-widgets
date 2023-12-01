@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	widgetType = "builtin.framecounter"
+	widgetType = "builtin.frameCounter"
 )
 
 func CountGen(canvasChan chan draw.Image, debug bool, c *context.Context, wg, wgc *sync.WaitGroup, logs *errhandle.Logger) {
@@ -47,7 +47,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 
 	b := canvas.Bounds().Max
 	if !f.getFrames() {
-		return nil
+		return fmt.Errorf("0DEV frame counter not enabled for this frame. Ensure frameCounter is set to true")
 	}
 
 	if f.Font == "" {
@@ -63,11 +63,20 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 		return fmt.Errorf("0155 configuration error when assiging framecount context")
 	}
 
+	// stop errors happening when font is not declared
+	if f.FontSize == 0 {
+		f.FontSize = 90
+	}
+
 	// Size of the text in pixels to font
 	f.FontSize = (float64(b.Y) * (f.FontSize / 100)) // keep as pixels
 
 	if b.Y > b.X {
 		f.FontSize *= (float64(b.X) / float64(b.Y)) // Scale the font size for narrow grids
+	}
+
+	if f.FontSize < 7 {
+		return fmt.Errorf("0DDEV The font size %v pixels is smaller thant the minimum value of 7 pixels", f.FontSize)
 	}
 
 	square := image.Point{int(f.FontSize), int(f.FontSize)}
@@ -79,7 +88,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 
 	txtBox := text.NewTextboxer(f.ColourSpace,
 		text.WithFill(text.FillTypeFull),
-		text.WithFont(text.FontPixel),
+		text.WithFont(f.Font),
 		text.WithBackgroundColour(&defaultBackground),
 		text.WithTextColour(&defaulText),
 	)
@@ -92,7 +101,6 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	if f.TextColour != "" {
 		text.WithTextColourString(f.TextColour)(txtBox)
 	}
-
 	// MyFont.Advance
 	mes, err := intTo4(pos())
 	if err != nil {
@@ -145,7 +153,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 	} else if y > b.Y-fb.Y {
 		return fmt.Errorf("_0153 the y position %v is greater than the y boundary of %v with frame height of %v", y, canvas.Bounds().Max.Y, fb.Y)
 	}
-
+	fmt.Println("HERE", x, y, f.FontSize)
 	// Corner := image.Point{-1 * (canvas.Bounds().Max.X - height - 1), -1 * (canvas.Bounds().Max.Y - height - 1)}
 	colour.Draw(canvas, image.Rect(x, y, x+int(f.FontSize), y+int(f.FontSize)), frame, image.Point{}, draw.Over)
 

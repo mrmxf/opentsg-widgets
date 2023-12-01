@@ -1,10 +1,10 @@
 {
-    "Gradients": {
-        "GroupSeparator": {
+    "groupsTemplates": {
+        "separator": {
             "height": 0,
             "color": "white"
         },
-        "GradientSeparator": {
+        "gradientSeparator": {
             "colors": [
                 "white",
                 "black",
@@ -13,7 +13,7 @@
             ],
             "height": 1
         },
-        "Gradients": [
+        "gradients": [
             {
                 "height": 5,
                 "bitDepth": 4,
@@ -36,7 +36,7 @@
             }
         ]
     },
-    "Groups": [
+    "groups": [
         {
             "color": "green",
             "initialPixelValue": 960,
@@ -53,14 +53,14 @@
         "cwRotation": "",
         "objectFitFill": false,
         "pixelValueRepeat": 0,
-        "TextProperties": {
+        "textProperties": {
             "textyPosition": "top",
             "textxPosition": "left",
             "textHeight": 30,
             "textColor": "#345AB6"
         }
     },
-    "ColorSpace": {
+    "colorSpace": {
         "Primaries": {
             "Red": {},
             "Green": {},

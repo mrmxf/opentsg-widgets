@@ -15,6 +15,16 @@ Rec 709.
 
 It has no fields, only the location is required.
 
+```json
+{
+    "type":"builtin.ebu3373/bars",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
+}
+```
+
 ## Luma
 
 A horizontal luma ramp from the 10 bit value 4 to 1019,
@@ -23,6 +33,16 @@ checking linear mapping functions and for clipping
 of lights and darks.
 
 It has no fields, only the location is required.
+
+```json
+{
+    "type":"builtin.ebu3373/luma",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
+}
+```
 
 ## Near black
 
@@ -33,24 +53,40 @@ This widget is generated to fill the widget area.
 
 It has no fields, only the location is required.
 
+```json
+{
+    "type":"builtin.ebu3373/nearblack",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
+}
+```
+
 ## Saturation
 
 The saturation generates the steps of red, green and blue
 from minimum to maximum saturation. These saturations
 are used to establish the colour space of the viewing device.
 
-It has the following fields
+It has the following optional fields
 
 - `colors` - An array of the "red", "green" and "blue". The saturation appears in the order
-they were declared. If only one colour is chosen then only that colour is used.
+they were declared. If only one colour is chosen then only that colour is used. If `colors` 
+is not declared then the default order of, red,green and blue is used.
 
 ```json
 {
+    "type":"builtin.ebu3373/saturation"
     "colors": [
         "red",
         "green",
         "blue"
-    ]
+    ],
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
 }
 ```
 
@@ -63,3 +99,13 @@ set of lines are linked to a cable. IF they don't match the expected
 layout then the cables are not correctly ordered.
 
 It has no fields, only the location is required.
+
+```json
+{
+    "type": "builtin.ebu3373/twosi",
+    "grid": {
+      "location": "a1",
+      "alias" : "A demo Alias"
+    }
+}
+```

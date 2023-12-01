@@ -8,7 +8,7 @@ import (
 type geomTextJSON struct {
 	TextColour  string            `json:"textColor" yaml:"textColor"`
 	GridLoc     *config.Grid      `json:"grid,omitempty" yaml:"grid,omitempty"`
-	ColourSpace colour.ColorSpace `json:"ColorSpace,omitempty" yaml:"ColorSpace,omitempty"`
+	ColourSpace colour.ColorSpace `json:"colorSpace,omitempty" yaml:"colorSpace,omitempty"`
 }
 
 var schemaInit = []byte(`{
