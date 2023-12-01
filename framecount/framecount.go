@@ -47,7 +47,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 
 	b := canvas.Bounds().Max
 	if !f.getFrames() {
-		return nil
+		return fmt.Errorf("0DEV frame counter not enabled for this frame. Ensure frameCounter is set to true")
 	}
 
 	if f.Font == "" {
