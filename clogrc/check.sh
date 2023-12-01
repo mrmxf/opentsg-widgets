@@ -17,7 +17,7 @@ OOPS=0                                   # non zero is bad - count the problems
 # getRemoteTag "opentsg-component" "ref" # get tag. [ -z "$2" ] adds color
 function getRemoteTag () {
   local URL="https://github.com/mrmxf/$1.git"
-  local TAG=$(git ls-remote --tags $URL v\* 2>/dev/null | head -1 | sed -r 's/.*(v[\.0-9]*).*/\1/')
+  local TAG=$(git ls-remote --tags $URL v\* 2>/dev/null | tail -1 | sed -r 's/.*(v[\.0-9]*).*/\1/')
   [ $? -ne 0 ]  && ((OOPS++)) && return $OOPS         # unknown error on stdout
   if [ -z "$2" ] ; then
     # make all the non-matching tags red

@@ -30,8 +30,19 @@ if [[ "$vLOCAL" != "$vREF" ]] ; then
   fi
 fi
 
+# if this component's tag is different because of a patch - ask user
+if [[ ( "$vLOCAL" == "$vHEAD" ) && ( "$vRwidgets" != "$vHEAD" ) ]] ; then
+  fPrompt "${cT}Push Patch of$cS $PROJECT$cT to origin @ $vREF?$cX" "yN" 6
+  if [ $? -eq 0 ] ; then # yes was selected
+    printf "Pushing $vREF to origin.\n"
+    fTagRemote "$vREF"
+    [ $? -gt 0 ] && printf "${cE}Abort$cX\n" && exit 1
+  fi
+fi
+
+# if all the tags are to be insync - ask the user
 if [[ ( "$vLOCAL" == "$vREF" ) && ( "$vRwidgets" != "$vREF" ) ]] ; then
-  fPrompt "${cT}Push$cS $PROJECT$cT to origin @ $vREF?$cX" "yN" 6
+  fPrompt "${cT}Push tag sync$cS $PROJECT$cT to origin @ $vREF?$cX" "yN" 6
   if [ $? -eq 0 ] ; then # yes was selected
     printf "Pushing $vREF to origin.\n"
     fTagRemote "$vREF"
