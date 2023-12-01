@@ -52,6 +52,8 @@ github.com/matoous/go-nanoid v1.5.0 h1:VRorl6uCngneC4oUQqOYtO3S0H5QKFtKuKycFG3eu
 github.com/matoous/go-nanoid v1.5.0/go.mod h1:zyD2a71IubI24efhpvkJz+ZwfwagzgSO6UNiFsZKN7U=
 github.com/mrmxf/opentsg-core v0.4.0 h1:SoWjG73c/YzDdtFM3hPW73VC3MYhJluZIHq0oE6dGdM=
 github.com/mrmxf/opentsg-core v0.4.0/go.mod h1:Q4pPGkrpGGZJq2lfv1+WqwiBkUdNEYq8RH/TaGlII7Q=
+github.com/mrmxf/opentsg-core v0.4.1 h1:tKHWFWASIR5aM33yoluGU3+IvyOJnGTYCASW4Ja4gr8=
+github.com/mrmxf/opentsg-core v0.4.1/go.mod h1:TPE2P8M1ZpaizGsOMBQuo7NdcEKrRNhkx6oAIxkD0bk=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 h1:zYyBkD/k9seD2A7fsi6Oo2LfFZAehjjQMERAvZLEDnQ=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646/go.mod h1:jpp1/29i3P1S/RLdc7JQKbRpFeM1dOBd8T9ki5s+AY8=
 github.com/peterbourgon/mergemap v0.0.1 h1:5/brtSACv34REV0xoYjPQ8JXZnx3nurGt6WInLRwqX4=
