@@ -88,7 +88,7 @@ func (f frameJSON) Generate(canvas draw.Image, extraOpts ...any) error {
 
 	txtBox := text.NewTextboxer(f.ColourSpace,
 		text.WithFill(text.FillTypeFull),
-		text.WithFont(text.FontPixel),
+		text.WithFont(f.Font),
 		text.WithBackgroundColour(&defaultBackground),
 		text.WithTextColour(&defaulText),
 	)
